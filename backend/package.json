@@ -21,8 +21,10 @@
   },
   "dependencies": {
     "@types/jest": "^26.0.0",
+    "apollo-server": "^2.14.3",
     "axios": "^0.19.2",
     "dotenv": "^8.2.0",
+    "graphql": "^15.1.0",
     "jest": "^26.0.1",
     "jest-tc": "^1.1.1",
     "types-axios": "0.0.8"
