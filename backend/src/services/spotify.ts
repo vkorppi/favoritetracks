@@ -6,7 +6,7 @@ import querystring from 'querystring';
 
 import enviro from 'dotenv';
 
-import { refreshtoken } from '../types';
+import { refreshtoken,spotifyResult } from '../types';
 
 enviro.config();
 
@@ -43,7 +43,7 @@ const CreateNewSession = async():Promise<void> => {
 
     const granttype:string=  typeparsers.parseEnvString(process.env.GRANTTYPE);
     const refreshtoken:string =  typeparsers.parseEnvString(process.env.REFRESHTOKEN);
-    const session:string =  typeparsers.parseEnvString(process.env.SESSIONURL);
+    const sessionUrl:string =  typeparsers.parseEnvString(process.env.SESSIONURL);
     const code:string =  typeparsers.parseEnvString(process.env.CODE);
 
     if (fs.existsSync('session.txt')) {
@@ -55,7 +55,7 @@ const CreateNewSession = async():Promise<void> => {
         "refresh_token": refreshtoken
     };
 
-    await axios.post(session,querystring.stringify(requestBody),
+    await axios.post(sessionUrl,querystring.stringify(requestBody),
     { headers: { 'Content-Type': 'application/x-www-form-urlencoded','authorization': 'Basic '+code} }).then(newtoken => {
 
        const retrievedToken:refreshtoken= newtoken.data as refreshtoken;
@@ -70,7 +70,7 @@ const CreateNewSession = async():Promise<void> => {
     
 };
 
- const search = async(track:string,page:number): void  => {
+ const search = async(track:string,page:number): Promise<spotifyResult>  => {
 
     if(hasSessionExpired()) {
        await CreateNewSession();
@@ -79,8 +79,17 @@ const CreateNewSession = async():Promise<void> => {
     const filecontent = fs.readFileSync('session.txt', 'utf8').toString().split("\n");
     const token:string = typeparsers.parseToken(filecontent[0]);
 
+    const querypart1:string=  typeparsers.parseEnvString(process.env.QUERYPART1);
+    const typepart2:string=  typeparsers.parseEnvString(process.env.TYPEPART2);
+    const offsetpart3:string=  typeparsers.parseEnvString(process.env.OFFSETPART3);
+    const limitpart4:string=  typeparsers.parseEnvString(process.env.LIMITPART4);
+    const offset:number= page *10;
 
- };
+    const url:string = querypart1+track+typepart2+offsetpart3+offset.toString()+limitpart4;
+
+    return await (await axios.get(url,{ headers: { 'authorization': 'Bearer '+token} })).data as spotifyResult;
+
+    };
 
 
 export default {
