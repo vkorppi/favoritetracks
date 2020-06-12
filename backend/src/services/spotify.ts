@@ -38,7 +38,6 @@ enviro.config();
 
  };
 
-// metodi try catchen sisaan
 const CreateNewSession = async():Promise<void> => {
 
     const granttype:string=  typeparsers.parseEnvString(process.env.GRANTTYPE);
