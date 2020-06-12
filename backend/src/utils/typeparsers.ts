@@ -3,11 +3,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
 import typeguards from '../utils/typeguards';
+import { ApolloError } from 'apollo-server';
 
 const parseExpiration = (value: any): number => {
     
-    if(!typeguards.isNumber(value)) {
-        throw new Error('Expiration time was not a number');
+    if(!value || !typeguards.isNumber(value)) {
+      console.log(new ApolloError('Expiration time: Expiration time was not a number'));
+        throw new ApolloError('Expiration time');
     }
 
     return value;
@@ -16,16 +18,18 @@ const parseExpiration = (value: any): number => {
 
   const parseEnvString = (value: any): string => {
 
-    if(!typeguards.isString(value)) {
-        throw new Error('Enviromentvariable was not a string');
+    if(!value || !typeguards.isString(value) || typeguards.isNumber(value)) {
+        console.log(new ApolloError('Enviroment variable: variable was not a string'));
+        throw new ApolloError('Enviroment variable');
     }
     return value;
   };
 
   const parseToken = (value: any): string => {
 
-    if(!typeguards.isString(value)) {
-        throw new Error('token was not a string');
+    if(!value || !typeguards.isString(value)) {
+        console.log(new ApolloError('Token: token was not a string'));
+        throw new ApolloError('Token');
     }
     return value;
   };

@@ -1,7 +1,7 @@
 
-import ApolloClient from 'apollo-boost';
+//import ApolloClient from 'apollo-boost';
 
-
+/*
 const apolloclient = new ApolloClient({
 	
 	uri: 'http://localhost:4000/',
@@ -11,6 +11,7 @@ const apolloclient = new ApolloClient({
    }
 
   });
+  */
 
   describe('Testing graphql queries', () => {
 
