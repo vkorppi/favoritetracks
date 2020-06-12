@@ -9,7 +9,7 @@ const server = new ApolloServer({
     resolvers,
     formatError: (err) => {  
       
-      const pattern = /Enviroment variable|Expiration time|Token|Spotify/i;
+      const pattern = /Enviroment variable|Expiration time|Token|Spotify|Track|Page/i;
      
       if (pattern.test(err.message)) { 
              return new Error('Internal server error');

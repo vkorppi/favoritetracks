@@ -34,8 +34,30 @@ const parseExpiration = (value: any): number => {
     return value;
   };
 
+  const parseTrack = (value: any): string => {
+
+    if(!value || !typeguards.isString(value)) {
+        console.log(new ApolloError('Track: track was not a string'));
+        throw new ApolloError('Track');
+    }
+    return value;
+  };
+
+  const parsePage = (value: any): number => {
+    
+    if(!value || !typeguards.isNumber(value)) {
+      console.log(new ApolloError('Page: Page was not a number'));
+        throw new ApolloError('Page');
+    }
+
+    return value;
+    
+  };
+
   export default {
     parseExpiration,
     parseEnvString,
-    parseToken
+    parseToken,
+    parseTrack,
+    parsePage
   };

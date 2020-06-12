@@ -84,9 +84,9 @@ const CreateNewSession = async():Promise<void> => {
     const offsetpart3:string=  typeparsers.parseEnvString(process.env.OFFSETPART3);
     const limitpart4:string=  typeparsers.parseEnvString(process.env.LIMITPART4);
     
-    const offset:number= page *10;
+    const offset:number= typeparsers.parsePage(page) *10;
 
-    const url:string = querypart1+track+typepart2+offsetpart3+offset.toString()+limitpart4;
+    const url:string = querypart1+typeparsers.parseTrack(track)+typepart2+offsetpart3+offset.toString()+limitpart4;
 
     
      return await (await axios.get(url,{ headers: { 'authorization': 'Bearer '+token} })).data as spotifyResult;
