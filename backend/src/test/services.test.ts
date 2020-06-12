@@ -1,12 +1,14 @@
 
+
 import spotify from '../services/spotify';
 import fs from 'fs';
 
+
  describe('Testing spotify services', () => {
 
-  test('creates session file with expirationtime and token', () => {
+  test('creates session file with expirationtime and token', async () => {
 
-    void spotify.CreateNewSession();
+    await spotify.CreateNewSession();
 
     const fileExists= fs.existsSync('session.txt');
     let filecontent=[];
@@ -19,13 +21,13 @@ import fs from 'fs';
       expect(filecontent.length).toBe(2);
     });
     
-    test('Removes existing file and creates new file with the same name', () => {
+    test('Removes existing file and creates new file with the same name', async () => {
 
       let filecontent='';
 
       fs.appendFileSync('session.txt','test');
 
-      void spotify.CreateNewSession();
+      await spotify.CreateNewSession();
 
       filecontent = fs.readFileSync('session.txt', 'utf8').toString();
 
@@ -33,19 +35,41 @@ import fs from 'fs';
       
     });
 
-    test('If session has expired returns true', () => {
-
-		// ...
-    });
-    
+        
     test('If session has not expired returns false', () => {
 
-		// ...
+      if (fs.existsSync('session.txt')) {
+        fs.unlinkSync('session.txt');
+      }
+
+      const milliseconds = 1000 * 60 * 60;
+      let dateExpire = new Date();
+      const date = new Date();
+
+      dateExpire=new Date( date.getTime() + milliseconds );
+
+      fs.appendFileSync('session.txt', 'token'+'\n'+dateExpire.getTime().toString());
+      
+      expect(spotify.hasSessionExpired()).toBe(false);
+
+      });
+
+    test('If session has expired returns true', () => {
+
+      if (fs.existsSync('session.txt')) {
+        fs.unlinkSync('session.txt');
+      }
+
+      const milliseconds = 1000 * 60 * 60;
+      let dateExpire = new Date();
+      const date = new Date();
+
+      dateExpire=new Date( date.getTime() - milliseconds );
+
+      fs.appendFileSync('session.txt', 'token'+'\n'+dateExpire.getTime().toString());
+      
+      expect(spotify.hasSessionExpired()).toBe(true);
+      
     });
     
-    test('Returns promise that can be used fetch data that has type spotifyResult', () => {
-
-		// ...
-    });
-
 });

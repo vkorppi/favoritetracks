@@ -6,6 +6,14 @@ export interface refreshtoken {
     scope: string;
   }
 
+  export interface testType { 
+    
+    tracks:string[]
+      
+
+  }
+
+
 
   export interface spotifyResult { 
     
