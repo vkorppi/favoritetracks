@@ -6,6 +6,9 @@ export interface refreshtoken {
     scope: string;
   }
 
+  export interface errorResponse {
+    error: string;
+  }
  
   export interface spotifyResult { 
     
