@@ -6,13 +6,20 @@ export interface refreshtoken {
     scope: string;
   }
 
-  export interface testType { 
+
+  export interface searchResult { 
     
     tracks:string[]
-      
+    total:number
 
   }
 
+  export interface query { 
+    
+    search:searchResult
+    
+
+  }
 
 
   export interface spotifyResult { 

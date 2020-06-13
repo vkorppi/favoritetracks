@@ -1,19 +1,33 @@
 
 
 import spotify from '../services/spotify';
-import { ApolloError } from 'apollo-server';
+import { ApolloError, UserInputError } from 'apollo-server';
+
+import { searchResult } from '../types';
 
 export const resolvers = {
 
     Query: {
 		
-        tracks:async (_root: any, args: { track: string; page: number; }):Promise<string[] | void> => {
+        search:async (_root: any, args: { track: string; page: number; }):Promise<searchResult | void> => {
              
           return  await spotify.search(args.track,args.page).then(result => {
-                return result.tracks.items.map(value => value.name);  
+              
+                const fetchedTracks:string[] = result.tracks.items.map(value => value.name);
+
+                return  { tracks:fetchedTracks, total:result.tracks.total};
+   
+              
             }).catch((error:Error) => {
+
                 console.error(error.stack);
-                throw new ApolloError('Spotify');
+
+                if(error instanceof ApolloError) {
+                    throw new ApolloError(error.message);
+                }
+                else if(error instanceof UserInputError) {
+                    throw new UserInputError(error.message);
+                }
               });
             
             

@@ -5,7 +5,12 @@ import { gql } from 'apollo-server';
 export const typeDefs = gql`
 
 type Query {
-    tracks(track: String,page: Int):  [String!]! 
+    search(track: String,page: Int):  searchResult! 
 }
+
+type searchResult {
+    tracks: [String!]!
+    total : Int!
+  }
 
 `;

@@ -239,7 +239,7 @@ describe('Testing typeparsers', () => {
             typeparsers.parsePage('test');
         }
         catch(error) {
-            
+         
             exceptionThrown=true;
         }
       

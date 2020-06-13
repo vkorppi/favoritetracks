@@ -2,7 +2,7 @@
 import ApolloClient from 'apollo-boost';
 import { gql } from 'apollo-server';
 import 'cross-fetch/polyfill';
-import { testType } from '../types';
+import { query } from '../types';
 
 const apolloclient = new ApolloClient(
 	{
@@ -24,15 +24,19 @@ const apolloclient = new ApolloClient(
 		const userQuery = gql`
 
 		query {
-			tracks(track: "nagasaki",page: 1)
+			search(track: "nagasaki",page: 1) 
+			{
+      			tracks
+      			total
+    		}
 		  }`;
 
 		const object= (await apolloclient.query({
 			query: userQuery
-		})).data as testType;
+		})).data as query;
 
 		
-		expect(object.tracks.length > 0).toBe(true);
+		expect(object.search.tracks.length > 0).toBe(true);
 	});
 	
 	
