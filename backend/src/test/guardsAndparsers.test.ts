@@ -35,230 +35,247 @@ describe('Testing typeparsers', () => {
 
     test('If parameter was empty throw exception', () => {
 
-        let exceptionThrown=false;
+        let message='';
 
         try {
             typeparsers.parseEnvString('');
         }
         catch(error) {
             
-            exceptionThrown=true;
+            const test:Error=error as Error ;
+             message=test.message;
+
         }
+        expect(message).toBe('Enviroment variable: variable was not a string');
       
-        expect(exceptionThrown).toBe(true);
     });
 
     test('If parameter was not a string throw exception', () => {
 
-        let exceptionThrown=false;
+        let message='';
 
         try {
             typeparsers.parseEnvString(123);
         }
         catch(error) {
             
-            exceptionThrown=true;
+            const test:Error=error as Error ;
+             message=test.message;
         }
       
-        expect(exceptionThrown).toBe(true);
+        expect(message).toBe('Enviroment variable: variable was not a string');
     });
 
     test('If parameter was a string do not throw exception', () => {
 
-        let exceptionThrown=false;
+        let message='';
 
         try {
             typeparsers.parseEnvString('test');
         }
         catch(error) {
             
-            exceptionThrown=true;
+            const test:Error=error as Error ;
+            message=test.message;
         }
       
-        expect(exceptionThrown).toBe(false);
+        expect(message).toBe('');
     });
 
     
 
     test('If parameter was empty throw exception', () => {
 
-        let exceptionThrown=false;
+        let message='';
 
         try {
             typeparsers.parseExpiration(null);
         }
         catch(error) {
             
-            exceptionThrown=true;
+            const test:Error=error as Error ;
+            message=test.message;
         }
       
-        expect(exceptionThrown).toBe(true);
+        expect(message).toBe('Expiration time: Expiration time was not a number');
     });
 
     test('If parameter was not a number throw exception', () => {
 
-        let exceptionThrown=false;
+        let message='';
 
         try {
             typeparsers.parseExpiration('test');
         }
         catch(error) {
             
-            exceptionThrown=true;
+            const test:Error=error as Error ;
+            message=test.message;
         }
       
-        expect(exceptionThrown).toBe(true);
+        expect(message).toBe('Expiration time: Expiration time was not a number');
     });
 
     test('If parameter was a number do not throw exception', () => {
 
-        let exceptionThrown=false;
+        let message='';
 
         try {
             typeparsers.parseExpiration(123);
         }
         catch(error) {
             
-            exceptionThrown=true;
+            const test:Error=error as Error ;
+            message=test.message;
         }
       
-        expect(exceptionThrown).toBe(false);
+        expect(message).toBe('');
     });
 
     test('If parameter was empty throw exception', () => {
 
-        let exceptionThrown=false;
+        let message='';
 
         try {
             typeparsers.parseToken('');
         }
         catch(error) {
             
-            exceptionThrown=true;
+            const test:Error=error as Error ;
+            message=test.message;
         }
       
-        expect(exceptionThrown).toBe(true);
+        expect(message).toBe('Token: token was not a string');
     });
 
     test('If parameter was not a string throw exception', () => {
 
-        let exceptionThrown=false;
+        let message='';
 
         try {
             typeparsers.parseToken(123);
         }
         catch(error) {
             
-            exceptionThrown=true;
+            const test:Error=error as Error ;
+            message=test.message;
         }
       
-        expect(exceptionThrown).toBe(true);
+        expect(message).toBe('Token: token was not a string');
     });
 
     test('If parameter was a string do not throw exception', () => {
 
-        let exceptionThrown=false;
+        let message='';
 
         try {
             typeparsers.parseToken('test');
         }
         catch(error) {
             
-            exceptionThrown=true;
+            const test:Error=error as Error ;
+            message=test.message;
         }
       
-        expect(exceptionThrown).toBe(false);
+        expect(message).toBe('');
     });
 
     test('If parameter was empty throw exception', () => {
 
-        let exceptionThrown=false;
+        let message='';
 
         try {
             typeparsers.parseTrack('');
         }
         catch(error) {
             
-            exceptionThrown=true;
+            const test:Error=error as Error ;
+            message=test.message;
         }
       
-        expect(exceptionThrown).toBe(true);
+        expect(message).toBe('Track: track was not a string');
     });
 
     test('If parameter was not a string throw exception', () => {
 
-        let exceptionThrown=false;
+        let message='';
 
         try {
             typeparsers.parseTrack(123);
         }
         catch(error) {
             
-            exceptionThrown=true;
+            const test:Error=error as Error ;
+            message=test.message;
         }
       
-        expect(exceptionThrown).toBe(true);
+        expect(message).toBe('Track: track was not a string');
     });
 
     test('If parameter was a string do not throw exception', () => {
 
-        let exceptionThrown=false;
+        let message='';
 
         try {
             typeparsers.parseTrack('test');
         }
         catch(error) {
             
-            exceptionThrown=true;
+            const test:Error=error as Error ;
+            message=test.message;
         }
       
-        expect(exceptionThrown).toBe(false);
+        expect(message).toBe('');
     });
 
 
     test('If parameter was empty throw exception', () => {
 
-        let exceptionThrown=false;
+        let message='';
 
         try {
             typeparsers.parsePage(null);
         }
         catch(error) {
             
-            exceptionThrown=true;
+            const test:Error=error as Error ;
+            message=test.message;
         }
       
-        expect(exceptionThrown).toBe(true);
+        expect(message).toBe('Page: Page was not a number');
     });
 
     test('If parameter was not a number throw exception', () => {
 
-        let exceptionThrown=false;
+        let message='';
 
         try {
             typeparsers.parsePage('test');
         }
         catch(error) {
-         
-            exceptionThrown=true;
+                    
+            const test:Error=error as Error ;
+            message=test.message;
         }
       
-        expect(exceptionThrown).toBe(true);
+        expect(message).toBe('Page: Page was not a number');
     });
 
     test('If parameter was a number do not throw exception', () => {
 
-        let exceptionThrown=false;
+        let message='';
+
 
         try {
             typeparsers.parsePage(123);
         }
         catch(error) {
             
-            exceptionThrown=true;
+            const test:Error=error as Error ;
+            message=test.message;
         }
       
-        expect(exceptionThrown).toBe(false);
+        expect(message).toBe('');
     });
 
 });
