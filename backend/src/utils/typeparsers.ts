@@ -25,6 +25,15 @@ const parseExpiration = (value: any): number => {
     }
     return value;
   };
+  
+  const parseEnvNumber = (value: any): number => {
+
+    if(!value || !typeguards.isNumber(value)) {
+  
+        throw new ApolloError('Enviroment variable: variable was not a number');
+    }
+    return value;
+  };
 
   const parseToken = (value: any): string => {
 
@@ -58,6 +67,7 @@ const parseExpiration = (value: any): number => {
   export default {
     parseExpiration,
     parseEnvString,
+    parseEnvNumber,
     parseToken,
     parseTrack,
     parsePage

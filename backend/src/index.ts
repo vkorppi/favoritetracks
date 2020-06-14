@@ -2,6 +2,8 @@
 import { ApolloServer } from 'apollo-server-express';
 import  { resolvers }  from '../src/graphql/resolvers';
 import  { typeDefs }  from '../src/graphql/typeDefinitions';
+import  typeparsers  from '../src/utils/typeparsers';
+
 import express from 'express';
 
 
@@ -34,8 +36,10 @@ const app = express();
 
 server.applyMiddleware({ app });
 
-app.listen({ port: 4000 }, () =>
-  console.log(`Server ready at http://localhost:4000${server.graphqlPath}`)
+const port =typeparsers.parseEnvNumber(process.env.PORT)
+
+app.listen({ port: port }, () =>
+  console.log(`Server ready at http://localhost:${port}${server.graphqlPath}`)
 );
 
 
