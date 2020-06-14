@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
 import typeguards from '../utils/typeguards';
-import { ApolloError, UserInputError } from 'apollo-server';
+import { ApolloError, UserInputError } from 'apollo-server-express';
 
 const parseExpiration = (value: any): number => {
     

@@ -1,13 +1,13 @@
 
 import ApolloClient from 'apollo-boost';
-import { gql } from 'apollo-server';
+import { gql } from 'apollo-server-express';
 import 'cross-fetch/polyfill';
 import { query } from '../types';
 
 const apolloclient = new ApolloClient(
 	{
 	
-	uri: 'http://localhost:4000/',
+	uri: 'http://localhost:4000/graphql',
 	
 	onError: (error) => { 
 		console.log(error);

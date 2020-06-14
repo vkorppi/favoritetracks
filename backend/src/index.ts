@@ -1,9 +1,8 @@
 
-import { ApolloServer } from 'apollo-server';
+import { ApolloServer } from 'apollo-server-express';
 import  { resolvers }  from '../src/graphql/resolvers';
 import  { typeDefs }  from '../src/graphql/typeDefinitions';
-import typeparsers from '../src/utils/typeparsers';
-
+import express from 'express';
 
 
 const server = new ApolloServer({
@@ -25,12 +24,19 @@ const server = new ApolloServer({
       }
  
       return err;
-  },
-    cors: {origin: typeparsers.parseEnvString(process.env.FRONTEND)}
+  }
+
   });
   
-void  server.listen().then(({ url }) => {
-    console.log(`Server ready at ${url}`);
-  });
-  
+const app = express();
+
+ app.use(express.static('TestPage'));
+
+server.applyMiddleware({ app });
+
+app.listen({ port: 4000 }, () =>
+  console.log(`Server ready at http://localhost:4000${server.graphqlPath}`)
+);
+
+
 

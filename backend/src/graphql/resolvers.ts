@@ -1,7 +1,7 @@
 
 
 import spotify from '../services/spotify';
-import { ApolloError, UserInputError } from 'apollo-server';
+import { ApolloError, UserInputError } from 'apollo-server-express';
 
 import { searchResult } from '../types';
 
