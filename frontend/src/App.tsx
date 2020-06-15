@@ -1,7 +1,7 @@
 import React from 'react';
 import queries from './graphql/queries';
 import { useLazyQuery  } from '@apollo/client'
-import Search from './reducers/Search';
+import Search from './components/search';
 
 
 
