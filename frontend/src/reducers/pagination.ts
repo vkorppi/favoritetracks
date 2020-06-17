@@ -1,11 +1,10 @@
 
 
-import { Action,PaginationType  } from '../type'
+import { PaginationType, Action  } from '../type'
 
 export const setPagination = (start: number,last: number,total: number) => {
-    return async dispatch => { 
-        dispatch({ start: start,last: last,total: total})
-     }
+
+    return {start:start,last:last,total:total}
 }
 
 const reducer = (state: PaginationType , action: Action) => {

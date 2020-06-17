@@ -1,9 +1,11 @@
 import React, { FormEvent } from 'react';
 import { QueryTuple } from '../type'
-import { Form, Button, Row, Col, ListGroup } from 'react-bootstrap'
+import {  Button, ListGroup } from 'react-bootstrap'
+import {  useDispatch } from 'react-redux'
 
 const Search: React.FC<QueryTuple> = (props) => {
 
+  const dispatch = useDispatch()
   const data = props.searchResult.data
 
   const searchTracks = (event: FormEvent) => {
@@ -15,7 +17,6 @@ const Search: React.FC<QueryTuple> = (props) => {
 
     input.value = ''
 
-    console.log(inputvalue)
 
     props.searchAction({ variables: { name: inputvalue, page: 1 } })
 

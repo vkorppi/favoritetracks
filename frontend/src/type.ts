@@ -2,8 +2,8 @@ import { LazyQueryResult, QueryLazyOptions  } from '@apollo/client'
 
   export interface QueryTuple {
 
-    searchAction:(options?: QueryLazyOptions<Record<string, any>> | undefined) => void;
-    searchResult: LazyQueryResult<any, Record<string, any>>
+    searchAction: (options?: QueryLazyOptions<Record<string, any>> | undefined) => void;
+    searchResult: LazyQueryResult<any, Record<string, any>>;
 
  
   }
