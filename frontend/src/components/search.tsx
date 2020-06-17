@@ -1,12 +1,14 @@
 import React, { FormEvent } from 'react';
 import { QueryTuple } from '../type'
-import {  Button, ListGroup } from 'react-bootstrap'
-import {  useDispatch } from 'react-redux'
+import { Button, ListGroup } from 'react-bootstrap'
+import Resultpagination from '../components/pagination';
+import { useDispatch } from 'react-redux'
+import { setSearchvalue } from '../reducers/pagination'
 
 const Search: React.FC<QueryTuple> = (props) => {
 
-  const dispatch = useDispatch()
   const data = props.searchResult.data
+  const dispatch = useDispatch()
 
   const searchTracks = (event: FormEvent) => {
 
@@ -20,7 +22,11 @@ const Search: React.FC<QueryTuple> = (props) => {
 
     props.searchAction({ variables: { name: inputvalue, page: 1 } })
 
+    dispatch(setSearchvalue(inputvalue))
+
   }
+
+
 
   return (
     <div className="search">
@@ -51,6 +57,7 @@ const Search: React.FC<QueryTuple> = (props) => {
           )) : ''}
         </ListGroup>
       </div>
+      {data ? <Resultpagination total={data.search.total} searchObject={props.searchAction}/> : ''}
     </div>
   );
 

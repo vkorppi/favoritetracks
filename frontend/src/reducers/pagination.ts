@@ -1,19 +1,33 @@
 
 
-import { PaginationType, Action  } from '../type'
+import { Action  } from '../type'
 
-export const setPagination = (start: number,last: number,total: number) => {
 
-    return {start:start,last:last,total:total}
+export const setPagination = (start: number,last: number) => {
+
+    return {type:'SETPAGINATION',data:{start:start,last:last}}
 }
 
-const reducer = (state: PaginationType , action: Action) => {
+export const setSearchvalue = (searchvalue: string) => {
+
+    return {type:'SETSEARCHVALUE',data:{start:0,last:0,searchvalue:searchvalue}}
+}
+
+const reducer = (state={start:1,last:10,searchvalue:''} , action: Action) => {
 
     switch (action.type) {
-      case 'SET':
-        return {start:action.data.start,
-            last:action.data.last,
-            total:action.data.total}
+      case 'SETPAGINATION':
+        return {
+            start:action.data.start,
+            last:action.data.last
+        }
+        case 'SETSEARCHVALUE':
+            
+            return {
+                start:state.start,
+                last:state.last,
+                searchvalue:action.data.searchvalue
+            }
       default: 
         return state
     }

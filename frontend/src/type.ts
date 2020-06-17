@@ -8,18 +8,28 @@ import { LazyQueryResult, QueryLazyOptions  } from '@apollo/client'
  
   }
 
+  export interface TotalType {
+    total: number;
+    searchObject: (options?: QueryLazyOptions<Record<string, any>> | undefined) => void;
+  }
+
+
   export interface PaginationType {
+    pagination: PaginationAttributes;
+  }
+
+  export interface PaginationAttributes {
     start: number;
     last: number;
-    total: number;
+    searchvalue: string;
   }
 
   export type Action =
   {
-    type: "INIT";
-    data: PaginationType;
+    type: "SETSEARCHVALUE";
+    data: PaginationAttributes;
   } |
   {
-    type: "SET";
-    data: PaginationType;
+    type: "SETPAGINATION";
+    data: PaginationAttributes;
   };
