@@ -1,8 +1,8 @@
 import React, { FormEvent } from 'react';
-import { queryTuple } from '../type'
+import { QueryTuple } from '../type'
 import { Form, Button, Row, Col, ListGroup } from 'react-bootstrap'
 
-const Search: React.FC<queryTuple> = (props) => {
+const Search: React.FC<QueryTuple> = (props) => {
 
   const data = props.searchResult.data
 
