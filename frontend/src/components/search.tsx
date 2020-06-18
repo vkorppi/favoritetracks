@@ -3,7 +3,7 @@ import { QueryTuple } from '../type'
 import { Button, ListGroup } from 'react-bootstrap'
 import Resultpagination from '../components/pagination';
 import { useDispatch } from 'react-redux'
-import { setSearchvalue } from '../reducers/pagination'
+import { setPagination } from '../reducers/pagination'
 
 const Search: React.FC<QueryTuple> = (props) => {
 
@@ -22,8 +22,7 @@ const Search: React.FC<QueryTuple> = (props) => {
 
     props.searchAction({ variables: { name: inputvalue, page: 1 } })
 
-    dispatch(setSearchvalue(inputvalue))
-
+    dispatch(setPagination(1,10,inputvalue))
   }
 
 

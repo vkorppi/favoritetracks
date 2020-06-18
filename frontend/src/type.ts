@@ -8,7 +8,7 @@ import { LazyQueryResult, QueryLazyOptions  } from '@apollo/client'
  
   }
 
-  export interface searchAttributes {
+  export interface SearchAttributes {
     total: number;
     searchObject: (options?: QueryLazyOptions<Record<string, any>> | undefined) => void;
   }
@@ -22,14 +22,19 @@ import { LazyQueryResult, QueryLazyOptions  } from '@apollo/client'
     start: number;
     last: number;
     searchvalue: string;
+    currentPage: number;
   }
 
   export type Action =
   {
-    type: "SETSEARCHVALUE";
+    type: "UPDATE";
     data: PaginationAttributes;
   } |
   {
-    type: "SETPAGINATION";
+    type: "SET";
+    data: PaginationAttributes;
+  }|
+  {
+    type: "SETPAGE";
     data: PaginationAttributes;
   };

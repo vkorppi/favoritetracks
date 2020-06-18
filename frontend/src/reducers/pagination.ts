@@ -1,37 +1,53 @@
 
 
-import { Action  } from '../type'
+import { Action } from '../type'
 
 
-export const setPagination = (start: number,last: number) => {
+export const setPagination = (start: number, last: number, searchvalue: string) => {
 
-    return {type:'SETPAGINATION',data:{start:start,last:last}}
+    return { type: 'SET', data: { start: start, last: last, searchvalue: searchvalue } }
 }
 
-export const setSearchvalue = (searchvalue: string) => {
+export const updatePagination = (start: number, last: number, currentPage: number) => {
 
-    return {type:'SETSEARCHVALUE',data:{start:0,last:0,searchvalue:searchvalue}}
+    return { type: 'UPDATE', data: { start: start, last: last, currentPage: currentPage } }
 }
 
-const reducer = (state={start:1,last:10,searchvalue:''} , action: Action) => {
+export const setPage = (currentPage: number) => {
+
+    return { type: 'SETPAGE', data: { currentPage: currentPage } }
+}
+
+
+const reducer = (state = { start: 1, last: 10, searchvalue: '', currentPage: 1 }, action: Action) => {
 
     switch (action.type) {
-      case 'SETPAGINATION':
-        return {
-            start:action.data.start,
-            last:action.data.last
-        }
-        case 'SETSEARCHVALUE':
-            
+        case 'SET':
             return {
-                start:state.start,
-                last:state.last,
-                searchvalue:action.data.searchvalue
+                start: action.data.start,
+                last: action.data.last,
+                searchvalue: action.data.searchvalue,
+                currentPage: state.currentPage
             }
-      default: 
-        return state
-    }
-  
-  }
+        case 'UPDATE':
+            return {
+                start: action.data.start,
+                last: action.data.last,
+                searchvalue: state.searchvalue,
+                currentPage: action.data.currentPage
+            }
+        case 'SETPAGE':
+            return {
+                start: state.start,
+                last: state.last,
+                searchvalue: state.searchvalue,
+                currentPage: action.data.currentPage
+            }
 
-  export default reducer
+        default:
+            return state
+    }
+
+}
+
+export default reducer
