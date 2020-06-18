@@ -3,9 +3,9 @@
 import { Action } from '../type'
 
 
-export const setPagination = (start: number, last: number, searchvalue: string) => {
+export const setPagination = (start: number, last: number, searchvalue: string, currentPage: number) => {
 
-    return { type: 'SET', data: { start: start, last: last, searchvalue: searchvalue } }
+    return { type: 'SET', data: { start: start, last: last, searchvalue: searchvalue, currentPage: currentPage  } }
 }
 
 export const updatePagination = (start: number, last: number, currentPage: number) => {
@@ -27,7 +27,7 @@ const reducer = (state = { start: 1, last: 10, searchvalue: '', currentPage: 1 }
                 start: action.data.start,
                 last: action.data.last,
                 searchvalue: action.data.searchvalue,
-                currentPage: state.currentPage
+                currentPage: action.data.currentPage
             }
         case 'UPDATE':
             return {

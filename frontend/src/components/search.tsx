@@ -21,8 +21,17 @@ const Search: React.FC<QueryTuple> = (props) => {
 
 
     props.searchAction({ variables: { name: inputvalue, page: 1 } })
+ 
 
-    dispatch(setPagination(1,10,inputvalue))
+    let total = 10;
+
+    if (data) {
+      total = data.search.total
+    }
+
+
+    dispatch(setPagination(1, total < 10 ? total : 10, inputvalue, 1))
+
   }
 
 
@@ -56,7 +65,7 @@ const Search: React.FC<QueryTuple> = (props) => {
           )) : ''}
         </ListGroup>
       </div>
-      {data ? <Resultpagination total={data.search.total} searchObject={props.searchAction}/> : ''}
+      {data ? <Resultpagination total={data.search.total} searchObject={props.searchAction} /> : ''}
     </div>
   );
 

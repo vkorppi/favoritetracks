@@ -36,8 +36,11 @@ const Resultpagination: React.FC<SearchAttributes> = (props) => {
         props.searchObject({ variables: { name:  data.pagination.searchvalue, page: pageNumber} })
 
         if(pageNumber > data.pagination.last) {
-           
-            dispatch(updatePagination(pageNumber,(pageNumber+9),pageNumber))
+
+            let total = props.total
+            let last = pageNumber+9
+            
+            dispatch(updatePagination(pageNumber,total < last ? total : last ,pageNumber))
         }
         else if(pageNumber < data.pagination.start) {
 
