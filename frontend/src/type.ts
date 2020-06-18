@@ -8,7 +8,7 @@ import { LazyQueryResult, QueryLazyOptions  } from '@apollo/client'
  
   }
 
-  export interface TotalType {
+  export interface searchAttributes {
     total: number;
     searchObject: (options?: QueryLazyOptions<Record<string, any>> | undefined) => void;
   }
