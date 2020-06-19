@@ -1,5 +1,5 @@
 import React, { FormEvent } from 'react';
-import { QueryTuple } from '../type'
+import { QueryTuple, Query } from '../type'
 import { Button, ListGroup } from 'react-bootstrap'
 import Resultpagination from '../components/pagination';
 import { useDispatch } from 'react-redux'
@@ -7,7 +7,9 @@ import { setPagination } from '../reducers/pagination'
 
 const Search: React.FC<QueryTuple> = (props) => {
 
-  const data = props.searchResult.data
+  const searchresult = props.searchResult as unknown 
+  const data: Query = searchresult as Query  
+
   const dispatch = useDispatch()
 
   const searchTracks = (event: FormEvent) => {

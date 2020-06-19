@@ -10,12 +10,13 @@ import Search from './components/search';
 const App: React.FC = () => {
  
 
-  const [getTracks, tracks] = useLazyQuery(queries.search, { fetchPolicy: "network-only" }) 
+  const [getTracks, {loading, error, data}] = useLazyQuery(queries.search, { fetchPolicy: "network-only",errorPolicy: 'all' }) 
 
 
   return (
     <div>
-      <Search searchAction={getTracks} searchResult={tracks}/>
+      <div><h1>Error </h1> </div>
+      <Search searchAction={getTracks} searchResult={data}/>
     </div>
   );
 }
