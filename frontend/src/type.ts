@@ -54,7 +54,23 @@ export interface Query {
 
 }
 
+export interface MessageType {
+  message: MessageAttributes;
+}
 
+export interface MessageAttributes {
+  text: string;
+}
+
+export type ActionMessage =
+{
+  type: "SET_MESSAGE";
+  data: MessageAttributes;
+} |
+{
+  type: "CLEAR_MESSAGE";
+  data: MessageAttributes;
+}; 
 
 
 export interface SpotifyTracks {

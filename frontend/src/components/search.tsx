@@ -22,7 +22,7 @@ const Search: React.FC<QueryTuple> = (props) => {
     input.value = ''
 
 
-    props.searchAction({ variables: { name: inputvalue, page: '1' } })
+    props.searchAction({ variables: { name: inputvalue, page: 1 } })
  
 
     let total = 10;
