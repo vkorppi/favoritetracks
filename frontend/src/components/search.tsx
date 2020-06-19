@@ -22,7 +22,7 @@ const Search: React.FC<QueryTuple> = (props) => {
     input.value = ''
 
 
-    props.searchAction({ variables: { name: inputvalue, page: 1 } })
+    props.searchAction({ variables: { name: inputvalue, page: '1' } })
  
 
     let total = 10;
@@ -39,7 +39,7 @@ const Search: React.FC<QueryTuple> = (props) => {
 
 
   return (
-    <div className="search">
+    <div >
       <div className="container">
         <form onSubmit={searchTracks}>
           <div className="form-group row">
