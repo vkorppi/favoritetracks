@@ -98,7 +98,9 @@ const CreateNewSession = async():Promise<void> => {
     const test = (track:string,page:number): searchResult  => {
 
         if(page > 10) {
+			
             track = `${track}_${page}`;
+			
         }
 
         let testdata = {
