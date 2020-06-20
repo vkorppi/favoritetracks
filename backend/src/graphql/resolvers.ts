@@ -11,7 +11,7 @@ export const resolvers = {
 		
         search:async (_root: any, args: { track: string; page: number; }):Promise<searchResult | void> => {
              
-          return  await spotify.search(args.track,args.page).then(result => {
+          return args.track.includes('Test_') ? spotify.test(args.track,args.page) :  await spotify.search(args.track,args.page).then(result => {
               
                 const fetchedTracks:string[] = result.tracks.items.map(value => value.name);
 

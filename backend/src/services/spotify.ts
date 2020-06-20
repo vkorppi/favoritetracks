@@ -6,7 +6,7 @@ import querystring from 'querystring';
 
 import enviro from 'dotenv';
 
-import { refreshtoken,spotifyResult } from '../types';
+import { refreshtoken,spotifyResult,query, searchResult } from '../types';
 
 enviro.config();
 
@@ -40,6 +40,7 @@ enviro.config();
 
 const CreateNewSession = async():Promise<void> => {
 
+    // Refaktoroi, toistoa : parseEnvString
     const granttype:string=  typeparsers.parseEnvString(process.env.GRANTTYPE);
     const refreshtoken:string =  typeparsers.parseEnvString(process.env.REFRESHTOKEN);
     const sessionUrl:string =  typeparsers.parseEnvString(process.env.SESSIONURL);
@@ -78,6 +79,7 @@ const CreateNewSession = async():Promise<void> => {
     const filecontent = fs.readFileSync('session.txt', 'utf8').toString().split("\n");
     const token:string = typeparsers.parseToken(filecontent[0]);
 
+    // Refaktoroi, toistoa : parseEnvString
     const querypart1:string=  typeparsers.parseEnvString(process.env.QUERYPART1);
     const typepart2:string=  typeparsers.parseEnvString(process.env.TYPEPART2);
     const offsetpart3:string=  typeparsers.parseEnvString(process.env.OFFSETPART3);
@@ -92,10 +94,35 @@ const CreateNewSession = async():Promise<void> => {
     
     };
 
+    const test = (track:string,page:number): searchResult  => {
+
+        if('total is over ten') {
+            console.log('test');
+        }
+
+       const test2 = {
+            "tracks": [
+                "test1",
+                "test2",
+                "test3",
+                "test4",
+                "test6",
+                "test7",
+                "test8",
+                "test9",
+                "test10",
+                "test11"
+            ],
+            "total": 90
+        };
+
+        return test2;
+    };
+
 
 export default {
     hasSessionExpired,
     CreateNewSession,
-    search
-
+    search,
+    test
 };
