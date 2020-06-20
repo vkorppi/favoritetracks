@@ -69,7 +69,7 @@ const Resultpagination: React.FC<SearchAttributes> = (props) => {
            {pages.map((page: number) => (
                 <Pagination.Item active={page === data.pagination.currentPage} key={Math.ceil(Math.random() * 100000)} onClick={newPage}>{page}</Pagination.Item>
            ))}
-          {props.total  < 10 ? '' : <Pagination.Last  onClick={newPage}  />}
+          {props.total  < data.pagination.last ? '' : <Pagination.Last  onClick={newPage}  />}
          
         </Pagination>
     )
