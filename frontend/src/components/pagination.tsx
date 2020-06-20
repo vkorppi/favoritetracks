@@ -37,10 +37,8 @@ const Resultpagination: React.FC<SearchAttributes> = (props) => {
 
         if(pageNumber > data.pagination.last) {
 
-            let total = props.total
-            let last = pageNumber+9
             
-            dispatch(updatePagination(pageNumber,total < last ? total : last ,pageNumber))
+            dispatch(updatePagination(pageNumber, (pageNumber+9) ,pageNumber))
         }
         else if(pageNumber < data.pagination.start) {
 
@@ -52,8 +50,13 @@ const Resultpagination: React.FC<SearchAttributes> = (props) => {
         }
         
     }
+
+    // Exception: page has less than ten rows
+    let last = data.pagination.last
+    last = props.total <  last ? props.total : last
+
     
-    for (let i = data.pagination.start; i < data.pagination.last+1; i++) {
+    for (let i = data.pagination.start; i < last+1; i++) {
         pages.push(i)
     }
 
@@ -66,7 +69,7 @@ const Resultpagination: React.FC<SearchAttributes> = (props) => {
            {pages.map((page: number) => (
                 <Pagination.Item active={page === data.pagination.currentPage} key={Math.ceil(Math.random() * 100000)} onClick={newPage}>{page}</Pagination.Item>
            ))}
-          <Pagination.Last  onClick={newPage}  />
+          {props.total  < 10 ? '' : <Pagination.Last  onClick={newPage}  />}
          
         </Pagination>
     )
