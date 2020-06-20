@@ -97,27 +97,71 @@ const CreateNewSession = async():Promise<void> => {
     
     const test = (track:string,page:number): searchResult  => {
 
-        if('total is over ten') {
-            console.log('test');
+        if(page > 10) {
+            track = `${track}_${page}`;
         }
 
-       const test2 = {
+        let testdata = {
             "tracks": [
                 "test1",
                 "test2",
                 "test3",
                 "test4",
+                "test5",
                 "test6",
                 "test7",
                 "test8",
                 "test9",
-                "test10",
-                "test11"
+				"test10"
             ],
             "total": 90
         };
 
-        return test2;
+        switch(track) {
+            case "Test_TotalUnderTen":
+              testdata = {
+                "tracks": [
+                    "test1",
+                    "test2",
+                    "test3",
+                    "test4",
+                    "test5"
+                ],
+                "total": 5
+            };
+              break;
+            case "Test_Total15":
+                testdata = {
+                    "tracks": [
+                        "test1",
+                        "test2",
+                        "test3",
+                        "test4",
+                        "test5",
+                        "test6",
+                        "test7",
+                        "test8",
+                        "test9",
+                        "test10",
+                    ],
+                    "total": 15
+                };
+              break;
+              case "Test_Total15_11":
+                testdata = {
+                    "tracks": [
+                        "test11",
+                        "test12",
+                        "test13",
+                        "test14",
+                        "test15"
+                    ],
+                    "total": 15
+                };
+              break;
+          } 
+
+        return testdata;
     };
 
 
