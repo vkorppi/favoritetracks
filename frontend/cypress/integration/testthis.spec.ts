@@ -1,18 +1,18 @@
 
 
-describe('Blog app', function() {
+describe('Test related to search', function() {
 
   beforeEach(function() {
-
 
     cy.visit('http://localhost:3000')
   })
   
-  it('test', function() {
+  it('Does show arrow to next searchresult', function() {
 
-    cy.contains('Patientor')
+      cy.get('#ex1').type('Test_firstTest')
 
+      cy.contains('»')
   })
 
 
-}
+})
