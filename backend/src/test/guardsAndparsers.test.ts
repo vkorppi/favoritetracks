@@ -327,4 +327,56 @@ describe('Testing typeparsers', () => {
         expect(message).toBe('');
     });
 
+        
+	
+	
+	test('If parameter was empty throw exception', () => {
+
+        let message='';
+
+        try {
+            typeparsers.parseId('');
+        }
+        catch(error) {
+            
+            const test:Error=error as Error ;
+             message=test.message;
+
+        }
+        expect(message).toBe('Id: id was not a number');
+      
+    });
+
+    test('If parameter was not a number throw exception', () => {
+
+        let message='';
+
+        try {
+            typeparsers.parseId('test');
+        }
+        catch(error) {
+            
+            const test:Error=error as Error ;
+             message=test.message;
+        }
+      
+        expect(message).toBe('Id: id was not a number');
+    });
+
+    test('If parameter was a number do not throw exception', () => {
+
+        let message='';
+
+        try {
+            typeparsers.parseId(123);
+        }
+        catch(error) {
+            
+            const test:Error=error as Error ;
+            message=test.message;
+        }
+      
+        expect(message).toBe('');
+    });
+
 });
