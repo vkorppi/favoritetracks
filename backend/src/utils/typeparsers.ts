@@ -64,26 +64,42 @@ const parseExpiration = (value: any): number => {
     
   };
 
-  const parsePage = (value: any): number => {
+  const parseId = (value: any): number => {
     
     if(!value || !typeguards.isNumber(value)) {
      
-        throw  new UserInputError('Page: Page was not a number');
+        throw  new ApolloError('Id: id was not a number');
     }
 
     return value;
     
   };
 
-  const parseId = (value: any): number => {
-    
-    if(!value || !typeguards.isNumber(value)) {
-     
-        throw  new UserInputError('Id: id was not a number');
-    }
+  const Parseusername = (value: any): string => {
 
+    if(!value || !typeguards.isString(value)) {
+     
+        throw new UserInputError('Username: username was not a string');
+    }
     return value;
-    
+  };
+
+  const Parsepassword = (value: any): string => {
+
+    if(!value || !typeguards.isString(value)) {
+     
+        throw new UserInputError('Password: password was not a string');
+    }
+    return value;
+  };
+
+  const Parsename = (value: any): string => {
+
+    if(!value || !typeguards.isString(value)) {
+     
+        throw new UserInputError('lastname or firstname: name was not a string');
+    }
+    return value;
   };
 
   export default {
@@ -93,5 +109,8 @@ const parseExpiration = (value: any): number => {
     parseToken,
     parseTrack,
     parsePage,
-    parseId
+    parseId,
+    Parseusername,
+    Parsepassword,
+    Parsename
   };

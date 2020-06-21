@@ -3,12 +3,6 @@ import typeparsers from "./typeparsers";
 
 
 
-export const getToken = (token:string): void  => {
-
-    console.log(token);
-
-};
-
 export const getTokenExpirationTime = (token:refreshtoken): string  => {
 
     const milliseconds:number = typeparsers.parseExpiration(token.expires_in) * 1000;
