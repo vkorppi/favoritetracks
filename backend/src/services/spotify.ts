@@ -22,7 +22,7 @@ enviro.config();
 
         const filecontent = fs.readFileSync('session.txt', 'utf8').toString().split("\n");
 
-        const expiration:number = typeparsers.parseExpiration(filecontent[1]);
+        const expiration:number = typeparsers.parseNumber(filecontent[1],'Expiration time: Expiration time was not a number');
 
         const current = new Date();
 

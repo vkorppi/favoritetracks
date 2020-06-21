@@ -2,10 +2,12 @@
 
 import { gql } from 'apollo-server-express';
 
-export const typeDefs = gql`
 
 // Query: search
 // Mutations: add, delete. modify
+
+
+export const typeDefs = gql`
 
 type Query {
     search(track: String,page: Int):  searchResult! 

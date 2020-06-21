@@ -36,7 +36,7 @@ const app = express();
 
 server.applyMiddleware({ app });
 
-const port =typeparsers.parseEnvNumber(process.env.PORT)
+const port =typeparsers.parseNumber(process.env.PORT,'Enviroment variable: variable was not a number');
 
 app.listen({ port: port }, () =>
   console.log(`Server ready at http://localhost:${port}${server.graphqlPath}`)

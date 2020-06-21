@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
 
 userSchema.set('toJSON', {
     transform: ( document:Document) => {
-      const id:number = typeparsers.parseId(document._id);
+      const id:number = typeparsers.parseNumber(document._id,'id was not a number');
       document.id = id.toString();
       delete document._id;
       delete document.__v;

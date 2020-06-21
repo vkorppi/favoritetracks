@@ -1,12 +1,11 @@
 
 
 import bcrypt from 'bcryptjs';
-import typeparsers from '../utils/typeparsers'
+// import typeparsers from '../utils/typeparsers'
 
 const create = (username:string,password:string, firstname: String,lastname: String): void  => {
 
-    password=typeparsers.Parsepassword(password);
-    
+  
 
     const hashedVal =  bcrypt.hashSync(password,10);
 
