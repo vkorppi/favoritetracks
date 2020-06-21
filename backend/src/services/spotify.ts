@@ -5,6 +5,8 @@ import axios from 'axios';
 import querystring from 'querystring';
 
 import enviro from 'dotenv';
+import {getSearchEnvs,getSessionEnvs} from '../utils/envFunctions';
+import {getTokenExpirationTime} from '../utils/sessionFunctions';
 
 import { refreshtoken,spotifyResult,query, searchResult } from '../types';
 
@@ -40,31 +42,34 @@ enviro.config();
 
 const CreateNewSession = async():Promise<void> => {
 
-    // Refaktoroi, toistoa : parseEnvString
-    const granttype:string=  typeparsers.parseEnvString(process.env.GRANTTYPE);
-    const refreshtoken:string =  typeparsers.parseEnvString(process.env.REFRESHTOKEN);
-    const sessionUrl:string =  typeparsers.parseEnvString(process.env.SESSIONURL);
-    const code:string =  typeparsers.parseEnvString(process.env.CODE);
 
     if (fs.existsSync('session.txt')) {
         fs.unlinkSync('session.txt');
     }
 
+    const env = getSessionEnvs();
+
     const requestBody = {
-        "grant_type":  granttype,
-        "refresh_token": refreshtoken
+        "grant_type":  env.granttype,
+        "refresh_token": env.refreshtoken
     };
 
-    await axios.post(sessionUrl,querystring.stringify(requestBody),
-    { headers: { 'Content-Type': 'application/x-www-form-urlencoded','authorization': 'Basic '+code} }).then(newtoken => {
+    const headers={ 
+        'Content-Type': 'application/x-www-form-urlencoded'
+        ,'authorization': 'Basic '+env.code
+    };
+
+    await axios.post(env.sessionUrl,querystring.stringify(requestBody),
+    { headers:  headers}).then(newtoken => {
 
        const retrievedToken:refreshtoken= newtoken.data as refreshtoken;
-
-        const milliseconds:number = typeparsers.parseExpiration(retrievedToken.expires_in) * 1000;
-        const current = new Date();
-        const expirationTime= new Date( current.getTime() + milliseconds );
-
-        fs.appendFileSync('session.txt', retrievedToken.access_token+'\n'+expirationTime.getTime().toString());
+       
+       fs.appendFileSync(
+           'session.txt',
+            retrievedToken.access_token
+            +'\n'+ 
+            getTokenExpirationTime(retrievedToken)
+        );
      
     });
     
@@ -72,25 +77,27 @@ const CreateNewSession = async():Promise<void> => {
 
  const search = async(track:string,page:number): Promise<spotifyResult>  => {
 
+    
     if(hasSessionExpired()) {
        await CreateNewSession();
     }
     
     const filecontent = fs.readFileSync('session.txt', 'utf8').toString().split("\n");
-    const token:string = typeparsers.parseToken(filecontent[0]);
 
-    // Refaktoroi, toistoa : parseEnvString
-    const querypart1:string=  typeparsers.parseEnvString(process.env.QUERYPART1);
-    const typepart2:string=  typeparsers.parseEnvString(process.env.TYPEPART2);
-    const offsetpart3:string=  typeparsers.parseEnvString(process.env.OFFSETPART3);
-    const limitpart4:string=  typeparsers.parseEnvString(process.env.LIMITPART4);
-    
-    const offset:number= typeparsers.parsePage(page) *10;
-
-    const url:string = querypart1+typeparsers.parseTrack(track)+typepart2+offsetpart3+offset.toString()+limitpart4;
+    const envs=getSearchEnvs(filecontent[0],track,page);
+ 
+    const url:string = envs.querypart1
+    +envs.parsedTrack+envs.typepart2
+    +envs.offsetpart3
+    +envs.offset.toString()
+    +envs.limitpart4;
 
     
-     return await (await axios.get(url,{ headers: { 'authorization': 'Bearer '+token} })).data as spotifyResult;
+     return await (await axios.get(
+         url,
+        { headers: { 'authorization': 'Bearer '+envs.parsedToken} }
+    
+    )).data as spotifyResult;
     
     };
 

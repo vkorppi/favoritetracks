@@ -1,17 +1,12 @@
-import React,{ MouseEventHandler } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux'
 import { updatePagination,setPage } from '../reducers/pagination'
 import { SearchAttributes, PaginationType } from '../type';
 import { Pagination } from 'react-bootstrap';
 import { useDispatch } from 'react-redux'
 
-/*
 
-Refaktorointi:  props , if else clauses
-
-*/
-
-const Resultpagination: React.FC<SearchAttributes> = (props) => {
+const Resultpagination: React.FC<SearchAttributes> = ({total,searchObject}) => {
 
     const paginationState = (state: PaginationType) => state
 
@@ -23,22 +18,23 @@ const Resultpagination: React.FC<SearchAttributes> = (props) => {
 
     const newPage = (event: MouseEvent) => {
 
-        let pageButton =event.target as HTMLElement
+        const pageButton =event.target as HTMLElement
+        const pageValue=pageButton.innerText
         let pageNumber
         
        
-        if(pageButton.innerText.includes('»')) {
+        if(pageValue.includes('»')) {
             pageNumber= data.pagination.last+1
         }
-        else if(pageButton.innerText.includes('«')) {
+        else if(pageValue.includes('«')) {
             pageNumber= data.pagination.start-1
         }
         else {
-            pageNumber = Number(pageButton.innerText); 
+            pageNumber = Number(pageValue); 
         }
 
          
-        props.searchObject({ variables: { name:  data.pagination.searchvalue, page: pageNumber} })
+        searchObject({ variables: { name:  data.pagination.searchvalue, page: pageNumber} })
 
         if(pageNumber > data.pagination.last) {
 
@@ -58,7 +54,7 @@ const Resultpagination: React.FC<SearchAttributes> = (props) => {
 
     // Exception: page has less than ten rows
     let last = data.pagination.last
-    last = props.total <  last ? props.total : last
+    last = total <  last ? total : last
 
     
     for (let i = data.pagination.start; i < last+1; i++) {
@@ -74,7 +70,7 @@ const Resultpagination: React.FC<SearchAttributes> = (props) => {
            {pages.map((page: number) => (
                 <Pagination.Item active={page === data.pagination.currentPage} key={Math.ceil(Math.random() * 100000)} onClick={newPage}>{page}</Pagination.Item>
            ))}
-          {props.total  < data.pagination.last ? '' : <Pagination.Last  onClick={newPage}  />}
+          {total  < data.pagination.last ? '' : <Pagination.Last  onClick={newPage}  />}
          
         </Pagination>
     )

@@ -107,3 +107,20 @@ export interface spotifArtistUrl {
   spotify:string;
 
 }
+
+export interface searchEnv {
+  querypart1:string;
+  typepart2:string;
+  offsetpart3:string;
+  limitpart4:string;
+  parsedToken:string
+  parsedTrack:string
+  offset:number;
+}
+
+export interface sessionEnv {
+  granttype:string;
+  refreshtoken:string;
+  sessionUrl:string;
+  code:string;
+}
