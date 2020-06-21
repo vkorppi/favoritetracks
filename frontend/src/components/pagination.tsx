@@ -5,6 +5,11 @@ import { SearchAttributes, PaginationType } from '../type';
 import { Pagination } from 'react-bootstrap';
 import { useDispatch } from 'react-redux'
 
+/*
+
+Refaktorointi:  props , if else clauses
+
+*/
 
 const Resultpagination: React.FC<SearchAttributes> = (props) => {
 
