@@ -64,11 +64,34 @@ const parseExpiration = (value: any): number => {
     
   };
 
+  const parsePage = (value: any): number => {
+    
+    if(!value || !typeguards.isNumber(value)) {
+     
+        throw  new UserInputError('Page: Page was not a number');
+    }
+
+    return value;
+    
+  };
+
+  const parseId = (value: any): number => {
+    
+    if(!value || !typeguards.isNumber(value)) {
+     
+        throw  new UserInputError('Id: id was not a number');
+    }
+
+    return value;
+    
+  };
+
   export default {
     parseExpiration,
     parseEnvString,
     parseEnvNumber,
     parseToken,
     parseTrack,
-    parsePage
+    parsePage,
+    parseId
   };
