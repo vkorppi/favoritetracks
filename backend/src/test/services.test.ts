@@ -1,8 +1,9 @@
 
 
 import spotify from '../services/spotify';
+import user from '../services/user';
 import fs from 'fs';
-
+import mongoose from 'mongoose';
 
  describe('Testing spotify services', () => {
 
@@ -72,4 +73,36 @@ import fs from 'fs';
       
     });
     
+});
+
+describe.only('Testing usermanagement', () => {
+
+  test('User is created to databse',  async () => {
+
+
+    const configuration = {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+      useCreateIndex: true
+    };
+
+    const url =process.env.DBTEST as string;
+  
+    await mongoose.connect(url, configuration);
+
+    await user.create('user4','password','firstname','lastname');
+
+    
+
+    expect(true).toBe(true);
+  });
+
+
+  /*
+  afterAll( () => {
+      void mongoose.connection.close();
+      console.log('Database connection closed');
+    });
+    */
 });

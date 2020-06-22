@@ -6,8 +6,8 @@
   "scripts": {
     "tsc": "tsc",
     "start": "node build/index.js",
-    "dev": "ts-node-dev src/index.ts",
-    "test": "jest --verbose --runInBand"
+    "dev": "cross-env ENVIR=test ts-node-dev src/index.ts",
+    "test": "jest --testEnvironment=node --verbose --runInBand"
   },
   "author": "Ville Korppi",
   "license": "ISC",
@@ -31,6 +31,7 @@
     "axios": "^0.19.2",
     "babel-jest": "^26.0.1",
     "bcryptjs": "^2.4.3",
+    "cross-env": "^7.0.2",
     "cross-fetch": "^3.0.4",
     "dotenv": "^8.2.0",
     "graphql": "^15.1.0",

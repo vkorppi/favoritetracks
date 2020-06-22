@@ -2,43 +2,37 @@
 import typeparsers from '../utils/typeparsers';
 import { searchEnv, sessionEnv } from '../types';
 
-const errorString = 'Enviroment variable: variable was not a string';
+const errorEnvString = 'Enviroment variable: variable was not a string';
+const errorEnvNumber = 'Enviroment variable: variable was not a number';
+const parser = typeparsers.parseString;
+const env = process.env;
 
-export const getSearchEnvs = (token:string,track:string,page:number): searchEnv  => {
+export const getSearchEnvs = (token: string, track: string, page: number): searchEnv => {
 
-    const querypart1:string=  typeparsers.parseString(process.env.QUERYPART1,errorString);
-    const typepart2:string=  typeparsers.parseString(process.env.TYPEPART2,errorString);
-    const offsetpart3:string=  typeparsers.parseString(process.env.OFFSETPART3,errorString);
-    const limitpart4:string=  typeparsers.parseString(process.env.LIMITPART4,errorString);
-    const offset:number= typeparsers.parsePage(page) *10;
-    const parsedToken:string = typeparsers.parseString(token,errorString);
-    const parsedTrack:string=typeparsers.parseStringUserInput(track,'Track: track was not a string');
-
+    const parserNum = typeparsers.parseNumber;
+    const parserInput = typeparsers.parseStringUserInput;
+    
     return {
-        querypart1:querypart1,
-        typepart2:typepart2,
-        offsetpart3:offsetpart3,
-        limitpart4:limitpart4,
-        offset:offset,
-        parsedToken:parsedToken,
-        parsedTrack:parsedTrack
+        querypart1: parser(env.QUERYPART1, errorEnvString),
+        typepart2: parser(env.TYPEPART2, errorEnvString),
+        offsetpart3: parser(env.OFFSETPART3, errorEnvString),
+        limitpart4: parser(env.LIMITPART4, errorEnvString),
+        offset: parserNum(page, errorEnvNumber) * 10,
+        parsedToken: parser(token, 'Token: token was not a string'),
+        parsedTrack: parserInput(track, 'Track: track was not a string')
+
     };
 
 };
 
 
-export const getSessionEnvs = (): sessionEnv  => {
+export const getSessionEnvs = (): sessionEnv => {
 
-    const granttype:string=  typeparsers.parseString(process.env.GRANTTYPE,errorString);
-    const refreshtoken:string =  typeparsers.parseString(process.env.REFRESHTOKEN,errorString);
-    const sessionUrl:string =  typeparsers.parseString(process.env.SESSIONURL,errorString);
-    const code:string =  typeparsers.parseString(process.env.CODE,errorString);
-   
     return {
-        granttype:granttype,
-        refreshtoken:refreshtoken,
-        sessionUrl:sessionUrl,
-        code:code
+        granttype: parser(env.GRANTTYPE, errorEnvString),
+        refreshtoken: parser(env.REFRESHTOKEN, errorEnvString),
+        sessionUrl: parser(env.SESSIONURL, errorEnvString),
+        code: parser(env.CODE, errorEnvString)
     };
-    
+
 };

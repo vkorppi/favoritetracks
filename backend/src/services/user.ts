@@ -1,20 +1,30 @@
 
 
 import bcrypt from 'bcryptjs';
- import typeparsers from '../utils/typeparsers'
+import typeparsers from '../utils/typeparsers';
+import User from '../mongo/user';
+import { UserInputType } from '../types';
 
-const create = (username:string,password:string, firstname: String,lastname: String): void  => {
+export const create =  async (username:string,password:string, firstname: string,lastname: string): Promise<void> => {
 
-    typeparsers.parseString(username,'username: username was not a string');
-    typeparsers.parseString(password);
-    typeparsers.parseString(firstname);
-    typeparsers.parseString(lastname);
+    const passwordError ='password: password was not a string';
+    const usernameError ='username: username was not a string';
+    const nameError ='name: name was not a string';
 
-    const hashedVal =  bcrypt.hashSync(password,10);
+    const parse = typeparsers.parseString;
+    const hashedVal =  bcrypt.hashSync(parse(password,passwordError),10);
 
-    // add user to database
-
-}
+   const userInput:UserInputType = {
+		username: parse(username,usernameError),
+		password: hashedVal,
+        firstname: parse(firstname,nameError),
+        lastname:parse(lastname,nameError)
+    } as UserInputType;
+    
+  
+    const user =  new User(userInput);
+    await user.save();
+};
 
 /*
 
@@ -31,3 +41,7 @@ const search = (): void  => {
 }
 
 */
+
+export default {
+    create
+};

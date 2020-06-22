@@ -1,4 +1,6 @@
 
+import  { Document } from 'mongoose';
+
 export interface refreshtoken {
     access_token: string;
     token_type: string;
@@ -123,4 +125,20 @@ export interface sessionEnv {
   refreshtoken:string;
   sessionUrl:string;
   code:string;
+}
+
+
+export interface UserSchemaType extends Document {
+  username:string;
+  password:string;
+  firstname:string;
+  lastname:string;
+}
+
+
+export interface UserInputType extends Document {
+  username:UserSchemaType['username'];
+  password:UserSchemaType['password'];
+  firstname:UserSchemaType['firstname'];
+  lastname:UserSchemaType['lastname'];
 }

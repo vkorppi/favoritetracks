@@ -9,6 +9,8 @@ import {getSearchEnvs,getSessionEnvs} from '../utils/envFunctions';
 import {getTokenExpirationTime} from '../utils/sessionFunctions';
 
 import { refreshtoken,spotifyResult,query, searchResult } from '../types';
+import { create } from './user';
+
 
 enviro.config();
 
@@ -102,7 +104,14 @@ const CreateNewSession = async():Promise<void> => {
     };
 
     
+    const test = async (track:string,page:number): Promise<void>  => {
+        await create('test3','test3','test3','test3');
+    };
+    
+    
+    /*
     const test = (track:string,page:number): searchResult  => {
+        
 
         if(page > 10) {
 			
@@ -172,8 +181,8 @@ const CreateNewSession = async():Promise<void> => {
 
         return testdata;
     };
-
-
+    */
+    
 export default {
     hasSessionExpired,
     CreateNewSession,
