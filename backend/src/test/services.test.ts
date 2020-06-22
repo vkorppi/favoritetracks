@@ -4,6 +4,8 @@ import spotify from '../services/spotify';
 import user from '../services/user';
 import fs from 'fs';
 import mongoose from 'mongoose';
+import typeparsers from '../utils/typeparsers';
+import User from '../mongo/user';
 
  describe('Testing spotify services', () => {
 
@@ -77,8 +79,13 @@ import mongoose from 'mongoose';
 
 describe.only('Testing usermanagement', () => {
 
-  test('User is created to databse',  async () => {
 
+
+  beforeAll(async () => {
+
+    const parser =typeparsers.parseString;
+    const env = process.env;
+    const error = 'databser url was not as string';
 
     const configuration = {
       useNewUrlParser: true,
@@ -86,10 +93,17 @@ describe.only('Testing usermanagement', () => {
       useFindAndModify: false,
       useCreateIndex: true
     };
-
-    const url =process.env.DBTEST as string;
   
-    await mongoose.connect(url, configuration);
+    await mongoose.connect(parser(env.DBTEST,error), configuration);
+  
+    
+ });
+ 
+
+  test('User is created to databse',  async () => {
+
+
+ 
 
     await user.create('user4','password','firstname','lastname');
 
@@ -99,10 +113,10 @@ describe.only('Testing usermanagement', () => {
   });
 
 
-  /*
+  
   afterAll( () => {
       void mongoose.connection.close();
       console.log('Database connection closed');
     });
-    */
+    
 });
