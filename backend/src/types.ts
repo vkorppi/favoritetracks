@@ -127,7 +127,6 @@ export interface sessionEnv {
   code:string;
 }
 
-
 export interface UserSchemaType extends Document {
   username:string;
   password:string;
@@ -135,10 +134,21 @@ export interface UserSchemaType extends Document {
   lastname:string;
 }
 
-
 export interface UserInputType extends Document {
   username:UserSchemaType['username'];
   password:UserSchemaType['password'];
   firstname:UserSchemaType['firstname'];
   lastname:UserSchemaType['lastname'];
 }
+
+export interface TokenType  {
+  value:string;
+}
+
+export interface DecodedToken  {
+  username:string;
+  id:string
+}
+
+
+
