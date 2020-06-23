@@ -17,5 +17,10 @@ type searchResult {
     tracks: [String!]!
     total : Int!
   }
+type searchResultUser {
+    firstname: [String!]!
+    lastname : String!
+    username : String!
+}
 
 `;

@@ -68,7 +68,7 @@ const search = async (firstname?: string, lastname?: string, username?: string):
     firstname = !firstname ? '' : firstname;
     lastname  = !lastname  ? '' : lastname;
     username  = !username  ? '' : username;
-
+    
     return await User.findOne({ $or: [{ firstname: firstname }, { lastname: lastname }, { username: username }] });
 };
 
