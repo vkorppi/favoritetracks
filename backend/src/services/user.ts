@@ -2,9 +2,9 @@
 
 import typeparsers from '../utils/typeparsers';
 import User from '../mongo/user';
-import { UserInputType, UserSchemaType, TokenType } from '../types';
+import { UserInputType, UserSchemaType, TokenType, UserType } from '../types';
 import { hashPassword } from '../utils/userFunctions';
-import  {sign}  from 'jsonwebtoken';
+import { sign } from 'jsonwebtoken';
 import { UserInputError } from 'apollo-server-express';
 import bcrypt from 'bcryptjs';
 
@@ -63,45 +63,63 @@ const remove = async (id: string): Promise<void> => {
 };
 
 
-const search = async (firstname?: string, lastname?: string, username?: string): Promise<UserSchemaType | null> => {
+const search = async (firstname?: string, lastname?: string, username?: string): Promise<UserType> => {
 
     firstname = !firstname ? '' : firstname;
-    lastname  = !lastname  ? '' : lastname;
-    username  = !username  ? '' : username;
+    lastname = !lastname ? '' : lastname;
+    username = !username ? '' : username;
+
+    const searchCriteria = {
+        $or: [
+            { firstname: firstname },
+            { lastname: lastname },
+            { username: username }
+        ]
+    };
+
+    const user = await User.findOne(searchCriteria);
+
+    if(!user) {
+        throw new UserInputError('Search did not return any results'); 
+    }
     
-    return await User.findOne({ $or: [{ firstname: firstname }, { lastname: lastname }, { username: username }] });
+    return {
+        username:user.username,
+        firstname:user.firstname,
+        lastname:user.lastname
+    };
 };
 
 
-const login = async (username:string,password:string): Promise<TokenType>  => {
+const login = async (username: string, password: string): Promise<TokenType> => {
 
-    const usernameError="username was invalid";
-    const passwordError="password was invalid";
-    const secretError='was not a string';
+    const usernameError = "username was invalid";
+    const passwordError = "password was invalid";
+    const secretError = 'was not a string';
 
     const parser = typeparsers.parseString;
     const env = process.env;
 
-    const parsedUsername=parser(username,usernameError);
-    const parsedPassword=parser(password,passwordError);
+    const parsedUsername = parser(username, usernameError);
+    const parsedPassword = parser(password, passwordError);
 
-    const id =await check(parsedUsername,parsedPassword);
+    const id = await check(parsedUsername, parsedPassword);
 
-    return { value: sign({username: username,id: id}, parser(env.SECRET,secretError)) };
+    return { value: sign({ username: username, id: id }, parser(env.SECRET, secretError)) };
 };
 
-const check = async (username:string,password:string): Promise<string>  => {
+const check = async (username: string, password: string): Promise<string> => {
 
-    const user = await search('','',username);
+    const user = await search('', '', username);
 
-    if(!user) {
+    if (!user) {
         throw new UserInputError('Username did match any users');
     }
     else {
 
-        const isPasswordCorrect = await bcrypt.compare(password,user.password);
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
-        if(!isPasswordCorrect) {
+        if (!isPasswordCorrect) {
             throw new UserInputError('Password was incorrect');
         }
     }

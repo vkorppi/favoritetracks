@@ -150,5 +150,10 @@ export interface DecodedToken  {
   id:string
 }
 
+export interface UserType {
+  username:string;
+  firstname:string;
+  lastname:string;
+}
 
 
