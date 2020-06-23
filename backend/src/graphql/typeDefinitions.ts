@@ -24,21 +24,23 @@ type Mutation {
 
   updateName(
     firstname: String!
-    lastname: String!      
-  ): User 
+    lastname: String! 
+    id:String!     
+  ): Boolean 
 
   updatePassword(
     password: String!
-  ): User 
+    id:String!
+  ): Boolean 
 
   remove(
     id: String!
-  ): User 
+  ): Boolean 
 
   login(
     username: String!
     password: String!
-  ): User 
+  ): Boolean 
 
 }
 

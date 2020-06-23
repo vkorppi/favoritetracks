@@ -4,7 +4,7 @@ import spotify from '../services/spotify';
 import user from '../services/user';
 import { ApolloError, UserInputError } from 'apollo-server-express';
 import { searchResult, spotifyTrack, UserType } from '../types';
-import {MongoError} from 'mongodb';
+import { MongoError } from 'mongodb';
 
 export const resolvers = {
 
@@ -76,14 +76,14 @@ export const resolvers = {
     },
     Mutation: {
 
-        create: async (_root: any, args: { username: string, password: string, firstname: string, lastname: string}): Promise<boolean | void> => {
+        create: async (_root: any, args: { username: string, password: string, firstname: string, lastname: string }): Promise<boolean | void> => {
 
             const firstname: string = args.firstname;
             const lastname: string = args.lastname;
             const username: string = args.username;
             const password: string = args.password;
 
-            return await user.create(username, password, firstname,lastname).then(result => {
+            return await user.create(username, password, firstname, lastname).then(result => {
                 console.log(result);
                 return true;
 
@@ -97,15 +97,128 @@ export const resolvers = {
                 else if (error instanceof UserInputError) {
                     throw new UserInputError(error.message);
                 }
-                else if(error instanceof MongoError) {
+                else if (error instanceof MongoError) {
                     throw new UserInputError(error.message);
                 }
 
 
             });
-;
 
+
+        },
+
+        updateName: async (_root: any, args: { firstname: string, lastname: string, id: string }): Promise<boolean | void> => {
+
+            const firstname: string = args.firstname;
+            const lastname: string = args.lastname;
+            const id: string = args.id;
+
+            return await user.updateName(firstname, lastname, id).then(result => {
+                console.log(result);
+                return true;
+
+            }).catch((error: Error) => {
+
+                console.error(error.stack);
+
+                if (error instanceof ApolloError) {
+                    throw new ApolloError(error.message);
+                }
+                else if (error instanceof UserInputError) {
+                    throw new UserInputError(error.message);
+                }
+                else if (error instanceof MongoError) {
+                    throw new UserInputError(error.message);
+                }
+
+
+            });
+
+
+        },
+
+        updatePassword: async (_root: any, args: { password: string, id: string }): Promise<boolean | void> => {
+
+            const password: string = args.password;
+            const id: string = args.id;
+
+            return await user.updatePassword(password,id).then(result => {
+                console.log(result);
+                return true;
+
+            }).catch((error: Error) => {
+
+                console.error(error.stack);
+
+                if (error instanceof ApolloError) {
+                    throw new ApolloError(error.message);
+                }
+                else if (error instanceof UserInputError) {
+                    throw new UserInputError(error.message);
+                }
+                else if (error instanceof MongoError) {
+                    throw new UserInputError(error.message);
+                }
+
+
+            });
+        },
+
+        remove: async (_root: any, args: { id: string }): Promise<boolean | void> => {
+
+            const id: string = args.id;
+
+            return await user.remove(id).then(result => {
+                console.log(result);
+                return true;
+
+            }).catch((error: Error) => {
+
+                console.error(error.stack);
+
+                if (error instanceof ApolloError) {
+                    throw new ApolloError(error.message);
+                }
+                else if (error instanceof UserInputError) {
+                    throw new UserInputError(error.message);
+                }
+                else if (error instanceof MongoError) {
+                    throw new UserInputError(error.message);
+                }
+
+
+            });
+        },
+
+        login: async (_root: any, args: { username: string,password: string }): Promise<boolean | void> => {
+
+            const username: string = args.username;
+            const password: string = args.password;
+
+            return await user.login(username,password).then(result => {
+                console.log(result);
+                return true;
+
+            }).catch((error: Error) => {
+
+                console.error(error.stack);
+
+                if (error instanceof ApolloError) {
+                    throw new ApolloError(error.message);
+                }
+                else if (error instanceof UserInputError) {
+                    throw new UserInputError(error.message);
+                }
+                else if (error instanceof MongoError) {
+                    throw new UserInputError(error.message);
+                }
+
+
+            });
         }
+
+
+
 
     }
 };

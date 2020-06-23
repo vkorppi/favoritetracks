@@ -10,7 +10,6 @@ import bcrypt from 'bcryptjs';
 import  {verify}  from 'jsonwebtoken';
 import { DecodedToken, UserInputType } from '../types';
 
-import { hashPassword } from '../utils/userFunctions';
 
 import dotenv from 'dotenv';
 

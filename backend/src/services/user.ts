@@ -2,18 +2,18 @@
 
 import typeparsers from '../utils/typeparsers';
 import User from '../mongo/user';
-import { UserInputType, UserSchemaType, TokenType, UserType } from '../types';
+import { UserInputType, TokenType, UserType } from '../types';
 import { hashPassword } from '../utils/userFunctions';
 import { sign } from 'jsonwebtoken';
 import { UserInputError } from 'apollo-server-express';
 import bcrypt from 'bcryptjs';
 
+const nameError = 'name: name was not a string';
+const usernameError = 'username: username was not a string';
+const parser = typeparsers.parseString;
+const env = process.env;
+
 export const create = async (username: string, password: string, firstname: string, lastname: string): Promise<UserType> => {
-
-    const usernameError = 'username: username was not a string';
-    const nameError = 'name: name was not a string';
-
-    const parser = typeparsers.parseString;
 
     const userInput: UserInputType = {
         username: parser(username, usernameError),
@@ -34,8 +34,8 @@ const updateName = async (firstname: string, lastname: string, id: string): Prom
         {
             $set:
             {
-                "firstname": firstname,
-                "lastname": lastname
+                "firstname": parser(firstname, nameError),
+                "lastname": parser(lastname, nameError)
             }
         });
 
@@ -93,17 +93,16 @@ const search = async (firstname?: string, lastname?: string, username?: string):
 
 const login = async (username: string, password: string): Promise<TokenType> => {
 
-    const usernameError = "username was invalid";
+    console.log(username);
+    console.log(password);
+
     const passwordError = "password was invalid";
     const secretError = 'was not a string';
 
-    const parser = typeparsers.parseString;
-    const env = process.env;
-
-    const parsedUsername = parser(username, usernameError);
-    const parsedPassword = parser(password, passwordError);
-
-    const id = await check(parsedUsername, parsedPassword);
+    const id = await check(
+        parser(username, usernameError),
+        parser(password, passwordError)
+    );
 
     return { value: sign({ username: username, id: id }, parser(env.SECRET, secretError)) };
 };

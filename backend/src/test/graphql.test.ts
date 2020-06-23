@@ -2,7 +2,7 @@
 import ApolloClient from 'apollo-boost';
 import { gql } from 'apollo-server-express';
 import 'cross-fetch/polyfill';
-import { query } from '../types';
+import { query, UserInputType,UserType } from '../types';
 import mongoose from 'mongoose';
 import typeparsers from '../utils/typeparsers';
 import User from '../mongo/user';
@@ -51,7 +51,7 @@ describe('Testing spotify', () => {
 });
 
 
-describe('Testing users', () => {
+describe('Testing usermanagement', () => {
 
 	const parser = typeparsers.parseString;
 
@@ -72,6 +72,7 @@ describe('Testing users', () => {
 		await mongoose.connect(parser(env.DBTEST, error), configuration);
 
 	});
+
 
 	test('User was created', async () => {
 
@@ -94,6 +95,174 @@ describe('Testing users', () => {
 
 	});
 
+	test('User was updated', async () => {
+
+		await User.deleteMany({});
+
+		const testuser: UserInputType = {
+			username: 'usernameTest',
+			password: 'passwordTest',
+			firstname: 'firstnameTest',
+			lastname: 'lastnameTest'
+		} as UserInputType;
+
+		const userTest = new User(testuser);
+		await userTest.save();
+
+
+		interface updateType {
+			updateName: boolean;
+		}
+
+		const user = await User.findOne({ username: 'usernameTest' });
+		const id = user?.id as string;
+
+		const userMutation = gql`
+
+			mutation UpdateName($firstname: String!,$lastname: String!,$id: String!){
+				updateName(firstname:$firstname,lastname:$lastname,id:$id) 
+    		}
+		  `;
+
+
+		const success = (await apolloclient.mutate({
+			variables: { id: id, firstname: 'first', lastname: 'last' },
+			mutation: userMutation,
+		})).data as updateType;
+
+
+		expect(success.updateName).toBe(true);
+
+
+	});
+
+	test('Password was updated', async () => {
+
+		interface updateType {
+			updatePassword: boolean;
+		}
+
+		const user = await User.findOne({ username: 'usernameTest' });
+		const id = user?.id as string;
+
+		const userMutation = gql`
+
+			mutation UpdatePassword($password: String!,$id: String!){
+				updatePassword(password:$password,id:$id) 
+    		}
+		  `;
+
+
+		const success = (await apolloclient.mutate({
+			variables: { password: 'newpassword', id: id },
+			mutation: userMutation,
+		})).data as updateType;
+
+		expect(success.updatePassword).toBe(true);
+
+
+	});
+
+	test('User was removed', async () => {
+
+		interface updateType {
+			remove: boolean;
+		}
+
+		const user = await User.findOne({ username: 'usernameTest' });
+		const id = user?.id as string;
+
+		const userMutation = gql`
+
+			mutation Remove($id: String!){
+				remove(id:$id) 
+    		}
+		  `;
+
+
+		const success = (await apolloclient.mutate({
+			variables: { id: id },
+			mutation: userMutation,
+		})).data as updateType;
+
+		expect(success.remove).toBe(true);
+	});
+
+	test('Login works', async () => {
+
+		await User.deleteMany({});
+
+		const testuser: UserInputType = {
+			username: 'usernameTest',
+			password: 'passwordTest',
+			firstname: 'firstnameTest',
+			lastname: 'lastnameTest'
+		} as UserInputType;
+
+		const user = new User(testuser);
+		return await user.save();
+
+
+		interface updateType {
+			login: boolean;
+		}
+
+		const username = 'usernameTest';
+		const password = 'passwordTest';
+
+		const userMutation = gql`
+
+			mutation Login($username: String!,$password: String!){
+				login(username:$username,password:$password) 
+    		}
+		  `;
+
+
+		const success = (await apolloclient.mutate({
+			variables: { username: username, password: password },
+			mutation: userMutation,
+		})).data as updateType;
+
+		expect(success.login).toBe(true);
+
+
+	});
+
+	test('User search works', async () => {
+		
+		await User.deleteMany({});
+
+		const testuser: UserInputType = {
+			username: 'usernameTest',
+			password: 'passwordTest',
+			firstname: 'firstnameTest',
+			lastname: 'lastnameTest'
+		} as UserInputType;
+
+		const user = new User(testuser);
+		return await user.save();
+
+		const userQuery = gql`
+
+		query {
+			searchUser(username: "usernameTest",firstname: "firstnameTest",lastname: "lastnameTest") 
+			{
+				firstname
+				lastname
+				username
+    		}
+		  }`;
+
+		const fetcheduser = (await apolloclient.query({
+			query: userQuery
+		})).data as UserType;
+
+
+		expect(fetcheduser.username).toBe('usernameTest');
+
+
+
+	});
 
 
 	afterAll(async () => {
