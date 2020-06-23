@@ -7,6 +7,10 @@ import mongoose from 'mongoose';
 import typeparsers from '../utils/typeparsers';
 import User from '../mongo/user';
 
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 const apolloclient = new ApolloClient(
 	{
 
@@ -26,7 +30,7 @@ describe('Testing spotify', () => {
 
 	test('Returns names of tracks', async () => {
 
-		const userQuery = gql`
+		const spotifyQuery = gql`
 
 		query {
 			search(track: "nagasaki",page: 1) 
@@ -37,17 +41,11 @@ describe('Testing spotify', () => {
 		  }`;
 
 		const object = (await apolloclient.query({
-			query: userQuery
+			query: spotifyQuery
 		})).data as query;
 
 
 		expect(object.search.tracks.length > 0).toBe(true);
-	});
-
-	afterAll(async () => {
-		await User.deleteMany({});
-		void mongoose.connection.close();
-		console.log('Database connection closed');
 	});
 
 });
@@ -60,7 +58,9 @@ describe('Testing users', () => {
 	beforeAll(async () => {
 
 		const env = process.env;
-		const error = 'databser url was not as string';
+
+
+		const error = 'databseurl url was not as string';
 
 		const configuration = {
 			useNewUrlParser: true,
@@ -73,9 +73,25 @@ describe('Testing users', () => {
 
 	});
 
-	test('User was created',  () => {
+	test('User was created', async () => {
 
-		console.log('test');
+		interface createType {
+			create: boolean;
+		}
+
+		const userMutation = gql`
+
+			mutation {
+				create(username: "username",password: "password",firstname:"first",lastname:"last") 
+    		}
+		  `;
+
+		const success = (await apolloclient.mutate({
+			mutation: userMutation
+		})).data as createType;
+
+		expect(success.create).toBe(true);
+
 	});
 
 

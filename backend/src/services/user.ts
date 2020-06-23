@@ -8,7 +8,7 @@ import { sign } from 'jsonwebtoken';
 import { UserInputError } from 'apollo-server-express';
 import bcrypt from 'bcryptjs';
 
-export const create = async (username: string, password: string, firstname: string, lastname: string): Promise<void> => {
+export const create = async (username: string, password: string, firstname: string, lastname: string): Promise<UserType> => {
 
     const usernameError = 'username: username was not a string';
     const nameError = 'name: name was not a string';
@@ -23,7 +23,7 @@ export const create = async (username: string, password: string, firstname: stri
     } as UserInputType;
 
     const user = new User(userInput);
-    await user.save();
+    return await user.save();
 };
 
 

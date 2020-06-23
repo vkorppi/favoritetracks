@@ -10,6 +10,10 @@ import bcrypt from 'bcryptjs';
 import  {verify}  from 'jsonwebtoken';
 import { DecodedToken } from '../types';
 
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 describe('Testing spotify services', () => {
 
   test('creates session file with expirationtime and token', async () => {
@@ -80,7 +84,7 @@ describe('Testing spotify services', () => {
 
 });
 
-describe.only('Testing usermanagement', () => {
+describe('Testing usermanagement', () => {
 
   const parser = typeparsers.parseString;
 
@@ -88,7 +92,8 @@ describe.only('Testing usermanagement', () => {
 
 
     const env = process.env;
-    const error = 'databser url was not as string';
+ 
+    const error = 'databseurl url was not as string';
 
     const configuration = {
       useNewUrlParser: true,
@@ -102,7 +107,7 @@ describe.only('Testing usermanagement', () => {
   });
 
 
-  test('User is created to databse', async () => {
+  test('User is created to database', async () => {
 
     await user.create('username4', 'password', 'firstname', 'lastname');
 
@@ -167,6 +172,7 @@ describe.only('Testing usermanagement', () => {
     const parser = typeparsers.parseString;
     const env = process.env;
     const secretError='was not a string';
+
 
     const fetchedUser = await User.findOne({ username: 'username4' });
     const encodedtoken = await user.login('username4','newpassword');
