@@ -150,3 +150,8 @@ export interface SpotifArtistUrl {
   spotify: string;
 
 }
+
+export interface RegistarationType {
+  name: string;
+
+}

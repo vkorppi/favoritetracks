@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux'
-import { updatePagination,setPage } from '../reducers/pagination'
-import { SearchAttributes, PaginationType } from '../type';
+import { updatePagination,setPage } from '../../reducers/pagination'
+import { SearchAttributes, PaginationType } from '../../type';
 import { Pagination } from 'react-bootstrap';
 import { useDispatch } from 'react-redux'
 
