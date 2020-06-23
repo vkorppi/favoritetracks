@@ -8,7 +8,9 @@ import typeparsers from '../utils/typeparsers';
 import User from '../mongo/user';
 import bcrypt from 'bcryptjs';
 import  {verify}  from 'jsonwebtoken';
-import { DecodedToken } from '../types';
+import { DecodedToken, UserInputType } from '../types';
+
+import { hashPassword } from '../utils/userFunctions';
 
 import dotenv from 'dotenv';
 
@@ -175,6 +177,7 @@ describe('Testing usermanagement', () => {
 
     // Toimi virheellisesti
     const fetchedUser = await User.findOne({ username: 'username4' });
+
     const encodedtoken = await user.login('username4','newpassword');
 
     const decodedtoken = verify(encodedtoken.value,parser(env.SECRET,secretError));

@@ -110,7 +110,7 @@ const login = async (username: string, password: string): Promise<TokenType> => 
 
 const check = async (username: string, password: string): Promise<string> => {
 
-    const user = await search('', '', username);
+    const user = await User.findOne({ username: username });
 
     if (!user) {
         throw new UserInputError('Username did match any users');
