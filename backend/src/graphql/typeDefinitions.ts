@@ -36,7 +36,8 @@ type Mutation {
   ): User 
 
   login(
-    id: String!
+    username: String!
+    password: String!
   ): User 
 
 }

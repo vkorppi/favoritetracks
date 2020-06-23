@@ -20,7 +20,7 @@ const apolloclient = new ApolloClient(
 );
 
 
-describe('Testing graphql queries', () => {
+describe('Testing spotify', () => {
 
 
 
@@ -53,7 +53,7 @@ describe('Testing graphql queries', () => {
 });
 
 
-describe('Testing graphql queries', () => {
+describe('Testing users', () => {
 
 	const parser = typeparsers.parseString;
 
@@ -73,6 +73,11 @@ describe('Testing graphql queries', () => {
 
 	});
 
+	test('User was created',  () => {
+
+		console.log('test');
+	});
+
 
 
 	afterAll(async () => {
@@ -80,5 +85,5 @@ describe('Testing graphql queries', () => {
 		void mongoose.connection.close();
 		console.log('Database connection closed');
 	});
-	
+
 });
