@@ -175,7 +175,6 @@ describe('Testing usermanagement', () => {
     const env = process.env;
     const secretError='was not a string';
 
-    // Toimi virheellisesti
     const fetchedUser = await User.findOne({ username: 'username4' });
 
     const encodedtoken = await user.login('username4','newpassword');
