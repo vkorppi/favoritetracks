@@ -9,7 +9,14 @@ query filter($name: String,$page: Int) {
     }
   }`
 
+const createUser = gql`
+  mutation Create($username: String!,$password: String!,$firstname: String!,$lastname: String!){
+    create(username: $username,password: $password,firstname:$firstname,lastname:$lastname) 
+    }
+  `
 
-  export default {
-    search
-  }
+
+export default {
+  search,
+  createUser
+}

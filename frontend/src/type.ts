@@ -1,4 +1,4 @@
-import { LazyQueryResult, QueryLazyOptions } from '@apollo/client'
+import { LazyQueryResult, QueryLazyOptions, ApolloError } from '@apollo/client'
 
 export interface QueryTuple {
 
@@ -63,14 +63,14 @@ export interface MessageAttributes {
 }
 
 export type ActionMessage =
-{
-  type: "SET_MESSAGE";
-  data: MessageAttributes;
-} |
-{
-  type: "CLEAR_MESSAGE";
-  data: MessageAttributes;
-}; 
+  {
+    type: "SET_MESSAGE";
+    data: MessageAttributes;
+  } |
+  {
+    type: "CLEAR_MESSAGE";
+    data: MessageAttributes;
+  };
 
 
 export interface SpotifyTracks {

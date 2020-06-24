@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Button, Card } from 'react-bootstrap';
+import { Button, Card,Form } from 'react-bootstrap';
 import { RegistarationType } from "../../type";
 
 const Registaration: React.FC<RegistarationType> = () => {
@@ -9,34 +9,35 @@ const Registaration: React.FC<RegistarationType> = () => {
     return (
         <div >
             <Card>
-                <Card.Header>Registaration</Card.Header>
+                <Card.Header>Sign up</Card.Header>
                 <Card.Body>
                     <div className="container">
                         <form >
                             <div className="form-group row">
+                                
                                 <div className="col-xs-2">
-                                    <div>
-                                        <input className="form-control" id="ex1" type="text" /></div>
+                                <Form.Label>Firstname</Form.Label>
+                                    <div><input className="form-control"  id="ex1" type="text" /></div>
                                 </div>
                             </div>
                             <div className="form-group row">
                                 <div className="col-xs-2">
-                                    <div>
-                                        <input className="form-control" id="ex1" type="text" /></div>
-                                </div>
-                            </div>
-
-                            <div className="form-group row">
-                                <div className="col-xs-2">
-                                    <div>
-                                        <input className="form-control" id="ex1" type="text" /></div>
+                                <Form.Label>Lastname</Form.Label>
+                                    <div><input className="form-control" id="ex1" type="text" /></div>
                                 </div>
                             </div>
 
                             <div className="form-group row">
                                 <div className="col-xs-2">
-                                    <div>
-                                        <input className="form-control" id="ex1" type="text" /></div>
+                                <Form.Label>Username</Form.Label>
+                                    <div> <input className="form-control" id="ex1" type="text" /></div>
+                                </div>
+                            </div>
+
+                            <div className="form-group row">
+                                <div className="col-xs-2">
+                                <Form.Label>Password</Form.Label>
+                                    <div> <input className="form-control" id="ex1" type="password" /></div>
                                 </div>
                             </div>
 

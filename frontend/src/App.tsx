@@ -1,27 +1,45 @@
 import React from 'react';
 import queries from './graphql/queries';
-import { useLazyQuery } from '@apollo/client'
+import { useLazyQuery, useMutation, ApolloError, useApolloClient } from '@apollo/client'
 import Search from './components/spotify/search';
 import { MessageType } from './type';
 import { Container, Row, Navbar, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { showMessage } from './thunks/message';
 import Message from './components/spotify/message';
-import Registaration from './components/users/registaration';
+//import Registaration from './components/users/registaration';
+
+
 
 const App: React.FC = () => {
 
 
-  const [getTracks, { loading, error, data }] = useLazyQuery(queries.search, { fetchPolicy: "network-only", errorPolicy: 'all' })
+  const [getTracks, trackObject] = useLazyQuery(queries.search, { fetchPolicy: "network-only", errorPolicy: 'none' })
+  const [createUser, createUserObject] = useMutation(queries.createUser, { errorPolicy: 'all' })
 
   const dispatch = useDispatch()
   const selector = (state: MessageType) => state
   const rootstate = useSelector(selector)
 
-  if (error && error.message !== rootstate.message.text) {
+  console.log(trackObject.error)
+ 
+  let error: ApolloError | undefined;
 
-    dispatch(showMessage(error.message, 5000))
+  if (trackObject.error ) {
+    error = trackObject.error
+
   }
+
+  if (createUserObject.error ) {
+    error = createUserObject.error 
+  }
+
+
+  if (error && error.message !== rootstate.message.text ) {
+    dispatch(showMessage(error.message, 5000))
+    
+  };
+  
 
   return (
     <div>
@@ -43,11 +61,11 @@ const App: React.FC = () => {
         <Row>
           <div className="col-xs-2">
 
-            <Registaration name=''/>
+            {/*<Registaration name='' />*/}
 
-          {/*  <Message text={rootstate.message.text} />
-            <Search searchAction={getTracks} searchResult={data} /> */}
-            
+            <Message text={rootstate.message.text} />
+            <Search searchAction={getTracks} searchResult={trackObject.data}  />
+
           </div>
         </Row>
 

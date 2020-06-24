@@ -5,14 +5,17 @@ import Resultpagination from './pagination';
 import { useDispatch } from 'react-redux'
 import { setPagination } from '../../reducers/pagination'
 
+
 const Search: React.FC<QueryTuple> = (props) => {
 
   const searchresult = props.searchResult as unknown 
   const data: Query = searchresult as Query  
 
+  
   const dispatch = useDispatch()
 
   const searchTracks = (event: FormEvent) => {
+
 
     event.preventDefault()
     const form = event.target as HTMLFormElement;
