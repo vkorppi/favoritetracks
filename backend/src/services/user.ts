@@ -63,17 +63,14 @@ const remove = async (id: string): Promise<void> => {
 };
 
 
-const search = async (firstname?: string, lastname?: string, username?: string): Promise<UserType> => {
+const search = async (value: string): Promise<UserType> => {
 
-    firstname = !firstname ? '' : firstname;
-    lastname = !lastname ? '' : lastname;
-    username = !username ? '' : username;
 
     const searchCriteria = {
         $or: [
-            { firstname: firstname },
-            { lastname: lastname },
-            { username: username }
+            { firstname: value },
+            { lastname: value },
+            { username: value }
         ]
     };
 
