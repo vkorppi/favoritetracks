@@ -2,12 +2,13 @@
 import ApolloClient from 'apollo-boost';
 import { gql } from 'apollo-server-express';
 import 'cross-fetch/polyfill';
-import { query, UserInputType,UserType } from '../types';
+import { query, UserInputType, UserType } from '../types';
 import mongoose from 'mongoose';
 import typeparsers from '../utils/typeparsers';
 import User from '../mongo/user';
 
 import dotenv from 'dotenv';
+import { hashPassword } from '../utils/userFunctions';
 
 dotenv.config();
 
@@ -80,7 +81,7 @@ describe('Testing usermanagement', () => {
 
 		const testuser: UserInputType = {
 			username: 'usernameTest',
-			password: 'passwordTest',
+			password: hashPassword('passwordTest'),
 			firstname: 'firstnameTest',
 			lastname: 'lastnameTest'
 		} as UserInputType;
@@ -112,22 +113,6 @@ describe('Testing usermanagement', () => {
 	});
 
 	test('User was updated', async () => {
-
-		/*
-
-		await User.deleteMany({});
-
-		const testuser: UserInputType = {
-			username: 'usernameTest',
-			password: 'passwordTest',
-			firstname: 'firstnameTest',
-			lastname: 'lastnameTest'
-		} as UserInputType;
-
-		const userTest = new User(testuser);
-		await userTest.save();
-
-		*/
 
 
 		interface updateType {
@@ -210,21 +195,6 @@ describe('Testing usermanagement', () => {
 
 	test('Login works', async () => {
 
-		/*
-		await User.deleteMany({});
-
-		const testuser: UserInputType = {
-			username: 'usernameTest',
-			password: 'passwordTest',
-			firstname: 'firstnameTest',
-			lastname: 'lastnameTest'
-		} as UserInputType;
-
-		const user = new User(testuser);
-		return await user.save();
-		*/
-
-
 		interface updateType {
 			login: boolean;
 		}
@@ -252,21 +222,9 @@ describe('Testing usermanagement', () => {
 
 	test('User search works', async () => {
 
-		/*
-		
-		await User.deleteMany({});
-
-		const testuser: UserInputType = {
-			username: 'usernameTest',
-			password: 'passwordTest',
-			firstname: 'firstnameTest',
-			lastname: 'lastnameTest'
-		} as UserInputType;
-
-		const user = new User(testuser);
-		return await user.save();
-
-		*/
+		interface userSearchType {
+			searchUser: UserType;
+		}
 
 		const userQuery = gql`
 
@@ -281,10 +239,10 @@ describe('Testing usermanagement', () => {
 
 		const fetcheduser = (await apolloclient.query({
 			query: userQuery
-		})).data as UserType;
+		})).data as userSearchType;
 
 
-		expect(fetcheduser.username).toBe('usernameTest');
+		expect(fetcheduser.searchUser).toBeTruthy();
 
 
 

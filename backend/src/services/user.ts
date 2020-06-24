@@ -93,9 +93,6 @@ const search = async (firstname?: string, lastname?: string, username?: string):
 
 const login = async (username: string, password: string): Promise<TokenType> => {
 
-    console.log(username);
-    console.log(password);
-
     const passwordError = "password was invalid";
     const secretError = 'was not a string';
 

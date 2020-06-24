@@ -3,10 +3,6 @@
 import { gql } from 'apollo-server-express';
 
 
-// Query: search
-// Mutations: add, delete. modify
-
-
 export const typeDefs = gql`
 
 type Query {

@@ -12,6 +12,7 @@ import { DecodedToken, UserInputType } from '../types';
 
 
 import dotenv from 'dotenv';
+import { hashPassword } from '../utils/userFunctions';
 
 dotenv.config();
 
@@ -85,7 +86,7 @@ describe('Testing spotify services', () => {
 
 });
 
-describe('Testing usermanagement', () => {
+describe('Testing usermanagement services', () => {
 
   const parser = typeparsers.parseString;
 
@@ -107,6 +108,22 @@ describe('Testing usermanagement', () => {
 
   });
 
+  beforeEach(async () => {
+
+		await User.deleteMany({});
+
+		const testuser: UserInputType = {
+			username: 'usernameTest',
+			password: hashPassword('passwordTest'),
+			firstname: 'firstnameTest',
+			lastname: 'lastnameTest'
+		} as UserInputType;
+
+		const userTest = new User(testuser);
+		await userTest.save();
+
+	});
+
 
   test('User is created to database', async () => {
 
@@ -126,11 +143,11 @@ describe('Testing usermanagement', () => {
   
   test('Password is updated', async () => {
 
-    const fetchedUser = await User.findOne({ username: 'username4' });
+    const fetchedUser = await User.findOne({ username: 'usernameTest' });
 
     await user.updatePassword('newpassword', fetchedUser?.id);
 
-    const userNewPass = await User.findOne({ username: 'username4' });
+    const userNewPass = await User.findOne({ username: 'usernameTest' });
 
     const password = parser(userNewPass?.password, 'password was empty');
 
@@ -142,11 +159,11 @@ describe('Testing usermanagement', () => {
 
   test('Name is updated', async () => {
 
-    const fetchedUser = await User.findOne({ username: 'username4' });
+    const fetchedUser = await User.findOne({ username: 'usernameTest' });
     
     await user.updateName('Newfirstname', 'Newlastname', fetchedUser?.id);
 
-    const userNameChanged = await User.findOne({ username: 'username4' });
+    const userNameChanged = await User.findOne({ username: 'usernameTest' });
 
     expect(userNameChanged?.firstname).toBe('Newfirstname');
     expect(userNameChanged?.lastname).toBe('Newlastname');
@@ -156,9 +173,9 @@ describe('Testing usermanagement', () => {
 
   test('User can be searched', async () => {
 
-    const fetchedUser1 =await user.search('Newfirstname');
-    const fetchedUser2 =await user.search('Newfirstname','Newlastname');
-    const fetchedUser3 =await user.search('Newfirstname','Newlastname','username4');
+    const fetchedUser1 =await user.search('firstnameTest');
+    const fetchedUser2 =await user.search('firstnameTest','lastnameTest');
+    const fetchedUser3 =await user.search('firstnameTest','lastnameTest','usernameTest');
 
     expect(fetchedUser1).toBeTruthy();
     expect(fetchedUser2).toBeTruthy();
@@ -174,9 +191,9 @@ describe('Testing usermanagement', () => {
     const env = process.env;
     const secretError='was not a string';
 
-    const fetchedUser = await User.findOne({ username: 'username4' });
+    const fetchedUser = await User.findOne({ username: 'usernameTest' });
 
-    const encodedtoken = await user.login('username4','newpassword');
+    const encodedtoken = await user.login('usernameTest','passwordTest');
 
     const decodedtoken = verify(encodedtoken.value,parser(env.SECRET,secretError));
     const jsonToken=decodedtoken as DecodedToken;
@@ -188,11 +205,11 @@ describe('Testing usermanagement', () => {
 
   test('User is deleted', async () => {
 
-    const fetchedUser = await User.findOne({ username: 'username4' });
+    const fetchedUser = await User.findOne({ username: 'usernameTest' });
 
     await user.remove(fetchedUser?.id);
 
-    const userNotFound=await User.findOne({ username: 'username4' });
+    const userNotFound=await User.findOne({ username: 'usernameTest' });
 
 
     expect(userNotFound).toBe(null);
