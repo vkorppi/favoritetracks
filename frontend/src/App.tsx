@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { showMessage } from './thunks/message';
 import Message from './components/spotify/message';
 //import Registaration from './components/users/registaration';
+import UserSearch from './components/users/search';
 
 const App: React.FC = () => {
 
@@ -16,7 +17,7 @@ const App: React.FC = () => {
   const rootstate = useSelector(selector)
 
   const errorMessage = (errorMsg: string) => {
-    dispatch(showMessage(errorMsg, 5000))
+    dispatch(showMessage(errorMsg, 5000,'warning'))
   };
 
 
@@ -27,7 +28,11 @@ const App: React.FC = () => {
     }
   })
 
-  const [createUser, createUserObject] = useMutation(queries.createUser, { errorPolicy: 'all' })
+  const [createUser, createUserObject] = useMutation(queries.createUser, { errorPolicy: 'none', onError: (error) => {
+    errorMessage(error.message)
+  }})
+
+  console.log(rootstate.message.msgtype)
 
   return (
     <div>
@@ -35,10 +40,11 @@ const App: React.FC = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link href="#Registaration">Tracks</Nav.Link>
+            <Nav.Link href="#Tracks">Tracks</Nav.Link>
             <Nav.Link href="#Favorites">Favorites</Nav.Link>
             <Nav.Link href="#Published">Published</Nav.Link>
             <Nav.Link href="#Users">Users</Nav.Link>
+            <Nav.Link href="#Roles">Roles</Nav.Link>
             <Nav.Link href="#Registaration">Registaration</Nav.Link>
             <Nav.Link href="#Login">Login</Nav.Link>
           </Nav>
@@ -48,11 +54,21 @@ const App: React.FC = () => {
       <Container className="search">
         <Row>
           <div className="col-xs-2">
+         
+            <Message text={rootstate.message.text} msgtype={rootstate.message.msgtype} />
+ 
+          </div>
+        </Row>
 
-            {/*<Registaration name='' />*/}
+        <Row>
+          <div className="col-xs-2">
+            
+            {/*
+             <Search searchAction={getTracks} searchResult={trackObject.data} />
+            <Registaration createuser={createUser} />
+            */}
 
-            <Message text={rootstate.message.text} />
-            <Search searchAction={getTracks} searchResult={trackObject.data} />
+            <UserSearch createuser={createUser} />
 
           </div>
         </Row>

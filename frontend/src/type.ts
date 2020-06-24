@@ -1,4 +1,4 @@
-import { LazyQueryResult, QueryLazyOptions, ApolloError } from '@apollo/client'
+import { LazyQueryResult, QueryLazyOptions, ApolloError, MutationFunctionOptions, FetchResult } from '@apollo/client'
 
 export interface QueryTuple {
 
@@ -12,6 +12,11 @@ export interface SearchAttributes {
   total: number;
   searchObject: (options?: QueryLazyOptions<Record<string, any>> | undefined) => void;
 }
+
+export interface CreateUser {
+  createuser: (options?: MutationFunctionOptions<any, Record<string, any>> | undefined) => Promise<FetchResult<any, Record<string, any>, Record<string, any>>>
+}
+
 
 
 export interface PaginationType {
@@ -60,6 +65,7 @@ export interface MessageType {
 
 export interface MessageAttributes {
   text: string;
+  msgtype: string;
 }
 
 export type ActionMessage =
@@ -108,7 +114,7 @@ export interface SpotifyTrack {
 
 export interface SpotifyArtist {
 
-  external_urls: SpotifArtistUrl,
+  external_urls: SpotifArtistUrl;
   href: string;
   id: string;
   name: string;

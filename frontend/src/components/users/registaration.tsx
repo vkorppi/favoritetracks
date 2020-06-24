@@ -1,9 +1,39 @@
 
-import React from 'react';
+import React, { FormEvent } from 'react';
 import { Button, Card,Form } from 'react-bootstrap';
-import { RegistarationType } from "../../type";
+import { CreateUser } from "../../type";
+import { useDispatch } from 'react-redux'
+import { showMessage } from '../../thunks/message';
 
-const Registaration: React.FC<RegistarationType> = () => {
+
+const Registaration: React.FC<CreateUser> = ({createuser}) => {
+
+    const dispatch = useDispatch()
+ 
+
+    const createUser = async (event: FormEvent) => {
+
+
+        event.preventDefault()
+        const form = event.target as HTMLFormElement;
+        const firstname = form[0] as HTMLInputElement;
+        const lastname =  form[1] as HTMLInputElement;
+        const username =  form[2] as HTMLInputElement;
+        const Password =  form[3] as HTMLInputElement;
+
+       const success= await createuser({ variables: { username: username.value,password: Password.value,firstname: firstname.value,lastname: lastname.value} });
+
+
+        username.value=''
+        Password.value=''
+        firstname.value=''
+        lastname.value=''
+        
+        if(success)
+        {
+            dispatch(showMessage('New user created', 5000,'primary'))
+        }
+    }
 
 
     return (
@@ -12,32 +42,32 @@ const Registaration: React.FC<RegistarationType> = () => {
                 <Card.Header>Sign up</Card.Header>
                 <Card.Body>
                     <div className="container">
-                        <form >
+                        <form  onSubmit={createUser}>
                             <div className="form-group row">
                                 
                                 <div className="col-xs-2">
                                 <Form.Label>Firstname</Form.Label>
-                                    <div><input className="form-control"  id="ex1" type="text" /></div>
+                                    <div><input className="form-control"   id="firstname" type="text" /></div>
                                 </div>
                             </div>
                             <div className="form-group row">
                                 <div className="col-xs-2">
                                 <Form.Label>Lastname</Form.Label>
-                                    <div><input className="form-control" id="ex1" type="text" /></div>
+                                    <div><input className="form-control" id="lastname"  type="text" /></div>
                                 </div>
                             </div>
 
                             <div className="form-group row">
                                 <div className="col-xs-2">
                                 <Form.Label>Username</Form.Label>
-                                    <div> <input className="form-control" id="ex1" type="text" /></div>
+                                    <div> <input className="form-control" id="username"   type="text" /></div>
                                 </div>
                             </div>
 
                             <div className="form-group row">
                                 <div className="col-xs-2">
                                 <Form.Label>Password</Form.Label>
-                                    <div> <input className="form-control" id="ex1" type="password" /></div>
+                                    <div> <input className="form-control" id="password"   type="password" /></div>
                                 </div>
                             </div>
 

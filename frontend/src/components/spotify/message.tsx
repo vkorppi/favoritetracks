@@ -17,7 +17,7 @@ const Message: React.FC<MessageAttributes> = (props) => {
 
 
     return (
-        <Alert variant="danger"> {props.text} </Alert>
+        <Alert variant= {props.msgtype as 'danger' | 'primary'}> {props.text} </Alert>
     )
 };
 
