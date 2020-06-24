@@ -25,14 +25,6 @@ const App: React.FC = () => {
  
   let error: ApolloError | undefined;
 
-  if (trackObject.error ) {
-    error = trackObject.error
-
-  }
-
-  if (createUserObject.error ) {
-    error = createUserObject.error 
-  }
 
 
   if (error && error.message !== rootstate.message.text ) {
