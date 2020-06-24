@@ -120,7 +120,17 @@ describe('Testing usermanagement services', () => {
 		} as UserInputType;
 
 		const userTest = new User(testuser);
-		await userTest.save();
+    await userTest.save();
+    
+    const testuser2: UserInputType = {
+			username: 'username2daTest',
+			password: hashPassword('passworqedTest'),
+			firstname: 'firstqwenameTest',
+			lastname: 'lastnameTest'
+		} as UserInputType;
+
+		const userTest2 = new User(testuser2);
+		await userTest2.save();
 
 	});
 
@@ -174,11 +184,11 @@ describe('Testing usermanagement services', () => {
   test('User can be searched', async () => {
 
     const fetchedUser1 =await user.search('firstnameTest');
-    const fetchedUser2 =await user.search('firstnameTest','lastnameTest');
-    const fetchedUser3 =await user.search('firstnameTest','lastnameTest','usernameTest');
+    const fetchedUser2 =await user.search('lastnameTest');
+    const fetchedUser3 =await user.search('usernameTest');
 
     expect(fetchedUser1).toBeTruthy();
-    expect(fetchedUser2).toBeTruthy();
+    expect(fetchedUser2.length).toBe(2);
     expect(fetchedUser3).toBeTruthy();
 
 

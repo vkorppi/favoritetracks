@@ -229,12 +229,13 @@ describe('Testing usermanagement', () => {
 		const userQuery = gql`
 
 		query {
-			searchUser(username: "usernameTest",firstname: "firstnameTest",lastname: "lastnameTest") 
+			searchUser(value: "usernameTest") 
 			{
-				firstname
-				lastname
-				username
-    		}
+				firstname,
+				lastname,
+				username,
+				id
+			  }
 		  }`;
 
 		const fetcheduser = (await apolloclient.query({

@@ -2,7 +2,7 @@
 
 import typeparsers from '../utils/typeparsers';
 import User from '../mongo/user';
-import { UserInputType, TokenType, UserType } from '../types';
+import { UserInputType, TokenType, UserType, UserSchemaType } from '../types';
 import { hashPassword } from '../utils/userFunctions';
 import { sign } from 'jsonwebtoken';
 import { UserInputError } from 'apollo-server-express';
@@ -63,28 +63,25 @@ const remove = async (id: string): Promise<void> => {
 };
 
 
-const search = async (value: string): Promise<UserType> => {
+const search = async (value: string): Promise<UserSchemaType[]> => {
 
 
     const searchCriteria = {
         $or: [
-            { firstname: value },
-            { lastname: value },
-            { username: value }
+            { firstname: { $in: [value] } },
+            { lastname: { $in: [value] } },
+            { username: { $in: [value] } }
         ]
     };
 
-    const user = await User.findOne(searchCriteria);
+    
+    const users = await User.find(searchCriteria);
 
-    if(!user) {
+    if(!users) {
         throw new UserInputError('Search did not return any results'); 
     }
-    
-    return {
-        username:user.username,
-        firstname:user.firstname,
-        lastname:user.lastname
-    };
+    return users;
+   
 };
 
 

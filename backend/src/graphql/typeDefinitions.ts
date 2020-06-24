@@ -7,7 +7,7 @@ export const typeDefs = gql`
 
 type Query {
     search(track: String,page: Int):  searchResult! 
-    searchUser(firstname: String, lastname: String, username: String): User!
+    searchUser(value: String): [User!]!
 }
 
 type Mutation {
@@ -48,6 +48,8 @@ type User {
     firstname: String!
     lastname : String!
     username : String!
+    id       : String!
 }
+
 
 `;

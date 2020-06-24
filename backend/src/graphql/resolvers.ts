@@ -3,7 +3,7 @@
 import spotify from '../services/spotify';
 import user from '../services/user';
 import { ApolloError, UserInputError } from 'apollo-server-express';
-import { searchResult, spotifyTrack, UserType } from '../types';
+import { searchResult, spotifyTrack, UserType, UserSchemaType } from '../types';
 import { MongoError } from 'mongodb';
 
 export const resolvers = {
@@ -43,19 +43,14 @@ export const resolvers = {
 
         },
 
-        searchUser: async (_root: any, args: { firstname: string; lastname: string; username: string; }): Promise<UserType | void> => {
+        searchUser: async (_root: any, args: { value: string; }): Promise<UserSchemaType[] | void> => {
 
-            const firstname: string = args.firstname;
-            const lastname: string = args.lastname;
-            const username: string = args.username;
+            const value: string = args.value;
+        
 
-            return await user.search(firstname, lastname, username).then(result => {
+            return await user.search(value).then(result => {
 
-                return {
-                    username: result.username,
-                    firstname: result.firstname,
-                    lastname: result.lastname
-                };
+                return result;
 
             }).catch((error: Error) => {
 
