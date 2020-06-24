@@ -74,6 +74,22 @@ describe('Testing usermanagement', () => {
 	});
 
 
+	beforeEach(async () => {
+
+		await User.deleteMany({});
+
+		const testuser: UserInputType = {
+			username: 'usernameTest',
+			password: 'passwordTest',
+			firstname: 'firstnameTest',
+			lastname: 'lastnameTest'
+		} as UserInputType;
+
+		const userTest = new User(testuser);
+		await userTest.save();
+
+	});
+
 	test('User was created', async () => {
 
 		interface createType {
@@ -97,6 +113,8 @@ describe('Testing usermanagement', () => {
 
 	test('User was updated', async () => {
 
+		/*
+
 		await User.deleteMany({});
 
 		const testuser: UserInputType = {
@@ -108,6 +126,8 @@ describe('Testing usermanagement', () => {
 
 		const userTest = new User(testuser);
 		await userTest.save();
+
+		*/
 
 
 		interface updateType {
@@ -190,6 +210,7 @@ describe('Testing usermanagement', () => {
 
 	test('Login works', async () => {
 
+		/*
 		await User.deleteMany({});
 
 		const testuser: UserInputType = {
@@ -201,6 +222,7 @@ describe('Testing usermanagement', () => {
 
 		const user = new User(testuser);
 		return await user.save();
+		*/
 
 
 		interface updateType {
@@ -229,6 +251,8 @@ describe('Testing usermanagement', () => {
 	});
 
 	test('User search works', async () => {
+
+		/*
 		
 		await User.deleteMany({});
 
@@ -241,6 +265,8 @@ describe('Testing usermanagement', () => {
 
 		const user = new User(testuser);
 		return await user.save();
+
+		*/
 
 		const userQuery = gql`
 
