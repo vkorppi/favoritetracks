@@ -9,29 +9,25 @@ import { showMessage } from './thunks/message';
 import Message from './components/spotify/message';
 //import Registaration from './components/users/registaration';
 
-
-
 const App: React.FC = () => {
-
-
-  const [getTracks, trackObject] = useLazyQuery(queries.search, { fetchPolicy: "network-only", errorPolicy: 'none' })
-  const [createUser, createUserObject] = useMutation(queries.createUser, { errorPolicy: 'all' })
 
   const dispatch = useDispatch()
   const selector = (state: MessageType) => state
   const rootstate = useSelector(selector)
 
-  console.log(trackObject.error)
- 
-  let error: ApolloError | undefined;
-
-
-
-  if (error && error.message !== rootstate.message.text ) {
-    dispatch(showMessage(error.message, 5000))
-    
+  const errorMessage = (errorMsg: string) => {
+    dispatch(showMessage(errorMsg, 5000))
   };
-  
+
+
+  const [getTracks, trackObject] = useLazyQuery(queries.search, {
+    fetchPolicy: "network-only", errorPolicy: 'none',
+    onError: (error) => {
+      errorMessage(error.message)
+    }
+  })
+
+  const [createUser, createUserObject] = useMutation(queries.createUser, { errorPolicy: 'all' })
 
   return (
     <div>
@@ -56,7 +52,7 @@ const App: React.FC = () => {
             {/*<Registaration name='' />*/}
 
             <Message text={rootstate.message.text} />
-            <Search searchAction={getTracks} searchResult={trackObject.data}  />
+            <Search searchAction={getTracks} searchResult={trackObject.data} />
 
           </div>
         </Row>
