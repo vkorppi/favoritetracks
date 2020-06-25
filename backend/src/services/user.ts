@@ -17,8 +17,8 @@ export const create = async (username: string, password: string, firstname: stri
 
     const fetchedUser = await User.findOne({ username: username });
 
-    if(fetchedUser) {
-        throw new UserInputError('Username: username was reserverd '); 
+    if (fetchedUser) {
+        throw new UserInputError('Username: username was reserverd ');
     }
 
 
@@ -75,20 +75,20 @@ const search = async (value: string): Promise<UserSchemaType[]> => {
 
     const searchCriteria = {
         $or: [
-            { firstname: { $in: [value] } },
-            { lastname: { $in: [value] } },
-            { username: { $in: [value] } }
+            { firstname: { $regex: '.*' + value + '.*' } },
+            { lastname: { $regex: '.*' + value + '.*' } },
+            { username: { $regex: '.*' + value + '.*' } }
         ]
     };
 
-    
+
     const users = await User.find(searchCriteria);
 
-    if(!users) {
-        throw new UserInputError('Search: Search did not return any results'); 
+    if (!users) {
+        throw new UserInputError('Search: Search did not return any results');
     }
     return users;
-   
+
 };
 
 

@@ -15,8 +15,22 @@ const createUser = gql`
     }
   `
 
+const searchUsers = gql`
+query filter($value: String){
+  searchUser(value: $value) 
+  {
+    firstname,
+    lastname,
+    username,
+    id
+    }
+  }`
+
+  
+
 
 export default {
   search,
-  createUser
+  createUser,
+  searchUsers
 }

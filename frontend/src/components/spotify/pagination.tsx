@@ -6,7 +6,7 @@ import { Pagination } from 'react-bootstrap';
 import { useDispatch } from 'react-redux'
 
 
-const Resultpagination: React.FC<SearchAttributes> = ({total,searchObject}) => {
+const Resultpagination: React.FC<SearchAttributes> = ({total,search}) => {
 
     const paginationState = (state: PaginationType) => state
 
@@ -34,7 +34,7 @@ const Resultpagination: React.FC<SearchAttributes> = ({total,searchObject}) => {
         }
 
          
-        searchObject({ variables: { name:  data.pagination.searchvalue, page: pageNumber} })
+        search({ variables: { name:  data.pagination.searchvalue, page: pageNumber} })
 
         if(pageNumber > data.pagination.last) {
 

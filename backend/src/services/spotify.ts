@@ -8,8 +8,8 @@ import enviro from 'dotenv';
 import {getSearchEnvs,getSessionEnvs} from '../utils/envFunctions';
 import {getTokenExpirationTime} from '../utils/sessionFunctions';
 
-import { refreshtoken,spotifyResult,query, searchResult } from '../types';
-import { create } from './user';
+import { refreshtoken,spotifyResult, searchResult } from '../types';
+
 
 
 enviro.config();
@@ -102,14 +102,7 @@ const CreateNewSession = async():Promise<void> => {
     )).data as spotifyResult;
     
     };
-
     
-    const test = async (track:string,page:number): Promise<void>  => {
-        await create('test3','test3','test3','test3');
-    };
-    
-    
-    /*
     const test = (track:string,page:number): searchResult  => {
         
 
@@ -181,7 +174,7 @@ const CreateNewSession = async():Promise<void> => {
 
         return testdata;
     };
-    */
+    
     
 export default {
     hasSessionExpired,

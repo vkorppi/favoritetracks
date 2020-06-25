@@ -1,15 +1,17 @@
 
-
-import spotify from '../services/spotify';
 import user from '../services/user';
+import spotify from '../services/spotify';
 import { ApolloError, UserInputError } from 'apollo-server-express';
-import { searchResult, spotifyTrack, UserType, UserSchemaType } from '../types';
 import { MongoError } from 'mongodb';
+import { UserSchemaType, searchResult, spotifyTrack } from '../types';
+
 
 export const resolvers = {
 
     Query: {
 
+
+        
         search: async (_root: any, args: { track: string; page: number; }): Promise<searchResult | void> => {
 
             const track: string = args.track;
@@ -18,8 +20,7 @@ export const resolvers = {
             let fetchedTracks: string[];
             let total: number;
 
-            return track.includes('Test_') ? spotify.test(track, page) :
-
+            return track.includes('Test_') ? spotify.test(track, page) : 
                 await spotify.search(track, page).then(result => {
 
                     tracks = result.tracks.items;
@@ -42,6 +43,8 @@ export const resolvers = {
 
 
         },
+
+        
 
         searchUser: async (_root: any, args: { value: string; }): Promise<UserSchemaType[] | void> => {
 

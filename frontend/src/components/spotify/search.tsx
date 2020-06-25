@@ -1,15 +1,26 @@
 import React, { FormEvent } from 'react';
-import { QueryTuple, Query } from '../../type'
+import { ShowMessageType, Query } from '../../type'
 import { Button, ListGroup } from 'react-bootstrap'
 import Resultpagination from './pagination';
 import { useDispatch } from 'react-redux'
 import { setPagination } from '../../reducers/pagination'
+import { useLazyQuery } from '@apollo/client';
+import queries from '../../graphql/queries';
 
 
-const Search: React.FC<QueryTuple> = (props) => {
+const Search: React.FC<ShowMessageType> = ({showmessage}) => {
 
-  const searchresult = props.searchResult as unknown 
-  const data: Query = searchresult as Query  
+  const [getTracks, trackObject] = useLazyQuery(queries.search, {
+    fetchPolicy: "network-only", errorPolicy: 'none',
+    onError: (error) => {
+      showmessage(error.message)
+    }
+  })
+
+  const data = trackObject.data;
+
+  const searchresult = data as unknown 
+  const fetchedData: Query = searchresult as Query  
 
   
   const dispatch = useDispatch()
@@ -25,7 +36,7 @@ const Search: React.FC<QueryTuple> = (props) => {
     input.value = ''
 
 
-    props.searchAction({ variables: { name: inputvalue, page: 1 } })
+    getTracks({ variables: { name: inputvalue, page: 1 } })
  
     dispatch(setPagination(1,10, inputvalue, 1))
 
@@ -51,7 +62,7 @@ const Search: React.FC<QueryTuple> = (props) => {
           </div>
         </form>
         <ListGroup variant="flush">
-          {data ? data.search.tracks.map((track: string) => (
+          {fetchedData ? fetchedData.search.tracks.map((track: string) => (
 
             <div key={Math.ceil(Math.random() * 100000)} className="form-group row">
               <div className="col-xs-2">
@@ -62,7 +73,7 @@ const Search: React.FC<QueryTuple> = (props) => {
           )) : ''}
         </ListGroup>
       </div>
-      {data ? <Resultpagination total={data.search.total} searchObject={props.searchAction} /> : ''}
+      {fetchedData ? <Resultpagination total={fetchedData.search.total} search={getTracks} /> : ''}
     </div>
   );
 

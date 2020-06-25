@@ -10,14 +10,16 @@ export interface QueryTuple {
 
 export interface SearchAttributes {
   total: number;
-  searchObject: (options?: QueryLazyOptions<Record<string, any>> | undefined) => void;
+  search: (options?: QueryLazyOptions<Record<string, any>> | undefined) => void;
 }
 
 export interface CreateUser {
   createuser: (options?: MutationFunctionOptions<any, Record<string, any>> | undefined) => Promise<FetchResult<any, Record<string, any>, Record<string, any>>>
 }
 
-
+export interface ShowMessageType {
+  showmessage: (errorMsg: string) => void;
+}
 
 export interface PaginationType {
   pagination: PaginationAttributes;
@@ -28,6 +30,12 @@ export interface PaginationAttributes {
   last: number;
   searchvalue: string;
   currentPage: number;
+}
+
+export interface UserType {
+  firstname: string;
+  lastname: string;
+  id: string;
 }
 
 export type Action =

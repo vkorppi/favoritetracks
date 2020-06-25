@@ -1,14 +1,13 @@
 import React from 'react';
-import queries from './graphql/queries';
-import { useLazyQuery, useMutation, ApolloError, useApolloClient } from '@apollo/client'
 import Search from './components/spotify/search';
 import { MessageType } from './type';
-import { Container, Row, Navbar, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap'
+import { Container, Row, Navbar, Nav } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { showMessage } from './thunks/message';
 import Message from './components/spotify/message';
 import Registaration from './components/users/registaration';
-//import UserSearch from './components/users/search';
+import UserSearch from './components/users/userSearch';
+import { Switch, Route } from 'react-router-dom';
 
 const App: React.FC = () => {
 
@@ -17,22 +16,10 @@ const App: React.FC = () => {
   const rootstate = useSelector(selector)
 
   const errorMessage = (errorMsg: string) => {
-    dispatch(showMessage(errorMsg, 5000,'warning'))
+
+    dispatch(showMessage(errorMsg, 5000, 'warning'))
   };
 
-
-  const [getTracks, trackObject] = useLazyQuery(queries.search, {
-    fetchPolicy: "network-only", errorPolicy: 'none',
-    onError: (error) => {
-      errorMessage(error.message)
-    }
-  })
-
-  const [createUser, createUserObject] = useMutation(queries.createUser, { errorPolicy: 'none', onError: (error) => {
-    errorMessage(error.message)
-  }})
-
-  console.log(rootstate.message.msgtype)
 
   return (
     <div>
@@ -40,12 +27,12 @@ const App: React.FC = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link href="#Tracks">Tracks</Nav.Link>
+            <Nav.Link href="/">Tracks</Nav.Link>
             <Nav.Link href="#Favorites">Favorites</Nav.Link>
             <Nav.Link href="#Published">Published</Nav.Link>
-            <Nav.Link href="#Users">Users</Nav.Link>
+            <Nav.Link href="/users">Users</Nav.Link>
             <Nav.Link href="#Roles">Roles</Nav.Link>
-            <Nav.Link href="#Registaration">Registaration</Nav.Link>
+            <Nav.Link href="/registaration">Registaration</Nav.Link>
             <Nav.Link href="#Login">Login</Nav.Link>
           </Nav>
 
@@ -54,24 +41,27 @@ const App: React.FC = () => {
       <Container className="search">
         <Row>
           <div className="col-xs-2">
-         
+
             <Message text={rootstate.message.text} msgtype={rootstate.message.msgtype} />
- 
+
           </div>
         </Row>
 
         <Row>
           <div className="col-xs-2">
-            
-           
-            
-            <Registaration createuser={createUser} />
-            
- {/*
 
-  <Search searchAction={getTracks} searchResult={trackObject.data} />
-            <UserSearch createuser={createUser} />
-*/}
+            <Switch>
+              <Route path="/users">
+                <UserSearch showmessage={errorMessage} />
+              </Route>
+              <Route path="/registaration">
+                <Registaration showmessage={errorMessage} />
+              </Route>
+              <Route path="/">
+                <Search showmessage={errorMessage} />
+              </Route>
+            </Switch>
+
           </div>
         </Row>
 

@@ -5,8 +5,10 @@ import { typeDefs } from '../src/graphql/typeDefinitions';
 import typeparsers from '../src/utils/typeparsers';
 import mongoose from 'mongoose';
 import { MongoError } from 'mongodb';
-
+import dotenv from 'dotenv';
 import express from 'express';
+
+dotenv.config();
 
 const connectToDatabase = async (): Promise<void> => {
 

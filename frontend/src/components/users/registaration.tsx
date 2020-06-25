@@ -1,12 +1,20 @@
 
 import React, { FormEvent } from 'react';
 import { Button, Card,Form } from 'react-bootstrap';
-import { CreateUser } from "../../type";
+import { ShowMessageType } from "../../type";
 import { useDispatch } from 'react-redux'
 import { showMessage } from '../../thunks/message';
+import { useMutation } from '@apollo/client';
+import queries from '../../graphql/queries';
 
 
-const Registaration: React.FC<CreateUser> = ({createuser}) => {
+const Registaration: React.FC<ShowMessageType> = ({showmessage}) => {
+
+    const [createNewUser] = useMutation(queries.createUser, {
+        errorPolicy: 'none', onError: (error) => {
+            showmessage(error.message)
+        }
+      })
 
     const dispatch = useDispatch()
  
@@ -21,7 +29,7 @@ const Registaration: React.FC<CreateUser> = ({createuser}) => {
         const username =  form[2] as HTMLInputElement;
         const Password =  form[3] as HTMLInputElement;
 
-       const success= await createuser({ variables: { username: username.value,password: Password.value,firstname: firstname.value,lastname: lastname.value} });
+       const success= await createNewUser({ variables: { username: username.value,password: Password.value,firstname: firstname.value,lastname: lastname.value} });
 
 
         username.value=''
