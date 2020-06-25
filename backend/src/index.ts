@@ -4,6 +4,7 @@ import { resolvers } from '../src/graphql/resolvers';
 import { typeDefs } from '../src/graphql/typeDefinitions';
 import typeparsers from '../src/utils/typeparsers';
 import mongoose from 'mongoose';
+import { MongoError } from 'mongodb';
 
 import express from 'express';
 
@@ -42,6 +43,10 @@ const server = new ApolloServer({
     const userError = /|Track|Page/i;
 
     console.log(err.message);
+
+    if (err instanceof MongoError) {
+      return new Error('Internal server error');
+    }
 
     if (internalError.test(err.message)) {
 

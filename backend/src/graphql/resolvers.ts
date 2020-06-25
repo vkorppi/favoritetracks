@@ -177,9 +177,7 @@ export const resolvers = {
                 else if (error instanceof UserInputError) {
                     throw new UserInputError(error.message);
                 }
-                else if (error instanceof MongoError) {
-                    throw new UserInputError(error.message);
-                }
+          
 
 
             });
@@ -204,9 +202,7 @@ export const resolvers = {
                 else if (error instanceof UserInputError) {
                     throw new UserInputError(error.message);
                 }
-                else if (error instanceof MongoError) {
-                    throw new UserInputError(error.message);
-                }
+              
 
 
             });
