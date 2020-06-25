@@ -40,7 +40,7 @@ const server = new ApolloServer({
   formatError: (err) => {
 
     const internalError = /Enviroment variable|Expiration time|Token|Spotify/i;
-    const userError = /|Track|Page/i;
+    const userError = /|Track|Page|Password|Username|Search/i;
 
     console.log(err.message);
 

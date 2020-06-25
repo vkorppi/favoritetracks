@@ -15,6 +15,13 @@ const env = process.env;
 
 export const create = async (username: string, password: string, firstname: string, lastname: string): Promise<UserType> => {
 
+    const fetchedUser = await User.findOne({ username: username });
+
+    if(fetchedUser) {
+        throw new UserInputError('Username: username was reserverd '); 
+    }
+
+
     const userInput: UserInputType = {
         username: parser(username, usernameError),
         password: hashPassword(password),
@@ -30,7 +37,7 @@ export const create = async (username: string, password: string, firstname: stri
 
 const updateName = async (firstname: string, lastname: string, id: string): Promise<void> => {
 
-    await User.update({ _id: id },
+    await User.updateOne({ _id: id },
         {
             $set:
             {
@@ -44,7 +51,7 @@ const updateName = async (firstname: string, lastname: string, id: string): Prom
 
 export const updatePassword = async (password: string, id: string): Promise<void> => {
 
-    await User.update({ _id: id },
+    await User.updateOne({ _id: id },
         {
             $set:
             {
@@ -78,7 +85,7 @@ const search = async (value: string): Promise<UserSchemaType[]> => {
     const users = await User.find(searchCriteria);
 
     if(!users) {
-        throw new UserInputError('Search did not return any results'); 
+        throw new UserInputError('Search: Search did not return any results'); 
     }
     return users;
    
@@ -103,14 +110,14 @@ const check = async (username: string, password: string): Promise<string> => {
     const user = await User.findOne({ username: username });
 
     if (!user) {
-        throw new UserInputError('Username did match any users');
+        throw new UserInputError('Username: Username did match any users');
     }
     else {
 
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
         if (!isPasswordCorrect) {
-            throw new UserInputError('Password was incorrect');
+            throw new UserInputError('Password: Password was incorrect');
         }
     }
     return user.id as string;
