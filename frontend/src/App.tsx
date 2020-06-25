@@ -7,8 +7,8 @@ import { Container, Row, Navbar, Nav, NavDropdown, Form, FormControl, Button } f
 import { useDispatch, useSelector } from 'react-redux'
 import { showMessage } from './thunks/message';
 import Message from './components/spotify/message';
-//import Registaration from './components/users/registaration';
-import UserSearch from './components/users/search';
+import Registaration from './components/users/registaration';
+//import UserSearch from './components/users/search';
 
 const App: React.FC = () => {
 
@@ -63,13 +63,15 @@ const App: React.FC = () => {
         <Row>
           <div className="col-xs-2">
             
-            {/*
-             <Search searchAction={getTracks} searchResult={trackObject.data} />
+           
+            
             <Registaration createuser={createUser} />
-            */}
+            
+ {/*
 
+  <Search searchAction={getTracks} searchResult={trackObject.data} />
             <UserSearch createuser={createUser} />
-
+*/}
           </div>
         </Row>
 
