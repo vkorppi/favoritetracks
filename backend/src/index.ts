@@ -44,7 +44,7 @@ const server = new ApolloServer({
 
     console.log(err.message);
 
-    if (err instanceof MongoError) {
+    if (err instanceof MongoError ) {
       return new Error('Internal server error');
     }
 
