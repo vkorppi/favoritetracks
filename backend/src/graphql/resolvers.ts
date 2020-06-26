@@ -68,6 +68,29 @@ export const resolvers = {
 
             });
 
+        },
+
+        getUser: async (_root: any, args: { id: string; }): Promise<void | UserSchemaType | null> => {
+
+            const id: string = args.id;
+    
+            return await user.getUser(id).then(result => {
+    
+                return result;
+    
+            }).catch((error: Error) => {
+    
+                console.error(error.stack);
+    
+                if (error instanceof ApolloError) {
+                    throw new ApolloError(error.message);
+                }
+                else if (error instanceof UserInputError) {
+                    throw new UserInputError(error.message);
+                }
+    
+            });
+    
         }
 
 
@@ -210,6 +233,7 @@ export const resolvers = {
 
             });
         }
+        
 
 
 

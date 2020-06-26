@@ -249,6 +249,38 @@ describe('Testing usermanagement', () => {
 
 	});
 
+	test('User can be fetched with id', async () => {
+
+		interface userGetuserType {
+			getUser: UserType;
+		}
+
+		const user = await User.findOne({ username: 'usernameTest' });
+		const id = user?.id as string;
+
+		const userQuery = gql`
+
+		query getUser($id: String!){
+			getUser(id: $id) 
+				{
+					firstname,
+					lastname,
+					username,
+					id
+				}
+		  }`;
+
+
+		const fetcheduser = (await apolloclient.query({
+			variables: { id: id },
+			query: userQuery
+		})).data as userGetuserType;
+		
+		expect(fetcheduser).toBeTruthy();
+
+
+	});
+
 
 	afterAll(async () => {
 		await User.deleteMany({});

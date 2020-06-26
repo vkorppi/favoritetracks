@@ -8,6 +8,7 @@ export const typeDefs = gql`
 type Query {
     search(track: String,page: Int):  searchResult! 
     searchUser(value: String): [User!]!
+    getUser(id: String): User!
 }
 
 type Mutation {

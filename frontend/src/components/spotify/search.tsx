@@ -1,5 +1,5 @@
 import React, { FormEvent } from 'react';
-import { ShowMessageType, Query } from '../../type'
+import { BasicComponent, Query } from '../../type'
 import { Button, ListGroup } from 'react-bootstrap'
 import Resultpagination from './pagination';
 import { useDispatch } from 'react-redux'
@@ -8,7 +8,7 @@ import { useLazyQuery } from '@apollo/client';
 import queries from '../../graphql/queries';
 
 
-const Search: React.FC<ShowMessageType> = ({showmessage}) => {
+const Search: React.FC<BasicComponent> = ({showmessage}) => {
 
   const [getTracks, trackObject] = useLazyQuery(queries.search, {
     fetchPolicy: "network-only", errorPolicy: 'none',

@@ -1,13 +1,12 @@
 
 import React from 'react';
-import { Button, Form } from 'react-bootstrap';
-import { ComponentAttribueId } from "../../type";
+import { Modal, Form, Button } from 'react-bootstrap';
+import { ComponentAttribueId } from '../../type';
+import { useMutation,useQuery } from '@apollo/client';
 import queries from '../../graphql/queries';
-import { useQuery, useMutation } from '@apollo/client';
 import { useHistory } from "react-router-dom"
 
-
-const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
+const ModifyUser: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
 
     const { error, data } = useQuery(queries.getUser, {
         fetchPolicy: "network-only", errorPolicy: 'none',
@@ -66,4 +65,4 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
 
 };
 
-export default Details;
+export default ModifyUser;

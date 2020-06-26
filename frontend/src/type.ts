@@ -1,25 +1,42 @@
-import { LazyQueryResult, QueryLazyOptions, ApolloError, MutationFunctionOptions, FetchResult } from '@apollo/client'
+import { QueryLazyOptions } from "@apollo/client";
 
-export interface QueryTuple {
-
-  searchAction: (options?: QueryLazyOptions<Record<string, any>> | undefined) => void;
-  searchResult: LazyQueryResult<any, Record<string, any>>;
-
-
-}
 
 export interface SearchAttributes {
   total: number;
   search: (options?: QueryLazyOptions<Record<string, any>> | undefined) => void;
 }
 
+/*
 export interface CreateUser {
   createuser: (options?: MutationFunctionOptions<any, Record<string, any>> | undefined) => Promise<FetchResult<any, Record<string, any>, Record<string, any>>>
 }
+*/
 
-export interface ShowMessageType {
+export interface BasicComponent {
   showmessage: (errorMsg: string) => void;
 }
+
+export interface ComponentAttribueId extends BasicComponent {
+  id: string;
+}
+
+export interface ComponentAttributeUser extends BasicComponent {
+  user: UserType;
+}
+
+
+export interface UserType {
+  firstname: string;
+  lastname: string;
+  username: string;
+}
+
+
+
+export interface UserParamType {
+  id: string;
+}
+
 
 export interface PaginationType {
   pagination: PaginationAttributes;

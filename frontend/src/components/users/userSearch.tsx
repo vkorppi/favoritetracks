@@ -1,11 +1,11 @@
 import React, { FormEvent } from 'react';
-import { ShowMessageType,UserType } from '../../type'
+import { BasicComponent,UserType } from '../../type'
 import { Button, ListGroup, InputGroup, FormControl } from 'react-bootstrap'
 import { useLazyQuery } from '@apollo/client';
 import queries from '../../graphql/queries';
 
 
-const Search: React.FC<ShowMessageType> = ({ showmessage }) => {
+const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
 
   const [searchUser, {data,error}] = useLazyQuery(queries.searchUsers, {
@@ -67,7 +67,7 @@ const Search: React.FC<ShowMessageType> = ({ showmessage }) => {
 
             <div key={Math.ceil(Math.random() * 100000)} className="form-group row">
               <div className="col-xs-2">
-                <ListGroup.Item><a href="#">{`${user.firstname} ${user.lastname}`}</a></ListGroup.Item>
+                <ListGroup.Item><a href={`/details/${user.id}`}>{`${user.firstname} ${user.lastname}`}</a></ListGroup.Item>
               </div>
             </div>
 

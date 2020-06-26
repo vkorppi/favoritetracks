@@ -123,6 +123,11 @@ const check = async (username: string, password: string): Promise<string> => {
     return user.id as string;
 };
 
+const getUser = async (id: string): Promise<UserSchemaType | null> => {
+
+    return await User.findOne({ _id: id });
+};
+
 
 export default {
     create,
@@ -131,5 +136,6 @@ export default {
     remove,
     search,
     check,
-    login
+    login,
+    getUser
 };

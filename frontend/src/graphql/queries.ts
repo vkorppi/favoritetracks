@@ -26,11 +26,31 @@ query filter($value: String){
     }
   }`
 
-  
+  const getUser = gql`
+
+  query getUser($id: String!){
+    getUser(id: $id) 
+      {
+        firstname,
+        lastname,
+        username,
+        id
+      }
+    }`;
+
+  const deleteUser =  gql`
+
+  mutation Remove($id: String!){
+    remove(id:$id) 
+    }
+ `;
+    
 
 
 export default {
   search,
   createUser,
-  searchUsers
+  searchUsers,
+  getUser,
+  deleteUser
 }

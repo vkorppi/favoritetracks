@@ -1,13 +1,15 @@
 import React from 'react';
 import Search from './components/spotify/search';
-import { MessageType } from './type';
+import { MessageType,UserParamType } from './type';
 import { Container, Row, Navbar, Nav } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { showMessage } from './thunks/message';
 import Message from './components/spotify/message';
 import Registaration from './components/users/registaration';
 import UserSearch from './components/users/userSearch';
-import { Switch, Route } from 'react-router-dom';
+import Details from './components/users/userDetails';
+import { useRouteMatch, Route, Switch } from 'react-router-dom';
+
 
 const App: React.FC = () => {
 
@@ -20,6 +22,18 @@ const App: React.FC = () => {
     dispatch(showMessage(errorMsg, 5000, 'warning'))
   };
 
+
+
+  const matchRoute = useRouteMatch("/details/:id")
+
+  let id=''
+
+  if(matchRoute) {
+
+    const param = matchRoute.params as UserParamType;
+    id = param.id
+  
+  }
 
   return (
     <div>
@@ -34,6 +48,8 @@ const App: React.FC = () => {
             <Nav.Link href="#Roles">Roles</Nav.Link>
             <Nav.Link href="/registaration">Registaration</Nav.Link>
             <Nav.Link href="#Login">Login</Nav.Link>
+
+            <Nav.Link href="/details">Test</Nav.Link>
           </Nav>
 
         </Navbar.Collapse>
@@ -51,6 +67,9 @@ const App: React.FC = () => {
           <div className="col-xs-2">
 
             <Switch>
+              <Route path="/details">
+                <Details showmessage={errorMessage} id={id}/>
+              </Route>
               <Route path="/users">
                 <UserSearch showmessage={errorMessage} />
               </Route>

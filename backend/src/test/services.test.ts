@@ -226,6 +226,16 @@ describe('Testing usermanagement services', () => {
 
   });
 
+  test('User can be found with id', async () => {
+
+    const fetchedUser = await User.findOne({ username: 'usernameTest' });
+
+    const userFound = await user.getUser(fetchedUser?.id);
+
+    expect(userFound).toBeTruthy();
+
+  });
+
 
 
 

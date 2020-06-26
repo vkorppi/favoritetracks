@@ -1,14 +1,14 @@
 
 import React, { FormEvent } from 'react';
 import { Button, Card,Form } from 'react-bootstrap';
-import { ShowMessageType } from "../../type";
+import { BasicComponent } from "../../type";
 import { useDispatch } from 'react-redux'
 import { showMessage } from '../../thunks/message';
 import { useMutation } from '@apollo/client';
 import queries from '../../graphql/queries';
 
 
-const Registaration: React.FC<ShowMessageType> = ({showmessage}) => {
+const Registaration: React.FC<BasicComponent> = ({showmessage}) => {
 
     const [createNewUser] = useMutation(queries.createUser, {
         errorPolicy: 'none', onError: (error) => {
