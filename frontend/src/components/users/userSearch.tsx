@@ -40,9 +40,6 @@ const Search: React.FC<ShowMessageType> = ({ showmessage }) => {
     input.value = ''
 
   }
-  
- // const data = UserObjects.data;
-  
 
   return (
     <div >
@@ -70,11 +67,13 @@ const Search: React.FC<ShowMessageType> = ({ showmessage }) => {
 
             <div key={Math.ceil(Math.random() * 100000)} className="form-group row">
               <div className="col-xs-2">
-                <ListGroup.Item>{`${user.firstname} ${user.lastname}`}</ListGroup.Item>
+                <ListGroup.Item><a href="#">{`${user.firstname} ${user.lastname}`}</a></ListGroup.Item>
               </div>
             </div>
 
           )) : ''}
+
+
 
           
         </ListGroup>
