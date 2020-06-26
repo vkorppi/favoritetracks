@@ -16,7 +16,7 @@ const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user }) => 
 
                             <div className="col-xs-2">
                                 <Form.Label>Firstname</Form.Label><div>
-                                <input className="form-control" value={user.lastname}   id="firstname" type="text" /></div>
+                                <input className="form-control" value={user.firstname}   id="firstname" type="text" /></div>
                             </div>
                         </div>
 
