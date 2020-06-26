@@ -5,6 +5,7 @@ import { ComponentAttribueId } from "../../type";
 import queries from '../../graphql/queries';
 import { useQuery, useMutation } from '@apollo/client';
 import { useHistory } from "react-router-dom"
+import ModifyUser from './modifyUser';
 
 
 const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
@@ -56,8 +57,10 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
                             </div>
                         </div>
                     </form>
-
-                </div> : ''}
+                    <ModifyUser showmessage={showmessage} user={data.getUser}/>
+                </div>
+                
+                : ''}
 
         </div>
     );

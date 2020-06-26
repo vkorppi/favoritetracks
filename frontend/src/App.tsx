@@ -1,6 +1,6 @@
 import React from 'react';
 import Search from './components/spotify/search';
-import { MessageType,UserParamType } from './type';
+import { MessageType, UserParamType } from './type';
 import { Container, Row, Navbar, Nav } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { showMessage } from './thunks/message';
@@ -26,13 +26,13 @@ const App: React.FC = () => {
 
   const matchRoute = useRouteMatch("/details/:id")
 
-  let id=''
+  let id = ''
 
-  if(matchRoute) {
+  if (matchRoute) {
 
     const param = matchRoute.params as UserParamType;
     id = param.id
-  
+
   }
 
   return (
@@ -48,8 +48,6 @@ const App: React.FC = () => {
             <Nav.Link href="#Roles">Roles</Nav.Link>
             <Nav.Link href="/registaration">Registaration</Nav.Link>
             <Nav.Link href="#Login">Login</Nav.Link>
-
-            <Nav.Link href="/details">Test</Nav.Link>
           </Nav>
 
         </Navbar.Collapse>
@@ -68,7 +66,7 @@ const App: React.FC = () => {
 
             <Switch>
               <Route path="/details">
-                <Details showmessage={errorMessage} id={id}/>
+                <Details showmessage={errorMessage} id={id} />
               </Route>
               <Route path="/users">
                 <UserSearch showmessage={errorMessage} />

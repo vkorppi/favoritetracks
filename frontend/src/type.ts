@@ -6,12 +6,6 @@ export interface SearchAttributes {
   search: (options?: QueryLazyOptions<Record<string, any>> | undefined) => void;
 }
 
-/*
-export interface CreateUser {
-  createuser: (options?: MutationFunctionOptions<any, Record<string, any>> | undefined) => Promise<FetchResult<any, Record<string, any>, Record<string, any>>>
-}
-*/
-
 export interface BasicComponent {
   showmessage: (errorMsg: string) => void;
 }
@@ -29,6 +23,7 @@ export interface UserType {
   firstname: string;
   lastname: string;
   username: string;
+  id: string;
 }
 
 
