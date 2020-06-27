@@ -132,6 +132,9 @@ export interface UserSchemaType extends Document {
   password:string;
   firstname:string;
   lastname:string;
+  birthdate: string,
+  email: string,
+  address: string
 }
 
 export interface UserInputType extends Document {
@@ -139,6 +142,10 @@ export interface UserInputType extends Document {
   password:UserSchemaType['password'];
   firstname:UserSchemaType['firstname'];
   lastname:UserSchemaType['lastname'];
+  birthdate:UserSchemaType['birthdate'];
+  email:UserSchemaType['email'];
+  address:UserSchemaType['address'];
+
 }
 
 export interface TokenType  {
@@ -154,6 +161,9 @@ export interface UserType {
   username:string;
   firstname:string;
   lastname:string;
+  birthdate: string,
+  email: string,
+  address: string
 }
 
 

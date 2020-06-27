@@ -97,6 +97,7 @@ export interface Modalttributes {
   show: boolean;
 }
 
+
 export type ActionMessage =
   {
     type: "SET_MESSAGE";

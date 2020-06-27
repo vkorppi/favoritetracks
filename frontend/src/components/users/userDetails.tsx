@@ -10,13 +10,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setShow } from '../../reducers/modal';
 
 
+
 const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
 
     const modalState = (state: ModalType) => state
     const data2 = useSelector(modalState)
     const dispatch = useDispatch()
 
-
+    
     const { error, data } = useQuery(queries.getUser, {
         fetchPolicy: "network-only", errorPolicy: 'none',
         variables: { id: id }
@@ -25,6 +26,11 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
     const [deleteUser] = useMutation(queries.deleteUser, {
         errorPolicy: 'none',
     })
+
+
+
+
+    
 
     const history = useHistory()
 

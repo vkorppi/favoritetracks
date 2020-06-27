@@ -2,31 +2,32 @@
 
 import typeguards from '../utils/typeguards';
 import typeparsers from '../utils/typeparsers';
+import { getMessage } from '../utils/errorFunctions';
+
+import { testParserString, testParserNumber } from '../utils/testFunctions';
 
 describe('Testing typeguards', () => {
 
-    test('If value is not number then return false', () => {
+
+    test('Returns true when number when number is checked', () => {
 
         expect(typeguards.isNumber('test')).toBe(false);
-
-    });
-
-    test('If value is number then return true', () => {
-
         expect(typeguards.isNumber(123)).toBe(true);
 
     });
 
-    test('If value is not string then return false', () => {
+    test('Returns false when value is not a string else returns true', () => {
 
         expect(typeguards.isString(123)).toBe(false);
-
+        expect(typeguards.isString('test')).toBe(true);
     });
 
-    test('If value is string then return true', () => {
 
-        expect(typeguards.isString('test')).toBe(true);
+    test('Returns false if date does not follow format: day.month.year', () => {
 
+        expect(typeguards.isDate('11.11.1990')).toBe(true);
+        expect(typeguards.isDate('11-11-1990')).toBe(false);
+        expect(typeguards.isDate('1990.11.24')).toBe(false);
     });
 
 });
@@ -35,203 +36,65 @@ describe('Testing typeparsers', () => {
 
     const errorString = 'variable was not a string';
     const errorNumber = 'variable was not a number';
-    const errorUserInputString ='input was not a string';
-    const errorUserInputNumber ='input was not a number';
 
-    test('If parameter was empty throw exception', () => {
+    const errorUserInputNumber = 'input was not a number';
+    const errorUserInputString = 'input was not a string';
 
-        let message = '';
+    test('Stringparser throws exception for non string values', () => {
 
-        try {
-            typeparsers.parseString('', errorString);
-        }
-        catch (error) {
+        const transformer = new Number(10);
+        const parser = typeparsers.parseString;
+        const wrongValue = transformer.toString(5);
 
-            const test: Error = error as Error;
-            message = test.message;
+        const errormessage1 = getMessage('string', '');
+        const errormessage2 = getMessage('string', wrongValue);
+        const errormessage3 = getMessage('string', 'test');
+        
+        const result1 = testParserString('', errormessage1, parser);
+        const result2 = testParserString(123, errormessage2, parser);
+        const result3 = testParserString('test', errormessage3, parser);
 
-        }
-        expect(message).toBe(errorString);
-
-    });
-
-    test('If parameter was not a string throw exception', () => {
-
-        let message = '';
-
-        try {
-            typeparsers.parseString(123, errorString);
-        }
-        catch (error) {
-
-            const test: Error = error as Error;
-            message = test.message;
-        }
-
-        expect(message).toBe(errorString);
-    });
-
-    test('If parameter was a string do not throw exception', () => {
-
-        let message = '';
-
-        try {
-            typeparsers.parseString('test', errorString);
-        }
-        catch (error) {
-
-            const test: Error = error as Error;
-            message = test.message;
-        }
-
-        expect(message).toBe('');
-    });
-
-    test('If parameter was empty throw exception', () => {
-
-        let message = '';
-
-        try {
-            typeparsers.parseNumber('', errorNumber);
-        }
-        catch (error) {
-
-            const test: Error = error as Error;
-            message = test.message;
-
-        }
-        expect(message).toBe(errorNumber);
+        expect(result1).toBe(errormessage1);
+        expect(result2).toBe(errormessage2);
+        expect(result3).toBe('');
 
     });
 
-    test('If parameter was not a number throw exception', () => {
+    test('Numberparser throws exception for non number values', () => {
 
-        let message = '';
+        const result1 = testParserNumber('', errorNumber, typeparsers.parseNumber);
+        const result2 = testParserNumber(123, errorNumber, typeparsers.parseNumber);
+        const result3 = testParserNumber('test', errorNumber, typeparsers.parseNumber);
 
-        try {
-            typeparsers.parseNumber('test', errorNumber);
-        }
-        catch (error) {
+        expect(result1).toBe(errorNumber);
+        expect(result2).toBe('');
+        expect(result3).toBe(errorNumber);
 
-            const test: Error = error as Error;
-            message = test.message;
-        }
-
-        expect(message).toBe(errorNumber);
-    });
-
-    test('If parameter was a number do not throw exception', () => {
-
-        let message = '';
-
-        try {
-            typeparsers.parseNumber(123, errorNumber);
-        }
-        catch (error) {
-
-            const test: Error = error as Error;
-            message = test.message;
-        }
-
-        expect(message).toBe('');
-    });
-
-    test('If parameter was empty throw exception', () => {
-
-        let message = '';
-
-        try {
-            typeparsers.parseStringUserInput('',errorUserInputString);
-        }
-        catch (error) {
-
-            const test: Error = error as Error;
-            message = test.message;
-        }
-
-        expect(message).toBe(errorUserInputString);
-    });
-
-    test('If parameter was not a string throw exception', () => {
-
-        let message = '';
-
-        try {
-            typeparsers.parseStringUserInput(123,errorUserInputString);
-        }
-        catch (error) {
-
-            const test: Error = error as Error;
-            message = test.message;
-        }
-
-        expect(message).toBe(errorUserInputString);
-    });
-
-    test('If parameter was a string do not throw exception', () => {
-
-        let message = '';
-
-        try {
-            typeparsers.parseStringUserInput('test',errorUserInputString);
-        }
-        catch (error) {
-
-            const test: Error = error as Error;
-            message = test.message;
-        }
-
-        expect(message).toBe('');
     });
 
 
-    test('If parameter was empty throw exception', () => {
+    test('parseStringUserInput throws exception for non string values', () => {
 
-        let message = '';
+        const result1 = testParserString('', errorUserInputString, typeparsers.parseStringUserInput);
+        const result2 = testParserString(123, errorUserInputString, typeparsers.parseStringUserInput);
+        const result3 = testParserString('test', errorUserInputString, typeparsers.parseStringUserInput);
 
-        try {
-            typeparsers.parseNumberUserInput(null,errorUserInputNumber);
-        }
-        catch (error) {
+        expect(result1).toBe(errorUserInputString);
+        expect(result2).toBe(errorUserInputString);
+        expect(result3).toBe('');
 
-            const test: Error = error as Error;
-            message = test.message;
-        }
-
-        expect(message).toBe(errorUserInputNumber);
     });
 
-    test('If parameter was not a number throw exception', () => {
+    test('parseNumberUserInput throws exception for non string values', () => {
 
-        let message = '';
+        const result1 = testParserNumber('', errorUserInputNumber, typeparsers.parseNumberUserInput);
+        const result2 = testParserNumber(123, errorUserInputNumber, typeparsers.parseNumberUserInput);
+        const result3 = testParserNumber('test', errorUserInputNumber, typeparsers.parseNumberUserInput);
 
-        try {
-            typeparsers.parseNumberUserInput('test',errorUserInputNumber);
-        }
-        catch (error) {
+        expect(result1).toBe(errorUserInputNumber);
+        expect(result2).toBe('');
+        expect(result3).toBe(errorUserInputNumber);
 
-            const test: Error = error as Error;
-            message = test.message;
-        }
-
-        expect(message).toBe(errorUserInputNumber);
-    });
-
-    test('If parameter was a number do not throw exception', () => {
-
-        let message = '';
-
-
-        try {
-            typeparsers.parseNumberUserInput(123,errorUserInputNumber);
-        }
-        catch (error) {
-
-            const test: Error = error as Error;
-            message = test.message;
-        }
-
-        expect(message).toBe('');
     });
 
 });

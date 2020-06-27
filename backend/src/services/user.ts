@@ -8,12 +8,19 @@ import { sign } from 'jsonwebtoken';
 import { UserInputError } from 'apollo-server-express';
 import bcrypt from 'bcryptjs';
 
-const nameError = 'name: name was not a string';
-const usernameError = 'username: username was not a string';
+
 const parser = typeparsers.parseString;
+const emailParser = typeparsers.parseEmailUserInput;
+const dateParser = typeparsers.parseBirthdate;
 const env = process.env;
 
-export const create = async (username: string, password: string, firstname: string, lastname: string): Promise<UserType> => {
+const nameError = 'name: name was not a string';
+const usernameError = 'username: username was not a string';
+const birthdateError = 'birthdate: birthdate was not in correct format';
+const emailError='email: Email was not in correct format';
+const addressError='address: was not a string';
+
+export const create = async (username: string, password: string, firstname: string, lastname: string, birthdate: string,email: string,address: string): Promise<UserType> => {
 
     const fetchedUser = await User.findOne({ username: username });
 
@@ -26,7 +33,10 @@ export const create = async (username: string, password: string, firstname: stri
         username: parser(username, usernameError),
         password: hashPassword(password),
         firstname: parser(firstname, nameError),
-        lastname: parser(lastname, nameError)
+        lastname: parser(lastname, nameError),
+        birthdate: birthdate ? dateParser(birthdate,birthdateError) : '',
+        email: email ? emailParser(email,emailError) : '',
+        address:address ? parser(address,addressError) : ''
     } as UserInputType;
 
     const user = new User(userInput);

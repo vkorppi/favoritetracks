@@ -44,7 +44,13 @@ query filter($value: String){
     remove(id:$id) 
     }
  `;
-    
+  
+ const updateUser = gql`
+
+ mutation UpdateName($firstname: String!,$lastname: String!,$id: String!){
+   updateName(firstname:$firstname,lastname:$lastname,id:$id) 
+   }
+ `;
 
 
 export default {
@@ -52,5 +58,6 @@ export default {
   createUser,
   searchUsers,
   getUser,
-  deleteUser
+  deleteUser,
+  updateUser
 }
