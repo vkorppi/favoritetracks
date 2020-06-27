@@ -100,7 +100,8 @@ describe('Testing usermanagement', () => {
 		const userMutation = gql`
 
 			mutation {
-				create(username: "username",password: "password",firstname:"first",lastname:"last") 
+				create(username: "username",password: "password",firstname:"first",lastname:"last",
+				birthdate: "11.11.1999",email: "test.testi@test.com",address:"street 11") 
     		}
 		  `;
 
@@ -116,7 +117,7 @@ describe('Testing usermanagement', () => {
 
 
 		interface updateType {
-			updateName: boolean;
+			updateUser: boolean;
 		}
 
 		const user = await User.findOne({ username: 'usernameTest' });
@@ -124,19 +125,21 @@ describe('Testing usermanagement', () => {
 
 		const userMutation = gql`
 
-			mutation UpdateName($firstname: String!,$lastname: String!,$id: String!){
-				updateName(firstname:$firstname,lastname:$lastname,id:$id) 
+			mutation UpdateUser($firstname: String!,$lastname: String!,$birthdate: String,
+				$email: String,$address: String,$id: String!){
+				updateUser(firstname:$firstname,lastname:$lastname,birthdate:$birthdate
+				,email:$email,address:$address,id:$id) 
     		}
 		  `;
 
-
 		const success = (await apolloclient.mutate({
-			variables: { id: id, firstname: 'first', lastname: 'last' },
+			variables: {  firstname: 'first', lastname: 'last', 
+			birthdate: '11.11.2011', email: 'test.test.@test.com',address: 'street 12',id: id },
 			mutation: userMutation,
 		})).data as updateType;
 
 
-		expect(success.updateName).toBe(true);
+		expect(success.updateUser).toBe(true);
 
 
 	});
