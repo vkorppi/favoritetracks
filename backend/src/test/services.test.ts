@@ -137,7 +137,7 @@ describe('Testing usermanagement services', () => {
 
   test('User is created to database', async () => {
 
-    await user.create('username4', 'password', 'firstname', 'lastname');
+    await user.create('username4', 'password', 'firstname', 'lastname','11.11.1999','test.test@mail.com','road 12');
 
     const newuser = await User.findOne({ username: 'username4' });
 
@@ -170,8 +170,9 @@ describe('Testing usermanagement services', () => {
   test('Name is updated', async () => {
 
     const fetchedUser = await User.findOne({ username: 'usernameTest' });
+
     
-    await user.updateName('Newfirstname', 'Newlastname', fetchedUser?.id);
+    await user.update('Newfirstname', 'Newlastname','12.12.2000','new.new@mail.com','address 123', fetchedUser?.id);
 
     const userNameChanged = await User.findOne({ username: 'usernameTest' });
 

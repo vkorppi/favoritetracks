@@ -39,9 +39,9 @@ describe('Testing typeparsers', () => {
         
         const parser = typeparsers.parseString;
 
-        const errormessage1 = getMessage('string', '');
-        const errormessage2 = getMessage('string', String(123));
-        const errormessage3 = getMessage('string', 'test');
+        const errormessage1 = getMessage('string', '',false);
+        const errormessage2 = getMessage('string', String(123),false);
+        const errormessage3 = getMessage('string', 'test',false);
         
         const result1 = testParserString('', errormessage1, parser);
         const result2 = testParserString(123, errormessage2, parser);
@@ -55,11 +55,9 @@ describe('Testing typeparsers', () => {
 
     test('Numberparser throws exception for non number values', () => {
 
-        const parser = typeparsers.parseNumber;
-
-        const errormessage1 = getMessage('number', '');
-        const errormessage2 = getMessage('number', String(123));
-        const errormessage3 = getMessage('number', 'test');
+        const errormessage1 = getMessage('number', '',false);
+        const errormessage2 = getMessage('number', String(123),false);
+        const errormessage3 = getMessage('number', 'test',false);
 
         const result1 = testParserNumber('', errormessage1, typeparsers.parseNumber);
         const result2 = testParserNumber(123, errormessage2, typeparsers.parseNumber);
@@ -75,9 +73,9 @@ describe('Testing typeparsers', () => {
     test('parseStringUserInput throws exception for non string values', () => {
 
         
-        const errormessage1 = getMessage('string', '');
-        const errormessage2 = getMessage('string', String(123));
-        const errormessage3 = getMessage('string', 'test');
+        const errormessage1 = getMessage('string', '',false);
+        const errormessage2 = getMessage('string', String(123),false);
+        const errormessage3 = getMessage('string', 'test',false);
 
         const result1 = testParserString('', errormessage1, typeparsers.parseStringUserInput);
         const result2 = testParserString(123, errormessage2, typeparsers.parseStringUserInput);
@@ -91,9 +89,9 @@ describe('Testing typeparsers', () => {
 
     test('parseNumberUserInput throws exception for non string values', () => {
 
-        const errormessage1 = getMessage('number', '');
-        const errormessage2 = getMessage('number', String(123));
-        const errormessage3 = getMessage('number', 'test');
+        const errormessage1 = getMessage('number', '',false);
+        const errormessage2 = getMessage('number', String(123),false);
+        const errormessage3 = getMessage('number', 'test',false);
 
         const result1 = testParserNumber('', errormessage1, typeparsers.parseNumberUserInput);
         const result2 = testParserNumber(123, errormessage2, typeparsers.parseNumberUserInput);

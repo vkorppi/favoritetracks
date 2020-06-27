@@ -16,12 +16,18 @@ type Mutation {
     username: String!
     password:  String!
     firstname: String!
-    lastname: String!      
+    lastname: String!
+    birthdate: String
+    email: String
+    address: String
   ): Boolean 
 
-  updateName(
+  updateUser(
     firstname: String!
     lastname: String! 
+    birthdate: String
+    email: String
+    address: String
     id:String!     
   ): Boolean 
 

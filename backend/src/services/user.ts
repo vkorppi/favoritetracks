@@ -20,32 +20,32 @@ export const create = async (username: string, password: string, firstname: stri
     const fetchedUser = await User.findOne({ username: username });
 
     if (fetchedUser) {
-        throw new UserInputError('Username: username was reserverd ');
+        throw new UserInputError('userInput: username was reserverd ');
     }
-
-
+    
     const userInput: UserInputType = {
         username: parser(
             username,
-            getMessage('string', 'username')
+            getMessage('string', 'username',true)
         ),
         password: hashPassword(password),
         firstname: parser(
             firstname,
-            getMessage('string', 'firstname')
+            getMessage('string', 'firstname',true)
         ),
         lastname: parser(
             lastname,
-            getMessage('string', 'lastname')),
+            getMessage('string', 'lastname',true)),
         birthdate: birthdate ? dateParser(
             birthdate,
-            getMessage('format', 'lastname')) : '',
+            getMessage('format', 'birthdate',true)) : '',
         email: email ? emailParser(
             email,
-            getMessage('format', 'email')) : '',
+            getMessage('format', 'email',true)) : '',
         address: address ? parser(
             address,
-            getMessage('string', 'address')) : ''
+            getMessage('string', 'address',true)) : ''
+            
     } as UserInputType;
 
     const user = new User(userInput);
@@ -54,7 +54,7 @@ export const create = async (username: string, password: string, firstname: stri
 
 
 
-const updateName = async (firstname: string, lastname: string, birthdate: string, email: string, address: string, id: string): Promise<void> => {
+const update = async (firstname: string, lastname: string, birthdate: string, email: string, address: string, id: string): Promise<void> => {
 
     await User.updateOne({ _id: id },
         {
@@ -62,19 +62,19 @@ const updateName = async (firstname: string, lastname: string, birthdate: string
             {
                 "firstname": parser(
                     firstname,
-                    getMessage('string', 'firstname')),
+                    getMessage('string', 'firstname',true)),
                 "lastname": parser(
                     lastname,
-                    getMessage('string', 'lastname')),
+                    getMessage('string', 'lastname',true)),
                 "birthdate": birthdate ? dateParser(
                     birthdate
-                    , getMessage('format', 'birthdate')) : '',
+                    , getMessage('format', 'birthdate',true)) : '',
                 "email": email ? emailParser(
                     email,
-                    getMessage('format', 'email')) : '',
+                    getMessage('format', 'email',true)) : '',
                 "address": address ? parser(
                     address,
-                    getMessage('string', 'address')) : ''
+                    getMessage('string', 'address',true)) : ''
             }
         });
 
@@ -117,7 +117,7 @@ const search = async (value: string): Promise<UserSchemaType[]> => {
     const users = await User.find(searchCriteria);
 
     if (!users) {
-        throw new UserInputError('Search: Search did not return any results');
+        throw new UserInputError('userInput: Search did not return any results');
     }
     return users;
 
@@ -127,11 +127,11 @@ const search = async (value: string): Promise<UserSchemaType[]> => {
 const login = async (username: string, password: string): Promise<TokenType> => {
 
     const id = await check(
-        parser(username, getMessage('string', 'username')),
-        parser(password, "password was invalid")
+        parser(username, getMessage('string', 'username',true)),
+        parser(password, "userInput: password was invalid")
     );
 
-    return { value: sign({ username: username, id: id }, parser(env.SECRET, getMessage('EnvString', 'SECRET'))) };
+    return { value: sign({ username: username, id: id }, parser(env.SECRET, getMessage('EnvString', 'SECRET',false))) };
 };
 
 const check = async (username: string, password: string): Promise<string> => {
@@ -139,14 +139,14 @@ const check = async (username: string, password: string): Promise<string> => {
     const user = await User.findOne({ username: username });
 
     if (!user) {
-        throw new UserInputError('Username: Username did match any users');
+        throw new UserInputError('userInput: Username did match any users');
     }
     else {
 
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
         if (!isPasswordCorrect) {
-            throw new UserInputError('Password: Password was incorrect');
+            throw new UserInputError('userInput: Password was incorrect');
         }
     }
     return user.id as string;
@@ -161,7 +161,7 @@ const getUser = async (id: string): Promise<UserSchemaType | null> => {
 export default {
     create,
     updatePassword,
-    updateName,
+    update,
     remove,
     search,
     check,

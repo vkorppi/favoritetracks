@@ -41,8 +41,7 @@ const server = new ApolloServer({
   resolvers,
   formatError: (err) => {
 
-    const internalError = /Enviroment variable|Expiration time|Token|Spotify/i;
-    const userError = /|Track|Page|Password|Username|Search|firstname|lastname/i;
+    const userError = /userInput:.*/i;
 
     console.log(err.message);
 
@@ -50,11 +49,11 @@ const server = new ApolloServer({
       return new Error('Internal server error');
     }
 
-    if (internalError.test(err.message)) {
+    if (!userError.test(err.message)) {
 
       return new Error('Internal server error');
     }
-    else if (userError.test(err.message)) {
+    else {
       return new Error(err.message);
     }
 

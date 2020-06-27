@@ -11,7 +11,7 @@ export const resolvers = {
     Query: {
 
 
-        
+
         search: async (_root: any, args: { track: string; page: number; }): Promise<searchResult | void> => {
 
             const track: string = args.track;
@@ -20,7 +20,7 @@ export const resolvers = {
             let fetchedTracks: string[];
             let total: number;
 
-            return track.includes('Test_') ? spotify.test(track, page) : 
+            return track.includes('Test_') ? spotify.test(track, page) :
                 await spotify.search(track, page).then(result => {
 
                     tracks = result.tracks.items;
@@ -44,12 +44,12 @@ export const resolvers = {
 
         },
 
-        
+
 
         searchUser: async (_root: any, args: { value: string; }): Promise<UserSchemaType[] | void> => {
 
             const value: string = args.value;
-        
+
 
             return await user.search(value).then(result => {
 
@@ -73,38 +73,45 @@ export const resolvers = {
         getUser: async (_root: any, args: { id: string; }): Promise<void | UserSchemaType | null> => {
 
             const id: string = args.id;
-    
+
             return await user.getUser(id).then(result => {
-    
+
                 return result;
-    
+
             }).catch((error: Error) => {
-    
+
                 console.error(error.stack);
-    
+
                 if (error instanceof ApolloError) {
                     throw new ApolloError(error.message);
                 }
                 else if (error instanceof UserInputError) {
                     throw new UserInputError(error.message);
                 }
-    
+
             });
-    
+
         }
 
 
     },
     Mutation: {
 
-        create: async (_root: any, args: { username: string, password: string, firstname: string, lastname: string }): Promise<boolean | void> => {
+        create: async (_root: any, args: {
+            username: string, password: string, firstname: string,
+            lastname: string, birthdate: string, email: string, address: string
+        }): Promise<boolean | void> => {
 
             const firstname: string = args.firstname;
             const lastname: string = args.lastname;
             const username: string = args.username;
             const password: string = args.password;
+            const email: string = args.email;
+            const address: string = args.address;
+            const birthdate: string = args.birthdate;
 
-            return await user.create(username, password, firstname, lastname).then(result => {
+
+            return await user.create(username, password, firstname, lastname, birthdate, email, address).then(result => {
                 console.log(result);
                 return true;
 
@@ -128,13 +135,17 @@ export const resolvers = {
 
         },
 
-        updateName: async (_root: any, args: { firstname: string, lastname: string, id: string }): Promise<boolean | void> => {
+        updateUser: async (_root: any, args: { firstname: string, lastname: string,birthdate: string,email: string,address: string, id: string }): Promise<boolean | void> => {
 
             const firstname: string = args.firstname;
             const lastname: string = args.lastname;
             const id: string = args.id;
+            const birthdate: string = args.birthdate;
+            const email: string = args.email;
+            const address: string = args.address;
 
-            return await user.updateName(firstname, lastname, id).then(result => {
+
+            return await user.update(firstname, lastname,birthdate,email,address,id).then(result => {
                 console.log(result);
                 return true;
 
@@ -163,7 +174,7 @@ export const resolvers = {
             const password: string = args.password;
             const id: string = args.id;
 
-            return await user.updatePassword(password,id).then(result => {
+            return await user.updatePassword(password, id).then(result => {
                 console.log(result);
                 return true;
 
@@ -203,18 +214,18 @@ export const resolvers = {
                 else if (error instanceof UserInputError) {
                     throw new UserInputError(error.message);
                 }
-          
+
 
 
             });
         },
 
-        login: async (_root: any, args: { username: string,password: string }): Promise<boolean | void> => {
+        login: async (_root: any, args: { username: string, password: string }): Promise<boolean | void> => {
 
             const username: string = args.username;
             const password: string = args.password;
 
-            return await user.login(username,password).then(result => {
+            return await user.login(username, password).then(result => {
                 console.log(result);
                 return true;
 
@@ -228,12 +239,12 @@ export const resolvers = {
                 else if (error instanceof UserInputError) {
                     throw new UserInputError(error.message);
                 }
-              
+
 
 
             });
         }
-        
+
 
 
 

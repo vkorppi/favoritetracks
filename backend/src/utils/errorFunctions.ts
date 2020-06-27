@@ -1,17 +1,20 @@
 
 
 
-export const getMessage = (type: string, value: string): string => {
+export const getMessage = (type: string, value: string,inpunFromUser:boolean): string => {
+
+
+    const flag = inpunFromUser ? 'userInput: ' : '';
 
     switch (type) {
         case 'string':
-            return `${value}: ${value} was not a string`;
+            return `${flag} ${value} was not a string`;
             break;
         case 'number':
-            return `${value}: ${value} was not a number`;
+            return `${flag} ${value} was not a number`;
             break;
         case 'format':
-            `${value}: ${value} was not in correct format`;
+            `${flag} ${value} was not in correct format`;
             break;
         case 'EnvString':
             `Enviroment variable: ${value} was not a string`;

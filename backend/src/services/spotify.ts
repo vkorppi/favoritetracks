@@ -9,7 +9,7 @@ import {getSearchEnvs,getSessionEnvs} from '../utils/envFunctions';
 import {getTokenExpirationTime} from '../utils/sessionFunctions';
 
 import { refreshtoken,spotifyResult, searchResult } from '../types';
-
+import { getMessage } from '../utils/errorFunctions';
 
 
 enviro.config();
@@ -24,8 +24,8 @@ enviro.config();
 
         const filecontent = fs.readFileSync('session.txt', 'utf8').toString().split("\n");
 
-        const expiration:number = typeparsers.parseNumber(filecontent[1],'Expiration time: Expiration time was not a number');
-
+        const expiration:number = typeparsers.parseNumber(filecontent[1],getMessage('string','Expiration time',false));
+        
         const current = new Date();
 
         if(current.getTime() < expiration) {
