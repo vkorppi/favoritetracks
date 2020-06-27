@@ -16,6 +16,7 @@ export interface ComponentAttribueId extends BasicComponent {
 
 export interface ComponentAttributeUser extends BasicComponent {
   user: UserType;
+  show: boolean;
 }
 
 
@@ -88,6 +89,14 @@ export interface MessageAttributes {
   msgtype: string;
 }
 
+export interface ModalType {
+  modal: Modalttributes;
+}
+
+export interface Modalttributes {
+  show: boolean;
+}
+
 export type ActionMessage =
   {
     type: "SET_MESSAGE";
@@ -97,6 +106,12 @@ export type ActionMessage =
     type: "CLEAR_MESSAGE";
     data: MessageAttributes;
   };
+
+  export type ActionModal =
+  {
+    type: "SET_SHOW";
+    data: Modalttributes;
+  }
 
 
 export interface SpotifyTracks {
