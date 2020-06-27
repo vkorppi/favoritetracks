@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { Button, Form } from 'react-bootstrap';
-import { ComponentAttribueId,ModalType } from "../../type";
+import { Button, Form, Col } from 'react-bootstrap';
+import { ComponentAttribueId, ModalType } from "../../type";
 import queries from '../../graphql/queries';
 import { useQuery, useMutation } from '@apollo/client';
 import { useHistory } from "react-router-dom"
@@ -17,7 +17,7 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
     const data2 = useSelector(modalState)
     const dispatch = useDispatch()
 
-    
+
     const { error, data } = useQuery(queries.getUser, {
         fetchPolicy: "network-only", errorPolicy: 'none',
         variables: { id: id }
@@ -30,7 +30,7 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
 
 
 
-    
+
 
     const history = useHistory()
 
@@ -54,34 +54,47 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
         <div >
 
             {data ?
-
-                <div className="container">
+                <Form.Group>
                     <form >
-                        <div className="form-group row">
-
-                            <div className="col-xs-2">
+                        <Form.Row>
+                            <Col>
                                 <Form.Label>{`${data.getUser.firstname} ${data.getUser.lastname}`}</Form.Label>
-                            </div>
-                        </div>
+                            </Col>
+                        </Form.Row>
 
-                        <div className="form-group row">
-                            <div className="col-xs-2">
+                        <Form.Row>
+                            <Col>
+                                <Form.Label>{`${data.getUser.birthdate}`}</Form.Label>
+                            </Col>
+                        </Form.Row>
+
+                        <Form.Row>
+                            <Col>
+                                <Form.Label>{`${data.getUser.email}`}</Form.Label>
+                            </Col>
+                        </Form.Row>
+
+                        <Form.Row>
+                            <Col>
+                                <Form.Label>{`${data.getUser.address}`}</Form.Label>
+                            </Col>
+                        </Form.Row>
+
+                        <Form.Row>
+                            <Col>
                                 <Form.Label>{data.getUser.username}</Form.Label>
-                            </div>
-                        </div>
-                        <div className="form-group row">
-                            <div className="col-xs-2">
+                            </Col>
+                        </Form.Row>
+                        <Form.Row>
+                            <Col>
                                 <Button type="button" variant="primary" onClick={() => removeUser()}  >Delete </Button>
-                            </div>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <div className="col-xs-10">
-                                <Button type="button" variant="primary" onClick={() => modifyUser()}  >Modify </Button>
-                            </div>
-                        </div>
+                                <Button type="button" className="buttonSpace" variant="primary" onClick={() => modifyUser()}  >Modify </Button>
+                            </Col>
+                        </Form.Row>
                     </form>
-                    {data2 ? <ModifyUser showmessage={showmessage} user={data.getUser} show={data2.modal.show}/>   : ''}
-                </div>
-                
+                    {data2 ? <ModifyUser showmessage={showmessage} user={data.getUser} show={data2.modal.show} /> : ''}
+                </Form.Group>
+
                 : ''}
 
         </div>

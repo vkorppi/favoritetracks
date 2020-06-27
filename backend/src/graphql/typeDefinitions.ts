@@ -55,8 +55,9 @@ type User {
     firstname: String!
     lastname : String!
     username : String!
+    birthdate: String
+    email:     String
+    address:   String
     id       : String!
 }
-
-
 `;

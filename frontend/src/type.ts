@@ -23,6 +23,9 @@ export interface ComponentAttributeUser extends BasicComponent {
 export interface UserType {
   firstname: string;
   lastname: string;
+  birthdate: string;
+  email: string;
+  address: string;
   username: string;
   id: string;
 }

@@ -1,6 +1,6 @@
 
 import React, { FormEvent } from 'react';
-import { Button, Card,Form } from 'react-bootstrap';
+import { Button, Card, Form, Col, FormControl } from 'react-bootstrap';
 import { BasicComponent } from "../../type";
 import { useDispatch } from 'react-redux'
 import { showMessage } from '../../thunks/message';
@@ -8,39 +8,52 @@ import { useMutation } from '@apollo/client';
 import queries from '../../graphql/queries';
 
 
-const Registaration: React.FC<BasicComponent> = ({showmessage}) => {
+const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
 
     const [createNewUser] = useMutation(queries.createUser, {
         errorPolicy: 'none', onError: (error) => {
             showmessage(error.message)
         }
-      })
+    })
 
     const dispatch = useDispatch()
- 
+
 
     const createUser = async (event: FormEvent) => {
 
 
         event.preventDefault()
         const form = event.target as HTMLFormElement;
+
         const firstname = form[0] as HTMLInputElement;
-        const lastname =  form[1] as HTMLInputElement;
-        const username =  form[2] as HTMLInputElement;
-        const Password =  form[3] as HTMLInputElement;
+        const lastname = form[1] as HTMLInputElement;
+        const birthdate = form[2] as HTMLInputElement;
+        const email = form[3] as HTMLInputElement;
+        const address = form[4] as HTMLInputElement;
+        const username = form[5] as HTMLInputElement;
+        const password = form[6] as HTMLInputElement;
 
-       const success= await createNewUser({ variables: { username: username.value,password: Password.value,firstname: firstname.value,lastname: lastname.value} });
 
 
-        username.value=''
-        Password.value=''
-        firstname.value=''
-        lastname.value=''
+         const success = await createNewUser({ variables: { username: username.value, password: password.value,
+         firstname: firstname.value, lastname: lastname.value,birthdate: birthdate.value,email:email.value,
+         address:address.value } });
+
+   
+        username.value = ''
+        password.value = ''
+        firstname.value = ''
+        lastname.value = ''
+        birthdate.value = ''
+        email.value = ''
+        address.value = ''
+
+
         
-        if(success)
-        {
-            dispatch(showMessage('New user created', 5000,'primary'))
+        if (success) {
+            dispatch(showMessage('New user created', 5000, 'primary'))
         }
+        
     }
 
 
@@ -49,44 +62,57 @@ const Registaration: React.FC<BasicComponent> = ({showmessage}) => {
             <Card>
                 <Card.Header>Sign up</Card.Header>
                 <Card.Body>
-                    <div className="container">
-                        <form  onSubmit={createUser}>
-                            <div className="form-group row">
-                                
-                                <div className="col-xs-2">
-                                <Form.Label>Firstname</Form.Label>
-                                    <div><input className="form-control"   id="firstname" type="text" /></div>
-                                </div>
-                            </div>
-                            <div className="form-group row">
-                                <div className="col-xs-2">
-                                <Form.Label>Lastname</Form.Label>
-                                    <div><input className="form-control" id="lastname"  type="text" /></div>
-                                </div>
-                            </div>
-
-                            <div className="form-group row">
-                                <div className="col-xs-2">
-                                <Form.Label>Username</Form.Label>
-                                    <div> <input className="form-control" id="username"   type="text" /></div>
-                                </div>
-                            </div>
-
-                            <div className="form-group row">
-                                <div className="col-xs-2">
-                                <Form.Label>Password</Form.Label>
-                                    <div> <input className="form-control" id="password"   type="password" /></div>
-                                </div>
-                            </div>
-
-                            <div className="form-group row">
-                                <div className="col-xs-2">
+                    <Form.Group>
+                        <form onSubmit={createUser}>
+                            <Form.Row>
+                                <Col>
+                                    <FormControl placeholder="firstname" id="firstname" />
+                                </Col>
+                            </Form.Row>
+                            <br />
+                            <Form.Row>
+                                <Col>
+                                    <FormControl placeholder="lastname" id="lastname" />
+                                </Col>
+                            </Form.Row>
+                            <br />
+                            <Form.Row>
+                                <Col>
+                                    <FormControl placeholder="dd.mm.yyyy" id="birthdate" />
+                                </Col>
+                            </Form.Row>
+                            <br />
+                            <Form.Row>
+                                <Col>
+                                    <FormControl placeholder="email" id="email" />
+                                </Col>
+                            </Form.Row>
+                            <br />
+                            <Form.Row>
+                                <Col>
+                                    <FormControl placeholder="address" id="address" />
+                                </Col>
+                            </Form.Row>
+                            <br />
+                            <Form.Row>
+                                <Col>
+                                    <FormControl placeholder="Username" id="username" />
+                                </Col>
+                            </Form.Row>
+                            <br />
+                            <Form.Row>
+                                <Col>
+                                    <FormControl placeholder="Password" type="password" id="password" />
+                                </Col>
+                            </Form.Row>
+                            <br />
+                            <Form.Row>
+                                <Col>
                                     <Button type="submit" variant="primary" >Register </Button>
-                                </div>
-                            </div>
+                                </Col>
+                            </Form.Row>
                         </form>
-
-                    </div>
+                    </Form.Group>
                 </Card.Body>
             </Card>
         </div>

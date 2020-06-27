@@ -10,11 +10,12 @@ query filter($name: String,$page: Int) {
   }`
 
 const createUser = gql`
-  mutation Create($username: String!,$password: String!,$firstname: String!,$lastname: String!){
-    create(username: $username,password: $password,firstname:$firstname,lastname:$lastname) 
+  mutation Create($username: String!,$password: String!,$firstname: String!,$lastname: String!
+    ,$birthdate: String,$email: String,$address: String){
+    create(username: $username,password: $password,firstname:$firstname,lastname:$lastname,
+      ,birthdate:$birthdate,email:$email,address:$address) 
     }
   `
-
 const searchUsers = gql`
 query filter($value: String){
   searchUser(value: $value) 
@@ -34,6 +35,9 @@ query filter($value: String){
         firstname,
         lastname,
         username,
+        birthdate,
+        email,
+        address
         id
       }
     }`;
@@ -47,9 +51,11 @@ query filter($value: String){
   
  const updateUser = gql`
 
- mutation UpdateName($firstname: String!,$lastname: String!,$id: String!){
-   updateName(firstname:$firstname,lastname:$lastname,id:$id) 
-   }
+ mutation UpdateUser($firstname: String!,$lastname: String!,$birthdate: String,
+  $email: String,$address: String,$id: String!){
+  updateUser(firstname:$firstname,lastname:$lastname,birthdate:$birthdate
+  ,email:$email,address:$address,id:$id) 
+  }
  `;
 
 
