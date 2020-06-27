@@ -32,7 +32,7 @@ export const getSearchEnvs = (token: string, track: string, page: number): searc
              getMessage('string','token',false)),
         parsedTrack: parserInput(
             track, 
-            getMessage('string','track',false))
+            getMessage('string','track',true))
     };
 
 };
