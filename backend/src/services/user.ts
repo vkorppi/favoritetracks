@@ -15,7 +15,7 @@ const env = process.env;
 import { getMessage } from '../utils/errorFunctions';
 
 
-export const create = async (username: string, password: string, firstname: string, lastname: string, birthdate: string,email: string,address: string): Promise<UserType> => {
+export const create = async (username: string, password: string, firstname: string, lastname: string, birthdate: string, email: string, address: string): Promise<UserType> => {
 
     const fetchedUser = await User.findOne({ username: username });
 
@@ -27,25 +27,25 @@ export const create = async (username: string, password: string, firstname: stri
     const userInput: UserInputType = {
         username: parser(
             username,
-            getMessage('string','username')
+            getMessage('string', 'username')
         ),
         password: hashPassword(password),
         firstname: parser(
             firstname,
-            getMessage('string','firstname')
+            getMessage('string', 'firstname')
         ),
         lastname: parser(
-            lastname, 
-            getMessage('string','lastname')),
+            lastname,
+            getMessage('string', 'lastname')),
         birthdate: birthdate ? dateParser(
             birthdate,
-            getMessage('format','lastname')) : '',
+            getMessage('format', 'lastname')) : '',
         email: email ? emailParser(
             email,
-            getMessage('format','email')) : '',
-        address:address ? parser(
+            getMessage('format', 'email')) : '',
+        address: address ? parser(
             address,
-            getMessage('string','address')) : ''
+            getMessage('string', 'address')) : ''
     } as UserInputType;
 
     const user = new User(userInput);
@@ -54,14 +54,27 @@ export const create = async (username: string, password: string, firstname: stri
 
 
 
-const updateName = async (firstname: string, lastname: string, id: string): Promise<void> => {
+const updateName = async (firstname: string, lastname: string, birthdate: string, email: string, address: string, id: string): Promise<void> => {
 
     await User.updateOne({ _id: id },
         {
             $set:
             {
-                "firstname": parser(firstname, getMessage('string','firstname')),
-                "lastname": parser(lastname, getMessage('string','lastname'))
+                "firstname": parser(
+                    firstname,
+                    getMessage('string', 'firstname')),
+                "lastname": parser(
+                    lastname,
+                    getMessage('string', 'lastname')),
+                "birthdate": birthdate ? dateParser(
+                    birthdate
+                    , getMessage('format', 'birthdate')) : '',
+                "email": email ? emailParser(
+                    email,
+                    getMessage('format', 'email')) : '',
+                "address": address ? parser(
+                    address,
+                    getMessage('string', 'address')) : ''
             }
         });
 
@@ -114,11 +127,11 @@ const search = async (value: string): Promise<UserSchemaType[]> => {
 const login = async (username: string, password: string): Promise<TokenType> => {
 
     const id = await check(
-        parser(username, getMessage('string','username')),
-        parser(password,  "password was invalid")
+        parser(username, getMessage('string', 'username')),
+        parser(password, "password was invalid")
     );
 
-    return { value: sign({ username: username, id: id }, parser(env.SECRET, getMessage('EnvString','SECRET'))) };
+    return { value: sign({ username: username, id: id }, parser(env.SECRET, getMessage('EnvString', 'SECRET'))) };
 };
 
 const check = async (username: string, password: string): Promise<string> => {
