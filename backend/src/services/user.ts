@@ -8,17 +8,12 @@ import { sign } from 'jsonwebtoken';
 import { UserInputError } from 'apollo-server-express';
 import bcrypt from 'bcryptjs';
 
-
 const parser = typeparsers.parseString;
 const emailParser = typeparsers.parseEmailUserInput;
 const dateParser = typeparsers.parseBirthdate;
 const env = process.env;
+import { getMessage } from '../utils/errorFunctions';
 
-const nameError = 'name: name was not a string';
-const usernameError = 'username: username was not a string';
-const birthdateError = 'birthdate: birthdate was not in correct format';
-const emailError='email: Email was not in correct format';
-const addressError='address: was not a string';
 
 export const create = async (username: string, password: string, firstname: string, lastname: string, birthdate: string,email: string,address: string): Promise<UserType> => {
 
@@ -30,13 +25,27 @@ export const create = async (username: string, password: string, firstname: stri
 
 
     const userInput: UserInputType = {
-        username: parser(username, usernameError),
+        username: parser(
+            username,
+            getMessage('string','username')
+        ),
         password: hashPassword(password),
-        firstname: parser(firstname, nameError),
-        lastname: parser(lastname, nameError),
-        birthdate: birthdate ? dateParser(birthdate,birthdateError) : '',
-        email: email ? emailParser(email,emailError) : '',
-        address:address ? parser(address,addressError) : ''
+        firstname: parser(
+            firstname,
+            getMessage('string','firstname')
+        ),
+        lastname: parser(
+            lastname, 
+            getMessage('string','lastname')),
+        birthdate: birthdate ? dateParser(
+            birthdate,
+            getMessage('format','lastname')) : '',
+        email: email ? emailParser(
+            email,
+            getMessage('format','email')) : '',
+        address:address ? parser(
+            address,
+            getMessage('string','address')) : ''
     } as UserInputType;
 
     const user = new User(userInput);
@@ -51,8 +60,8 @@ const updateName = async (firstname: string, lastname: string, id: string): Prom
         {
             $set:
             {
-                "firstname": parser(firstname, nameError),
-                "lastname": parser(lastname, nameError)
+                "firstname": parser(firstname, getMessage('string','firstname')),
+                "lastname": parser(lastname, getMessage('string','lastname'))
             }
         });
 
@@ -104,15 +113,12 @@ const search = async (value: string): Promise<UserSchemaType[]> => {
 
 const login = async (username: string, password: string): Promise<TokenType> => {
 
-    const passwordError = "password was invalid";
-    const secretError = 'was not a string';
-
     const id = await check(
-        parser(username, usernameError),
-        parser(password, passwordError)
+        parser(username, getMessage('string','username')),
+        parser(password,  "password was invalid")
     );
 
-    return { value: sign({ username: username, id: id }, parser(env.SECRET, secretError)) };
+    return { value: sign({ username: username, id: id }, parser(env.SECRET, getMessage('EnvString','SECRET'))) };
 };
 
 const check = async (username: string, password: string): Promise<string> => {

@@ -34,20 +34,13 @@ describe('Testing typeguards', () => {
 
 describe('Testing typeparsers', () => {
 
-    const errorString = 'variable was not a string';
-    const errorNumber = 'variable was not a number';
-
-    const errorUserInputNumber = 'input was not a number';
-    const errorUserInputString = 'input was not a string';
-
     test('Stringparser throws exception for non string values', () => {
 
-        const transformer = new Number(10);
+        
         const parser = typeparsers.parseString;
-        const wrongValue = transformer.toString(5);
 
         const errormessage1 = getMessage('string', '');
-        const errormessage2 = getMessage('string', wrongValue);
+        const errormessage2 = getMessage('string', String(123));
         const errormessage3 = getMessage('string', 'test');
         
         const result1 = testParserString('', errormessage1, parser);
@@ -62,38 +55,53 @@ describe('Testing typeparsers', () => {
 
     test('Numberparser throws exception for non number values', () => {
 
-        const result1 = testParserNumber('', errorNumber, typeparsers.parseNumber);
-        const result2 = testParserNumber(123, errorNumber, typeparsers.parseNumber);
-        const result3 = testParserNumber('test', errorNumber, typeparsers.parseNumber);
+        const parser = typeparsers.parseNumber;
 
-        expect(result1).toBe(errorNumber);
+        const errormessage1 = getMessage('number', '');
+        const errormessage2 = getMessage('number', String(123));
+        const errormessage3 = getMessage('number', 'test');
+
+        const result1 = testParserNumber('', errormessage1, typeparsers.parseNumber);
+        const result2 = testParserNumber(123, errormessage2, typeparsers.parseNumber);
+        const result3 = testParserNumber('test', errormessage3, typeparsers.parseNumber);
+
+        expect(result1).toBe(errormessage1);
         expect(result2).toBe('');
-        expect(result3).toBe(errorNumber);
+        expect(result3).toBe(errormessage3);
 
     });
 
 
     test('parseStringUserInput throws exception for non string values', () => {
 
-        const result1 = testParserString('', errorUserInputString, typeparsers.parseStringUserInput);
-        const result2 = testParserString(123, errorUserInputString, typeparsers.parseStringUserInput);
-        const result3 = testParserString('test', errorUserInputString, typeparsers.parseStringUserInput);
+        
+        const errormessage1 = getMessage('string', '');
+        const errormessage2 = getMessage('string', String(123));
+        const errormessage3 = getMessage('string', 'test');
 
-        expect(result1).toBe(errorUserInputString);
-        expect(result2).toBe(errorUserInputString);
+        const result1 = testParserString('', errormessage1, typeparsers.parseStringUserInput);
+        const result2 = testParserString(123, errormessage2, typeparsers.parseStringUserInput);
+        const result3 = testParserString('test', errormessage3, typeparsers.parseStringUserInput);
+
+        expect(result1).toBe(errormessage1);
+        expect(result2).toBe(errormessage2);
         expect(result3).toBe('');
 
     });
 
     test('parseNumberUserInput throws exception for non string values', () => {
 
-        const result1 = testParserNumber('', errorUserInputNumber, typeparsers.parseNumberUserInput);
-        const result2 = testParserNumber(123, errorUserInputNumber, typeparsers.parseNumberUserInput);
-        const result3 = testParserNumber('test', errorUserInputNumber, typeparsers.parseNumberUserInput);
+        const errormessage1 = getMessage('number', '');
+        const errormessage2 = getMessage('number', String(123));
+        const errormessage3 = getMessage('number', 'test');
 
-        expect(result1).toBe(errorUserInputNumber);
+        const result1 = testParserNumber('', errormessage1, typeparsers.parseNumberUserInput);
+        const result2 = testParserNumber(123, errormessage2, typeparsers.parseNumberUserInput);
+        const result3 = testParserNumber('test', errormessage3, typeparsers.parseNumberUserInput);
+
+        expect(result1).toBe(errormessage1);
         expect(result2).toBe('');
-        expect(result3).toBe(errorUserInputNumber);
+        expect(result3).toBe(errormessage3);
 
     });
 
