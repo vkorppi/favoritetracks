@@ -7,6 +7,9 @@ export const getMessage = (type: string, value: string): string => {
         case 'string':
             return `${value}: ${value} was not a string`;
             break;
+        case 'number':
+            return `${value}: ${value} was not a number`;
+            break;
         case 'format':
             `${value}: ${value} was not in correct format`;
             break;
