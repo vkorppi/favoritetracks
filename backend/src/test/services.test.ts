@@ -148,6 +148,9 @@ describe('Testing usermanagement services', () => {
     expect(success).toBe(true);
     expect(newuser?.firstname).toBe('firstname');
     expect(newuser?.lastname).toBe('lastname');
+    expect(newuser?.birthdate).toBe('11.11.1999');
+    expect(newuser?.email).toBe('test.test@mail.com');
+    expect(newuser?.address).toBe('road 12');
   });
 
   
@@ -167,7 +170,7 @@ describe('Testing usermanagement services', () => {
   });
 
 
-  test('Name is updated', async () => {
+  test('User is updated', async () => {
 
     const fetchedUser = await User.findOne({ username: 'usernameTest' });
 
@@ -178,6 +181,9 @@ describe('Testing usermanagement services', () => {
 
     expect(userNameChanged?.firstname).toBe('Newfirstname');
     expect(userNameChanged?.lastname).toBe('Newlastname');
+    expect(userNameChanged?.birthdate).toBe('12.12.2000');
+    expect(userNameChanged?.email).toBe('new.new@mail.com');
+    expect(userNameChanged?.address).toBe('address 123');
 
   });
  
