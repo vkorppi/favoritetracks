@@ -85,8 +85,8 @@ const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show 
                             <br/>
                             <Form.Row>
                                 <Col>
-                                    <Button type="submit" variant="primary"    >Save </Button>
-                                    <Button className="buttonSpace" type="button" variant="primary" onClick={() => close()}  >Close </Button>
+                                    <Button type="submit" id="save" variant="primary"    >Save </Button>
+                                    <Button className="buttonSpace"  type="button" variant="primary" onClick={() => close()}  >Close </Button>
                                 </Col>
  
                             </Form.Row>

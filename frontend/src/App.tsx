@@ -8,6 +8,7 @@ import Message from './components/spotify/message';
 import Registaration from './components/users/registaration';
 import UserSearch from './components/users/userSearch';
 import Details from './components/users/userDetails';
+import UpdatePassword from './components/users/updatePassword';
 import { useRouteMatch, Route, Switch } from 'react-router-dom';
 
 
@@ -47,6 +48,7 @@ const App: React.FC = () => {
             <Nav.Link href="/users">Users</Nav.Link>
             <Nav.Link href="#Roles">Roles</Nav.Link>
             <Nav.Link href="/registaration">Registaration</Nav.Link>
+            <Nav.Link href="/reset">reset password</Nav.Link>
             <Nav.Link href="#Login">Login</Nav.Link>
           </Nav>
 

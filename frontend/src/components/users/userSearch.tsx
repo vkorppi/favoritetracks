@@ -50,9 +50,9 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
               <div>
                 <InputGroup className="mb-3">
                   <InputGroup.Prepend>
-                    <Button type="submit" variant="primary">Search</Button>
+                    <Button type="submit" variant="primary" id="searchUserbutton">Search</Button>
                   </InputGroup.Prepend>
-                  <FormControl placeholder="username,  name" />
+                  <FormControl placeholder="username,  name" id="UsersearchInput" />
                 </InputGroup>
               
 
@@ -67,7 +67,7 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
             <div key={Math.ceil(Math.random() * 100000)} className="form-group row">
               <div className="col-xs-2">
-                <ListGroup.Item><a href={`/details/${user.id}`}>{`${user.firstname} ${user.lastname}`}</a></ListGroup.Item>
+                <ListGroup.Item><a href={`/details/${user.id}`}>{`${user.firstname} ${user.lastname} ${user.username}`}</a></ListGroup.Item>
               </div>
             </div>
 

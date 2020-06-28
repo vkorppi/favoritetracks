@@ -5,11 +5,13 @@ describe('Test related to search', function() {
   beforeEach(function() {
 
     cy.visit('http://localhost:3000')
+   
   })
   
   it('Shows arrow to next result and shows searchresult', function() {
 
-      cy.get('#ex1').type('Test_firstTest')
+     
+      cy.get('#searchTrack').type('Test_firstTest')
       cy.contains('Search').click()
 
       cy.contains('test1')
@@ -28,7 +30,7 @@ describe('Test related to search', function() {
 
   it('Does not Show arrow to next searchresult and shows searchresult', function() {
 
-    cy.get('#ex1').type('Test_TotalUnderTen')
+    cy.get('#searchTrack').type('Test_TotalUnderTen')
     cy.contains('Search').click()
 
     cy.contains('test1')
@@ -42,7 +44,7 @@ describe('Test related to search', function() {
 
 it('Shows result in first and second page. Does not show arrow in next page', function() {
 
-  cy.get('#ex1').type('Test_Total15')
+  cy.get('#searchTrack').type('Test_Total15')
   cy.contains('Search').click()
 
   cy.contains('test1')

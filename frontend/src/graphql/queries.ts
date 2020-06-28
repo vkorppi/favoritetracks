@@ -27,7 +27,7 @@ query filter($value: String){
     }
   }`
 
-  const getUser = gql`
+const getUser = gql`
 
   query getUser($id: String!){
     getUser(id: $id) 
@@ -42,14 +42,14 @@ query filter($value: String){
       }
     }`;
 
-  const deleteUser =  gql`
+const deleteUser = gql`
 
   mutation Remove($id: String!){
     remove(id:$id) 
     }
  `;
-  
- const updateUser = gql`
+
+const updateUser = gql`
 
  mutation UpdateUser($firstname: String!,$lastname: String!,$birthdate: String,
   $email: String,$address: String,$id: String!){
@@ -58,6 +58,12 @@ query filter($value: String){
   }
  `;
 
+const updatePassword = gql`
+
+ mutation UpdatePassword($password: String!,$id: String!){
+  updatePassword(password:$password,id:$id) 
+  }
+ `;
 
 export default {
   search,
@@ -65,5 +71,6 @@ export default {
   searchUsers,
   getUser,
   deleteUser,
-  updateUser
+  updateUser,
+  updatePassword
 }

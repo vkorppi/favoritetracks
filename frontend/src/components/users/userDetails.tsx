@@ -87,8 +87,8 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
                         </Form.Row>
                         <Form.Row>
                             <Col>
-                                <Button type="button" variant="primary" onClick={() => removeUser()}  >Delete </Button>
-                                <Button type="button" className="buttonSpace" variant="primary" onClick={() => modifyUser()}  >Modify </Button>
+                                <Button type="button" variant="primary" id="remove" onClick={() => removeUser()}  >Delete </Button>
+                                <Button type="button" id="modify" className="buttonSpace" variant="primary" onClick={() => modifyUser()}  >Modify </Button>
                             </Col>
                         </Form.Row>
                     </form>
