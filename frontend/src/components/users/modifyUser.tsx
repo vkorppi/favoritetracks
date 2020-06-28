@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import queries from '../../graphql/queries';
 import { useHistory } from "react-router-dom"
 import { useMutation } from '@apollo/client';
+import { showMessage } from '../../thunks/message';
 
 const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show }) => {
 

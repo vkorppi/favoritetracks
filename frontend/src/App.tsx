@@ -8,7 +8,6 @@ import Message from './components/spotify/message';
 import Registaration from './components/users/registaration';
 import UserSearch from './components/users/userSearch';
 import Details from './components/users/userDetails';
-import UpdatePassword from './components/users/updatePassword';
 import { useRouteMatch, Route, Switch } from 'react-router-dom';
 
 
@@ -18,9 +17,9 @@ const App: React.FC = () => {
   const selector = (state: MessageType) => state
   const rootstate = useSelector(selector)
 
-  const errorMessage = (errorMsg: string) => {
+  const showAlert = (message: string,type: string) => {
 
-    dispatch(showMessage(errorMsg, 5000, 'warning'))
+    dispatch(showMessage(message, 5000, type))
   };
 
 
@@ -68,16 +67,16 @@ const App: React.FC = () => {
 
             <Switch>
               <Route path="/details">
-                <Details showmessage={errorMessage} id={id} />
+                <Details showmessage={showAlert} id={id} />
               </Route>
               <Route path="/users">
-                <UserSearch showmessage={errorMessage} />
+                <UserSearch showmessage={showAlert} />
               </Route>
               <Route path="/registaration">
-                <Registaration showmessage={errorMessage} />
+                <Registaration showmessage={showAlert} />
               </Route>
               <Route path="/">
-                <Search showmessage={errorMessage} />
+                <Search showmessage={showAlert} />
               </Route>
             </Switch>
 

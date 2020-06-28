@@ -7,7 +7,7 @@ export interface SearchAttributes {
 }
 
 export interface BasicComponent {
-  showmessage: (errorMsg: string) => void;
+  showmessage: (message: string,type: string) => void;
 }
 
 export interface ComponentAttribueId extends BasicComponent {
