@@ -33,11 +33,11 @@ const UpdatePassword: React.FC<ComponentAttributeUser> = ({ showmessage, user })
                 }
             });
 
-            showmessage(`Password was updated`)
+            showmessage(`Password was updated`,'primary')
             history.push('/users')
         }
         else {
-            showmessage(`Password was same as old one`)
+            showmessage(`Password was same as old one`,'danger')
         }
 
 

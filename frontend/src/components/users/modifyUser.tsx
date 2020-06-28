@@ -7,7 +7,6 @@ import { useDispatch } from 'react-redux';
 import queries from '../../graphql/queries';
 import { useHistory } from "react-router-dom"
 import { useMutation } from '@apollo/client';
-import { showMessage } from '../../thunks/message';
 
 const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show }) => {
 
@@ -19,6 +18,9 @@ const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show 
 
     const [updateUser] = useMutation(queries.updateUser, {
         errorPolicy: 'none',
+         onError: (error) => {
+            showmessage(error.message,'danger')
+        }
     })
 
     const save = (event: FormEvent) => {
@@ -36,7 +38,7 @@ const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show 
             birthdate:birthdate.value,email:email.value,address:address.value, id: user.id } });
 
         dispatch(setShow(false))
-        showmessage(`User was updated: ${firstname.value} ${lastname.value}`)
+        showmessage(`User was updated: ${firstname.value} ${lastname.value}`,'primary')
         history.push('/users')
 
     }

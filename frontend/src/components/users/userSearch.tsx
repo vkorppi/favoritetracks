@@ -34,7 +34,7 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
     searchUser({ variables: { value: inputvalue} })
    
     if(error) {
-      showmessage(error?.message)
+      showmessage(error?.message,'danger')
     }
 
     input.value = ''

@@ -35,12 +35,12 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
     const history = useHistory()
 
     if (error) {
-        showmessage(error?.message)
+        showmessage(error?.message,'danger')
     }
 
     const removeUser = () => {
         deleteUser({ variables: { id: id } });
-        showmessage('User was deleted')
+        showmessage('User was deleted','primary')
         history.push('/users')
     }
 

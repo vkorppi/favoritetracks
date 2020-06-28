@@ -2,8 +2,6 @@
 import React, { FormEvent } from 'react';
 import { Button, Card, Form, Col, FormControl } from 'react-bootstrap';
 import { BasicComponent } from "../../type";
-import { useDispatch } from 'react-redux'
-import { showMessage } from '../../thunks/message';
 import { useMutation } from '@apollo/client';
 import queries from '../../graphql/queries';
 
@@ -12,12 +10,9 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
 
     const [createNewUser] = useMutation(queries.createUser, {
         errorPolicy: 'none', onError: (error) => {
-            showmessage(error.message)
+            showmessage(error.message,'danger')
         }
     })
-
-    const dispatch = useDispatch()
-
 
     const createUser = async (event: FormEvent) => {
 
@@ -48,10 +43,8 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
         email.value = ''
         address.value = ''
 
-
-        
         if (success) {
-            dispatch(showMessage('New user created', 5000, 'primary'))
+            showmessage('New user created','primary')
         }
         
     }

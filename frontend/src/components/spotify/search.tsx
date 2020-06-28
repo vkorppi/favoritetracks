@@ -13,7 +13,7 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
   const [getTracks, trackObject] = useLazyQuery(queries.search, {
     fetchPolicy: "network-only", errorPolicy: 'none',
     onError: (error) => {
-      showmessage(error.message)
+      showmessage(error.message,'danger')
     }
   })
 
