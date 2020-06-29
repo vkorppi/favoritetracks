@@ -39,6 +39,14 @@ const connectToDatabase = async (): Promise<void> => {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: async ({ req }) => {
+    if(req) 
+    {
+      const auth = req.headers.authorization;
+      
+
+    }
+  },
   formatError: (err) => {
 
     const userError = /userInput:.*/i;
