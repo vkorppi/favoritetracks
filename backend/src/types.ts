@@ -125,6 +125,12 @@ export interface sessionEnv {
   refreshtoken:string;
   sessionUrl:string;
   code:string;
+  secret:string;
+}
+
+export interface userToken {
+  username:string;
+   id: string;
 }
 
 export interface UserSchemaType extends Document {

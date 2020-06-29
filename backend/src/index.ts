@@ -7,18 +7,22 @@ import mongoose from 'mongoose';
 import { MongoError } from 'mongodb';
 import dotenv from 'dotenv';
 import express from 'express';
+import jsonwebtoken from 'jsonwebtoken';
+import { getSessionEnvs } from './utils/envFunctions';
+import user from './services/user';
+import { userToken } from './types';
 
 dotenv.config();
 
 const connectToDatabase = async (): Promise<void> => {
 
-  let dbUrl:string|undefined;
- 
+  let dbUrl: string | undefined;
+
   if (process.env.ENVIR === 'test') {
-    dbUrl=process.env.DBTEST;
+    dbUrl = process.env.DBTEST;
   }
   else {
-    dbUrl=process.env.DATABASE;
+    dbUrl = process.env.DATABASE;
   }
 
   const envError = 'database url was not a string';
@@ -38,22 +42,41 @@ const connectToDatabase = async (): Promise<void> => {
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers,
+  resolvers
+  ,
   context: async ({ req }) => {
-    if(req) 
-    {
+    if (req) {
+      const { secret } = getSessionEnvs();
       const auth = req.headers.authorization;
-      
+      const hasAuthHeader = auth ? auth.startsWith('bearer ') : false;
+      let encodedToken: string;
+
+      if (hasAuthHeader) {
+        encodedToken = auth?.replace('bearer ', '') as string;
+        const decodedToken = jsonwebtoken.verify(encodedToken, secret) as userToken;
+
+        const userdata =user.getUser(decodedToken.id);
+
+        return userdata.then(
+          response => {
+            return response;
+          }
+        );
+
+      }
 
     }
+
+    return '';
   },
+
   formatError: (err) => {
 
     const userError = /userInput:.*/i;
 
     console.log(err.message);
 
-    if (err instanceof MongoError ) {
+    if (err instanceof MongoError) {
       return new Error('Internal server error');
     }
 

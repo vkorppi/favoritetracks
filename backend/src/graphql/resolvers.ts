@@ -12,7 +12,7 @@ export const resolvers = {
 
 
 
-        search: async (_root: any, args: { track: string; page: number; }): Promise<searchResult | void> => {
+        search: async (_root: any, args: { track: string; page: number; } ): Promise<searchResult | void> => {
 
             const track: string = args.track;
             const page: number = args.page;

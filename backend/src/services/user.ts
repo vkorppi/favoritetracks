@@ -13,6 +13,7 @@ const emailParser = typeparsers.parseEmailUserInput;
 const dateParser = typeparsers.parseBirthdate;
 const env = process.env;
 import { getMessage } from '../utils/errorFunctions';
+import { getSessionEnvs } from '../utils/envFunctions';
 
 
 export const create = async (username: string, password: string, firstname: string, lastname: string, birthdate: string, email: string, address: string): Promise<UserType> => {
@@ -126,12 +127,15 @@ const search = async (value: string): Promise<UserSchemaType[]> => {
 
 const login = async (username: string, password: string): Promise<TokenType> => {
 
+
+    const {secret} = getSessionEnvs();
+
     const id = await check(
         parser(username, getMessage('string', 'username',true)),
         parser(password, "userInput: password was invalid")
     );
 
-    return { value: sign({ username: username, id: id }, parser(env.SECRET, getMessage('EnvString', 'SECRET',false))) };
+    return { value: sign({ username: username, id: id }, secret) };
 };
 
 const check = async (username: string, password: string): Promise<string> => {

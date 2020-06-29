@@ -52,7 +52,10 @@ export const getSessionEnvs = (): sessionEnv => {
             getMessage('EnvString','SESSIONURL',false)),
         code: parser(
             env.CODE,
-            getMessage('EnvString','CODE',false))
+            getMessage('EnvString','CODE',false)),
+        secret: parser(
+            env.SECRET,
+            getMessage('EnvString','SECRET',false))
     };
 
 };
