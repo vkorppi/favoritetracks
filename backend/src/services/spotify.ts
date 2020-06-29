@@ -5,7 +5,7 @@ import axios from 'axios';
 import querystring from 'querystring';
 
 import enviro from 'dotenv';
-import { getSearchEnvs, getSessionEnvs, getPlayListEnvs } from '../utils/envFunctions';
+import { getSearchEnvs, getSessionEnvs, getPlayListEnvs, getTracktEnvs } from '../utils/envFunctions';
 import { refreshtoken, spotifyResult, searchResult, favorites } from '../types';
 import { getMessage } from '../utils/errorFunctions';
 import user from '../services/user';
@@ -31,8 +31,9 @@ const getTokenExpirationTime = (token: refreshtoken): string => {
 const getSessionToken = (): string => {
 
     const filecontent = fs.readFileSync('session.txt', 'utf8').toString().split("\n");
-    return filecontent[0];
-
+    const token = filecontent[0];
+    const tokenError = getMessage('string', token, false);
+    return parserString(token, tokenError);
 };
 
 
@@ -110,9 +111,6 @@ const search = async (track: string, page: number): Promise<spotifyResult> => {
 
     const envs = getSearchEnvs();
 
-    const tokenError = getMessage('string', token, false);
-    const parsedToken = parserString(token, tokenError);
-
     const pageError = getMessage('number', page.toString(), false);
     const offset = parserNum(page, pageError);
 
@@ -128,7 +126,7 @@ const search = async (track: string, page: number): Promise<spotifyResult> => {
 
     return await (await axios.get(
         url,
-        { headers: { 'authorization': 'Bearer ' + parsedToken } }
+        { headers: { 'authorization': 'Bearer ' + token } }
 
     )).data as spotifyResult;
 
@@ -136,29 +134,66 @@ const search = async (track: string, page: number): Promise<spotifyResult> => {
 
 
 
-const AddToList =  async (tracks:string[],listId:string): Promise<void> => {
+const AddToList = async (tracks: string[], userId: string): Promise<boolean | void | Error> => {
 
     if (hasSessionExpired()) {
         await CreateNewSession();
     }
 
-    
+    const { trackpart1, trackpart3 } = getTracktEnvs();
+
+    const token = getSessionToken();
+    let listid = '';
+
+    const fetcheduser = await user.getUser(userId);
+    listid = fetcheduser?.favorites as string;
+
+
+    if (!listid) {
+
+        const username = fetcheduser?.username as string;
+        const id = fetcheduser?.id as string;
+
+        listid = await CreateList(username, id) as string;
+
+    }
+
+
+    const url = trackpart1 + listid + trackpart3;
+
+    const requestBody = {
+        "uris": tracks
+    };
+
+    const headers = {
+        'Content-Type': 'application/json'
+        , 'authorization': 'Bearer ' + token
+    };
+
+    await axios.post(url, requestBody,
+        { headers: headers }).catch((error: Error) => {
+
+            console.error(error.stack);
+            return false;
+        });
+
+
+    return true;
+
 };
 
 
-const CreateList = async (name: string, id: string): Promise<void> => {
+const CreateList = async (name: string, userid: string): Promise<string | void | Error> => {
 
-    const { userid, playlistpart1, playlistpart3 } = getPlayListEnvs();
+    const { accountId, playlistpart1, playlistpart3 } = getPlayListEnvs();
 
     if (hasSessionExpired()) {
         await CreateNewSession();
     }
 
-    const url = playlistpart1 + userid + playlistpart3;
+    const url = playlistpart1 + accountId + playlistpart3;
 
     const token = getSessionToken();
-    const tokenError = getMessage('string', token, false);
-    const parsedToken = parserString(token, tokenError);
 
     const requestBody = {
         "name": name,
@@ -168,19 +203,21 @@ const CreateList = async (name: string, id: string): Promise<void> => {
 
     const headers = {
         'Content-Type': 'application/json'
-        , 'authorization': 'Bearer ' + parsedToken
+        , 'authorization': 'Bearer ' + token
     };
 
-    await axios.post(url, requestBody,
-        { headers: headers }).then(response => {
+    return await axios.post(url, requestBody,
+        { headers: headers }).then(async response => {
 
             const list = response.data as favorites;
 
-            void user.addList(list.id, id).catch((error: Error) => {
+            await user.addList(list.id, userid).catch((error: Error) => {
 
                 console.error(error.stack);
 
             });
+
+            return list.id;
 
         }).catch(Error).catch((error: Error) => {
 
@@ -189,19 +226,13 @@ const CreateList = async (name: string, id: string): Promise<void> => {
         });
 };
 
-/*
+
 const getList = async (): Promise<void> => {
 
     console.log('code');
 };
 
 
-const RemoveList = async (): Promise<void> => {
-
-    console.log('code');
-};
-
-*/
 
 
 const test = (track: string, page: number): searchResult => {
@@ -281,7 +312,7 @@ export default {
     hasSessionExpired,
     CreateNewSession,
     search,
-    //AddToList,
+    AddToList,
     CreateList,
     test
 };

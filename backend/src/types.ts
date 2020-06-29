@@ -130,9 +130,14 @@ export interface sessionEnv {
 }
 
 export interface playListEnv {
-  userid: string;
+  accountId: string;
   playlistpart1: string;
   playlistpart3: string;
+}
+
+export interface tracksEnv {
+  trackpart1: string;
+  trackpart3: string;
 }
 
 export interface userToken {

@@ -53,7 +53,7 @@ export const create = async (username: string, password: string, firstname: stri
     return await user.save();
 };
 
-const addList = async (favorites: string, id: string): Promise<void> => {
+const addList = async (favorites: string, id: string): Promise<string> => {
 
     await User.updateOne({ _id: id },
         {
@@ -64,6 +64,8 @@ const addList = async (favorites: string, id: string): Promise<void> => {
                     getMessage('string', 'favorites', true))
             }
         });
+
+    return id;
 
 };
 

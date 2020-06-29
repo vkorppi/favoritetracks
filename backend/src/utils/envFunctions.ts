@@ -1,6 +1,6 @@
 
 import typeparsers from '../utils/typeparsers';
-import { searchEnv, sessionEnv, playListEnv } from '../types';
+import { searchEnv, sessionEnv, playListEnv,tracksEnv } from '../types';
 import { getMessage } from '../utils/errorFunctions';
 
 const parser = typeparsers.parseString;
@@ -51,15 +51,28 @@ export const getSessionEnvs = (): sessionEnv => {
 export const getPlayListEnvs = (): playListEnv => {
 
     return {
-        userid: parser(
-            env.USERID,
-            getMessage('EnvString', 'USERID', false)),
+        accountId: parser(
+            env.ACCOUNTID,
+            getMessage('EnvString', 'ACCOUNTID', false)),
         playlistpart1: parser(
             env.PLAYLISTPART1,
             getMessage('EnvString', 'PLAYLISTPART1', false)),
         playlistpart3: parser(
             env.PLAYLISTPART3,
             getMessage('EnvString', 'PLAYLISTPART3', false)),
+    };
+
+};
+
+export const getTracktEnvs = (): tracksEnv => {
+
+    return {
+        trackpart1: parser(
+            env.TRACKSPART1,
+            getMessage('EnvString', 'TRACKSPART1', false)),
+        trackpart3: parser(
+            env.TRACKSPART3,
+            getMessage('EnvString', 'TRACKSPART3', false))
     };
 
 };

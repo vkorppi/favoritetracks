@@ -291,6 +291,7 @@ describe('Testing services that use database and spotify', () => {
     
 	});
 
+  
   test("service updates user's favorites with created trackslist", async () => {
 
     const fetchedUser = await User.findOne({ username: 'usernameTest' });
@@ -304,6 +305,25 @@ describe('Testing services that use database and spotify', () => {
     expect(fetchedUser2?.favorites).toBeTruthy();
 
   });
+  
+
+ test("service adds tracks to user's list and does not fail", async () => {
+
+  const fetchedUser = await User.findOne({ username: 'usernameTest' });
+
+  const success=await spotify.AddToList(
+    [
+     'spotify:track:59LSFQW38CnzJylvtYJKJu',
+     'spotify:track:6sXK5j92V7XpaIUH2w5GRb'
+    ],
+    fetchedUser?.id);
+
+  const fetchedUser2 = await User.findOne({ username: 'usernameTest' });
+  
+  expect(success).toBe(true);
+
+});
+
 
 
   afterAll(async () => {
