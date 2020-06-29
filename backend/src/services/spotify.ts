@@ -102,6 +102,17 @@ const CreateNewSession = async():Promise<void> => {
     )).data as spotifyResult;
     
     };
+
+    const AddToList = async(): Promise<void>  => {
+
+        console.log('code');
+    };
+
+    const CreateList = async(): Promise<void>  => {
+
+        console.log('code');
+    };
+
     
     const test = (track:string,page:number): searchResult  => {
         
@@ -180,5 +191,7 @@ export default {
     hasSessionExpired,
     CreateNewSession,
     search,
+    AddToList,
+    CreateList,
     test
 };

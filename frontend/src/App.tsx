@@ -23,6 +23,11 @@ const App: React.FC = () => {
     dispatch(showMessage(message, 5000, type))
   };
 
+  const logout = () => {
+
+    localStorage.clear()
+
+  };
 
 
   const matchRoute = useRouteMatch("/details/:id")
@@ -50,6 +55,7 @@ const App: React.FC = () => {
             <Nav.Link href="/registaration">Registaration</Nav.Link>
             <Nav.Link href="/reset">reset password</Nav.Link>
             <Nav.Link href="/login">Login</Nav.Link>
+            <Nav.Link href="#" onClick={() => logout()}>logout</Nav.Link>
           </Nav>
 
         </Navbar.Collapse>
