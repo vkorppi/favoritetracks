@@ -43,7 +43,7 @@ type Mutation {
   login(
     username: String!
     password: String!
-  ): Boolean 
+  ): encodedToken 
 
 }
 
@@ -60,4 +60,10 @@ type User {
     address:   String
     id       : String!
 }
+
+type encodedToken {
+  value : String!
+}
+
+
 `;

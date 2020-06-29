@@ -8,6 +8,7 @@ import Message from './components/spotify/message';
 import Registaration from './components/users/registaration';
 import UserSearch from './components/users/userSearch';
 import Details from './components/users/userDetails';
+import Login from './components/users/login';
 import { useRouteMatch, Route, Switch } from 'react-router-dom';
 
 
@@ -48,7 +49,7 @@ const App: React.FC = () => {
             <Nav.Link href="#Roles">Roles</Nav.Link>
             <Nav.Link href="/registaration">Registaration</Nav.Link>
             <Nav.Link href="/reset">reset password</Nav.Link>
-            <Nav.Link href="#Login">Login</Nav.Link>
+            <Nav.Link href="/login">Login</Nav.Link>
           </Nav>
 
         </Navbar.Collapse>
@@ -66,6 +67,9 @@ const App: React.FC = () => {
           <div className="col-xs-2">
 
             <Switch>
+            <Route path="/login">
+                <Login showmessage={showAlert} />
+              </Route>
               <Route path="/details">
                 <Details showmessage={showAlert} id={id} />
               </Route>

@@ -209,16 +209,19 @@ describe('Testing usermanagement', () => {
 
 			mutation Login($username: String!,$password: String!){
 				login(username:$username,password:$password) 
+				{
+					value
+				}
     		}
 		  `;
 
 
-		const success = (await apolloclient.mutate({
+		const token = (await apolloclient.mutate({
 			variables: { username: username, password: password },
 			mutation: userMutation,
 		})).data as updateType;
 
-		expect(success.login).toBe(true);
+		expect(token.login).toBeTruthy();
 
 
 	});

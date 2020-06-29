@@ -65,6 +65,16 @@ const updatePassword = gql`
   }
  `;
 
+ const login = gql`
+
+ mutation Login($username: String!,$password: String!){
+  login(username:$username,password:$password)
+	{
+		value
+	}  
+  }
+ `;
+
 export default {
   search,
   createUser,
@@ -72,5 +82,6 @@ export default {
   getUser,
   deleteUser,
   updateUser,
-  updatePassword
+  updatePassword,
+  login
 }
