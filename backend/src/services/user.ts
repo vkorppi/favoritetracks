@@ -23,36 +23,49 @@ export const create = async (username: string, password: string, firstname: stri
     if (fetchedUser) {
         throw new UserInputError('userInput: username was reserverd ');
     }
-    
+
     const userInput: UserInputType = {
         username: parser(
             username,
-            getMessage('string', 'username',true)
+            getMessage('string', 'username', true)
         ),
         password: hashPassword(password),
         firstname: parser(
             firstname,
-            getMessage('string', 'firstname',true)
+            getMessage('string', 'firstname', true)
         ),
         lastname: parser(
             lastname,
-            getMessage('string', 'lastname',true)),
+            getMessage('string', 'lastname', true)),
         birthdate: birthdate ? dateParser(
             birthdate,
-            getMessage('format', 'birthdate',true)) : '',
+            getMessage('format', 'birthdate', true)) : '',
         email: email ? emailParser(
             email,
-            getMessage('format', 'email',true)) : '',
+            getMessage('format', 'email', true)) : '',
         address: address ? parser(
             address,
-            getMessage('string', 'address',true)) : ''
-            
+            getMessage('string', 'address', true)) : ''
+
     } as UserInputType;
 
     const user = new User(userInput);
     return await user.save();
 };
 
+const addList = async (favorites: string, id: string): Promise<void> => {
+
+    await User.updateOne({ _id: id },
+        {
+            $set:
+            {
+                "favorites": parser(
+                    favorites,
+                    getMessage('string', 'favorites', true))
+            }
+        });
+
+};
 
 
 const update = async (firstname: string, lastname: string, birthdate: string, email: string, address: string, id: string): Promise<void> => {
@@ -63,19 +76,19 @@ const update = async (firstname: string, lastname: string, birthdate: string, em
             {
                 "firstname": parser(
                     firstname,
-                    getMessage('string', 'firstname',true)),
+                    getMessage('string', 'firstname', true)),
                 "lastname": parser(
                     lastname,
-                    getMessage('string', 'lastname',true)),
+                    getMessage('string', 'lastname', true)),
                 "birthdate": birthdate ? dateParser(
                     birthdate
-                    , getMessage('format', 'birthdate',true)) : '',
+                    , getMessage('format', 'birthdate', true)) : '',
                 "email": email ? emailParser(
                     email,
-                    getMessage('format', 'email',true)) : '',
+                    getMessage('format', 'email', true)) : '',
                 "address": address ? parser(
                     address,
-                    getMessage('string', 'address',true)) : ''
+                    getMessage('string', 'address', true)) : ''
             }
         });
 
@@ -128,10 +141,10 @@ const search = async (value: string): Promise<UserSchemaType[]> => {
 const login = async (username: string, password: string): Promise<TokenType> => {
 
 
-    const {secret} = getSessionEnvs();
+    const { secret } = getSessionEnvs();
 
     const id = await check(
-        parser(username, getMessage('string', 'username',true)),
+        parser(username, getMessage('string', 'username', true)),
         parser(password, "userInput: password was invalid")
     );
 
@@ -170,5 +183,6 @@ export default {
     search,
     check,
     login,
-    getUser
+    getUser,
+    addList
 };

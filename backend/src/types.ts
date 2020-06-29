@@ -110,14 +110,15 @@ export interface spotifArtistUrl {
 
 }
 
+export interface favorites {
+  id: string
+}
+
 export interface searchEnv {
   querypart1: string;
   typepart2: string;
   offsetpart3: string;
   limitpart4: string;
-  parsedToken: string
-  parsedTrack: string
-  offset: number;
 }
 
 export interface sessionEnv {
@@ -126,6 +127,12 @@ export interface sessionEnv {
   sessionUrl: string;
   code: string;
   secret: string;
+}
+
+export interface playListEnv {
+  userid: string;
+  playlistpart1: string;
+  playlistpart3: string;
 }
 
 export interface userToken {
@@ -142,7 +149,8 @@ export interface UserSchemaType extends Document {
   lastname: string;
   birthdate: string,
   email: string,
-  address: string
+  address: string,
+  favorites:string
 }
 
 export interface UserInputType extends Document {

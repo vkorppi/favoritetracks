@@ -9,7 +9,8 @@ const userSchema: Schema = new Schema({
   lastname: { type: String, required: true },
   birthdate: { type: String },
   email: { type: String },
-  address: { type: String }
+  address: { type: String },
+  favorites: { type: String }
 });
 
 

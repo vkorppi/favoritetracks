@@ -84,6 +84,7 @@ describe('Testing spotify services', () => {
 
   });
 
+
 });
 
 describe('Testing usermanagement services', () => {
@@ -244,6 +245,65 @@ describe('Testing usermanagement services', () => {
   });
 
 
+  afterAll(async () => {
+    await User.deleteMany({});
+    void mongoose.connection.close();
+    console.log('Database connection closed');
+  });
+
+});
+
+describe('Testing services that use database and spotify', () => {
+
+  const parser = typeparsers.parseString;
+
+  beforeAll(async () => {
+
+
+    const env = process.env;
+ 
+    const error = 'databseurl url was not as string';
+
+    const configuration = {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+      useCreateIndex: true
+    };
+
+    await mongoose.connect(parser(env.DBTEST, error), configuration);
+
+  });
+
+  beforeEach(async () => {
+
+		await User.deleteMany({});
+
+		const testuser: UserInputType = {
+			username: 'usernameTest',
+			password: hashPassword('passwordTest'),
+			firstname: 'firstnameTest',
+			lastname: 'lastnameTest'
+		} as UserInputType;
+
+		const userTest = new User(testuser);
+    await userTest.save();
+    
+	});
+
+  test("service updates user's favorites with created trackslist", async () => {
+
+    const fetchedUser = await User.findOne({ username: 'usernameTest' });
+
+    await spotify.CreateList('usernameTest',fetchedUser?.id);
+
+    const fetchedUser2 = await User.findOne({ username: 'usernameTest' });
+
+    console.log(fetchedUser2?.favorites);
+    
+    expect(fetchedUser2?.favorites).toBeTruthy();
+
+  });
 
 
   afterAll(async () => {
