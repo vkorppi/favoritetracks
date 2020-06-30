@@ -3,7 +3,7 @@ import user from '../services/user';
 import spotify from '../services/spotify';
 import { ApolloError, UserInputError } from 'apollo-server-express';
 import { MongoError } from 'mongodb';
-import { UserSchemaType, searchResult, spotifyTrack, encodedToken, TokenType } from '../types';
+import { UserSchemaType, searchResult, spotifyTrack, TokenType,UserInputType } from '../types';
 
 
 export const resolvers = {
@@ -80,6 +80,28 @@ export const resolvers = {
 
             }).catch((error: Error) => {
 
+                console.error(error.stack);
+
+                if (error instanceof ApolloError) {
+                    throw new ApolloError(error.message);
+                }
+                else if (error instanceof UserInputError) {
+                    throw new UserInputError(error.message);
+                }
+
+            });
+
+        },
+
+        getList: async (_root: any, args: any, userdata:UserInputType): Promise<void | string[]> => {
+
+            
+             return await spotify.GetList(userdata.id).then(result => {
+
+                return result.items.map(value => value.track.name);
+
+             }).catch((error: Error) => {
+                
                 console.error(error.stack);
 
                 if (error instanceof ApolloError) {
@@ -243,9 +265,30 @@ export const resolvers = {
 
 
             });
+        },
+
+
+        addTrackToList: async (_root: any, args: { tracks: string[] }, userdata:UserInputType): Promise<boolean> => {
+
+            const tracks: string[] = args.tracks;
+
+            
+            await spotify.AddToList(tracks,userdata.id).catch((error: Error) => {
+                
+                console.error(error.stack);
+
+                if (error instanceof ApolloError) {
+                    throw new ApolloError(error.message);
+                }
+                else if (error instanceof UserInputError) {
+                    throw new UserInputError(error.message);
+                }
+
+            });
+            
+            return true;
+            
         }
-
-
 
 
 

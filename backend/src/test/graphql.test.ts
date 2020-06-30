@@ -9,6 +9,9 @@ import User from '../mongo/user';
 
 import dotenv from 'dotenv';
 import { hashPassword } from '../utils/userFunctions';
+import { getSessionEnvs } from '../utils/envFunctions';
+import { sign } from 'jsonwebtoken';
+
 
 dotenv.config();
 
@@ -133,8 +136,10 @@ describe('Testing usermanagement', () => {
 		  `;
 
 		const success = (await apolloclient.mutate({
-			variables: {  firstname: 'first', lastname: 'last', 
-			birthdate: '11.11.2011', email: 'test.test.@test.com',address: 'street 12',id: id },
+			variables: {
+				firstname: 'first', lastname: 'last',
+				birthdate: '11.11.2011', email: 'test.test.@test.com', address: 'street 12', id: id
+			},
 			mutation: userMutation,
 		})).data as updateType;
 
@@ -281,12 +286,138 @@ describe('Testing usermanagement', () => {
 			variables: { id: id },
 			query: userQuery
 		})).data as userGetuserType;
-		
+
 		expect(fetcheduser).toBeTruthy();
 
 
 	});
 
+
+	afterAll(async () => {
+		await User.deleteMany({});
+		void mongoose.connection.close();
+		console.log('Database connection closed');
+	});
+
+});
+
+
+describe('Testing spotify mutations and queries that require authorization header', () => {
+
+	const parser = typeparsers.parseString;
+	let clientWithHeaders: ApolloClient<unknown>;
+
+	beforeAll(async () => {
+
+		const { secret } = getSessionEnvs();
+
+
+
+		const env = process.env;
+
+		const error = 'databseurl url was not as string';
+
+		const configuration = {
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+			useFindAndModify: false,
+			useCreateIndex: true
+		};
+
+		await mongoose.connect(parser(env.DBTEST, error), configuration);
+
+		await User.deleteMany({});
+
+		const testuser: UserInputType = {
+			username: 'usernameTest',
+			password: hashPassword('passwordTest'),
+			firstname: 'firstnameTest',
+			lastname: 'lastnameTest'
+		} as UserInputType;
+
+
+
+		const userTest = new User(testuser);
+		await userTest.save();
+
+		const token = sign({ username: userTest.username, id: userTest.id as string }, secret);
+		
+
+		clientWithHeaders = new ApolloClient({
+
+			uri: 'http://localhost:4000/graphql',
+
+			
+			request: config => {
+				config.setContext({ headers: { authorization: `bearer ${token}`, }, });
+			},
+			
+
+		});
+
+	});
+
+	test('New tracks should be added without any failures', async () => {
+
+		
+		const usermutation = gql`
+
+		mutation AddTrackToList($tracks: [String!]!){
+			addTrackToList(tracks: $tracks) 
+				
+		  }`;
+
+		const user = await User.findOne({ username: 'usernameTest' });
+		const id = user?.id as string;
+
+		const success=await clientWithHeaders.mutate({
+			variables: { tracks: 
+				[ 
+					'spotify:track:59LSFQW38CnzJylvtYJKJu',
+					'spotify:track:6sXK5j92V7XpaIUH2w5GRb'
+				], userId: id },
+			mutation: usermutation
+		});
+
+		interface dataType2 {
+			addTrackToList: boolean;
+		}
+
+		interface dataType {
+			data: dataType2;
+		}
+
+		const content = success as dataType;
+		
+		expect(content.data.addTrackToList).toBe(true);
+	});
+
+	test("Query returns user's favorites", async () => {
+
+		const favoritesQuery = gql`
+
+		query {
+			getList
+		}`;
+
+		interface dataType2 {
+			getList: string[];
+		}
+
+		interface dataType {
+			data: dataType2;
+		}
+		
+
+		const fetcheduser = (await clientWithHeaders.query({
+			query: favoritesQuery
+		})) as dataType;
+
+		const items =fetcheduser.data.getList;
+
+		expect(items.length).toBe(2);
+
+	});
 
 	afterAll(async () => {
 		await User.deleteMany({});

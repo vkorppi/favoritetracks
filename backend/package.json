@@ -28,6 +28,7 @@
     "@types/jsonwebtoken": "^8.5.0",
     "@types/mongoose": "^5.7.27",
     "apollo-boost": "^0.4.9",
+    "apollo-link-context": "^1.0.20",
     "apollo-server-express": "^2.14.4",
     "axios": "^0.19.2",
     "babel-jest": "^26.0.1",

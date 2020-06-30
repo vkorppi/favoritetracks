@@ -9,6 +9,7 @@ type Query {
     search(track: String,page: Int):  searchResult! 
     searchUser(value: String): [User!]!
     getUser(id: String): User!
+    getList: [String!]!
 }
 
 type Mutation {
@@ -44,6 +45,10 @@ type Mutation {
     username: String!
     password: String!
   ): encodedToken 
+
+  addTrackToList(
+    tracks: [String!]!
+  ): Boolean 
 
 }
 

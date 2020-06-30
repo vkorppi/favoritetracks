@@ -114,6 +114,15 @@ export interface favorites {
   id: string
 }
 
+export interface favoritesSearchResult {
+  items: [favoritesSearchResultItem]
+}
+
+export interface favoritesSearchResultItem {
+  track: spotifyTrack
+}
+
+
 export interface searchEnv {
   querypart1: string;
   typepart2: string;
@@ -166,6 +175,7 @@ export interface UserInputType extends Document {
   birthdate: UserSchemaType['birthdate'];
   email: UserSchemaType['email'];
   address: UserSchemaType['address'];
+  favorites: UserSchemaType['favorites'];
 
 }
 

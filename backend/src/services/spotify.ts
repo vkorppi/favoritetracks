@@ -6,7 +6,7 @@ import querystring from 'querystring';
 
 import enviro from 'dotenv';
 import { getSearchEnvs, getSessionEnvs, getPlayListEnvs, getTracktEnvs } from '../utils/envFunctions';
-import { refreshtoken, spotifyResult, searchResult, favorites } from '../types';
+import { refreshtoken, spotifyResult, searchResult, favorites, favoritesSearchResult } from '../types';
 import { getMessage } from '../utils/errorFunctions';
 import user from '../services/user';
 
@@ -134,7 +134,7 @@ const search = async (track: string, page: number): Promise<spotifyResult> => {
 
 
 
-const AddToList = async (tracks: string[], userId: string): Promise<boolean | void | Error> => {
+const AddToList = async (tracks: string[], userId: string): Promise<void> => {
 
     if (hasSessionExpired()) {
         await CreateNewSession();
@@ -170,15 +170,7 @@ const AddToList = async (tracks: string[], userId: string): Promise<boolean | vo
         , 'authorization': 'Bearer ' + token
     };
 
-    await axios.post(url, requestBody,
-        { headers: headers }).catch((error: Error) => {
-
-            console.error(error.stack);
-            return false;
-        });
-
-
-    return true;
+    await axios.post(url, requestBody, { headers: headers });
 
 };
 
@@ -210,26 +202,37 @@ const CreateList = async (name: string, userid: string): Promise<string | void |
         { headers: headers }).then(async response => {
 
             const list = response.data as favorites;
-
-            await user.addList(list.id, userid).catch((error: Error) => {
-
-                console.error(error.stack);
-
-            });
-
+            await user.addList(list.id, userid);
             return list.id;
-
-        }).catch(Error).catch((error: Error) => {
-
-            console.error(error.stack);
-
         });
 };
 
 
-const getList = async (): Promise<void> => {
+const GetList = async (userId: string): Promise<favoritesSearchResult> => {
 
-    console.log('code');
+    if (hasSessionExpired()) {
+        await CreateNewSession();
+    }
+
+    const token = getSessionToken();
+
+    const { trackpart1, trackpart3 } = getTracktEnvs();
+
+    let listid = '';
+
+    const fetcheduser = await user.getUser(userId);
+    listid = fetcheduser?.favorites as string;
+
+    const url = trackpart1 + listid + trackpart3;
+
+
+    return await (await axios.get(
+        url,
+        { headers: { 'authorization': 'Bearer ' + token } }
+
+    )).data as favoritesSearchResult;
+
+
 };
 
 
@@ -314,5 +317,6 @@ export default {
     search,
     AddToList,
     CreateList,
+    GetList,
     test
 };
