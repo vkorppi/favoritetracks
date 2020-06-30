@@ -53,7 +53,7 @@ type Mutation {
 }
 
 type searchResult {
-    tracks: [String!]!
+    tracks: [track!]!
     total : Int!
   }
 type User {
@@ -68,6 +68,11 @@ type User {
 
 type encodedToken {
   value : String!
+}
+
+type track {
+  name: String!,
+  uri: String!
 }
 
 

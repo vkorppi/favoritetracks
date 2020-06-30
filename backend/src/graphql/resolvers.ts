@@ -3,7 +3,7 @@ import user from '../services/user';
 import spotify from '../services/spotify';
 import { ApolloError, UserInputError } from 'apollo-server-express';
 import { MongoError } from 'mongodb';
-import { UserSchemaType, searchResult, spotifyTrack, TokenType,UserInputType } from '../types';
+import { UserSchemaType, searchResult,/* spotifyTrack, */spotifyTrackMinimal, TokenType,UserInputType } from '../types';
 
 
 export const resolvers = {
@@ -16,18 +16,21 @@ export const resolvers = {
 
             const track: string = args.track;
             const page: number = args.page;
-            let tracks: spotifyTrack[] | null = null;
-            let fetchedTracks: string[];
+           // let tracks: spotifyTrack[] | null = null;
+           let tracks: spotifyTrackMinimal[] | null = null;
+           // let fetchedTracks: string[];
             let total: number;
 
             return track.includes('Test_') ? spotify.test(track, page) :
                 await spotify.search(track, page).then(result => {
 
                     tracks = result.tracks.items;
-                    fetchedTracks = tracks.map(value => value.name);
+                    //fetchedTracks = tracks.map(value => value.name);
                     total = result.tracks.total;
 
-                    return { tracks: fetchedTracks, total: total };
+                    
+
+                    return { tracks: tracks, total: total };
 
                 }).catch((error: Error) => {
 

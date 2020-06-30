@@ -11,7 +11,7 @@ export interface refreshtoken {
 
 export interface searchResult {
 
-  tracks: string[]
+  tracks: spotifyTrackMinimal[]
   total: number
 
 }
@@ -62,6 +62,11 @@ export interface spotifyTrack {
   preview_url: string,
   track_number: number,
   type: string,
+  uri: string
+}
+
+export interface spotifyTrackMinimal {
+  name: string,
   uri: string
 }
 

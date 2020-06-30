@@ -39,7 +39,10 @@ describe('Testing spotify', () => {
 		query {
 			search(track: "nagasaki",page: 1) 
 			{
-      			tracks
+      			tracks {
+					name,
+					uri
+				  }
       			total
     		}
 		  }`;
@@ -48,6 +51,7 @@ describe('Testing spotify', () => {
 			query: spotifyQuery
 		})).data as query;
 
+		console.log(object.search.tracks);
 
 		expect(object.search.tracks.length > 0).toBe(true);
 	});
