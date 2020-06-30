@@ -1,21 +1,30 @@
-import React, { FormEvent } from 'react';
-import { BasicComponent, Query } from '../../type'
-import { Button, ListGroup, Col, Form, FormControl } from 'react-bootstrap'
+import React, { FormEvent, ChangeEvent } from 'react';
+import { BasicComponent, Query, Track, ListType } from '../../type'
+import { Button, ListGroup, Col, Form, FormControl, InputGroup } from 'react-bootstrap'
 import Resultpagination from './pagination';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setPagination } from '../../reducers/pagination'
+import { addItem, removeItem } from '../../reducers/list'
 import { useLazyQuery } from '@apollo/client';
 import queries from '../../graphql/queries';
+
 
 
 const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
   const [getTracks, trackObject] = useLazyQuery(queries.search, {
     fetchPolicy: "network-only", errorPolicy: 'none',
+    /*
+    // Causes endles loop
     onError: (error) => {
-      showmessage(error.message,'danger')
+      showmessage(error.message, 'danger')
     }
+    */
   })
+
+
+  const listState = (state: ListType) => state
+  const dataList = useSelector(listState)
 
   const data = trackObject.data;
 
@@ -42,6 +51,20 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
   }
 
+  const changeFavorite = (event: ChangeEvent<HTMLInputElement>) => {
+
+    const input = event.target as HTMLInputElement
+
+    if (input.checked === true) {
+
+      dispatch(addItem(input.value))
+    }
+    else {
+
+      dispatch(removeItem(input.value))
+    }
+  }
+
 
 
   return (
@@ -50,7 +73,7 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
         <form onSubmit={searchTracks}>
           <Form.Row>
             <Col>
-              <FormControl  id="searchTrack" type="text" />
+              <FormControl id="searchTrack" type="text" />
             </Col>
           </Form.Row>
           <Form.Row>
@@ -60,11 +83,20 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
           </Form.Row>
         </form>
         <ListGroup variant="flush">
-          {fetchedData ? fetchedData.search.tracks.map((track: string) => (
+          {fetchedData ? fetchedData.search.tracks.map((track: Track) => (
 
-            <Form.Row key={Math.ceil(Math.random() * 100000)} >
+            <Form.Row key={track.uri} >
               <Col>
-                <ListGroup.Item>{track}</ListGroup.Item>
+                <InputGroup.Prepend>
+
+                  {dataList.list.list.includes(track.uri) ?
+                    <InputGroup.Checkbox onChange={changeFavorite} defaultChecked value={track.uri} />
+                    :
+                    <InputGroup.Checkbox onChange={changeFavorite} value={track.uri} />
+                  }
+                  <ListGroup.Item>{track.name}</ListGroup.Item>
+                </InputGroup.Prepend>
+
               </Col>
             </Form.Row>
 

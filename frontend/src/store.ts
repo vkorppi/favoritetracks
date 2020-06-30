@@ -6,12 +6,14 @@ import thunk from 'redux-thunk'
 import paginationReducer from './reducers/pagination'
 import messageReducer from './reducers/message'
 import modalReducer from './reducers/modal'
+import listReducer from './reducers/list'
 
 
 const reducer = combineReducers({
     pagination: paginationReducer,
     message: messageReducer,
     modal: modalReducer,
+    list: listReducer,
   })
 
 const store = createStore( reducer,composeWithDevTools(applyMiddleware(thunk)))

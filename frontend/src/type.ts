@@ -7,7 +7,7 @@ export interface SearchAttributes {
 }
 
 export interface BasicComponent {
-  showmessage: (message: string,type: string) => void;
+  showmessage: (message: string, type: string) => void;
 }
 
 export interface ComponentAttribueId extends BasicComponent {
@@ -34,6 +34,14 @@ export interface UserType {
 
 export interface UserParamType {
   id: string;
+}
+
+export interface ListType {
+  list: List2Type;
+}
+
+export interface List2Type {
+  list: string[];
 }
 
 
@@ -68,10 +76,15 @@ export type Action =
     data: PaginationAttributes;
   };
 
+export interface Track {
+  name: string;
+  uri: string;
+}
 
 export interface SearchResult {
 
-  tracks: string[];
+  //tracks: string[];
+  tracks: Track[];
   total: number;
 
 }
@@ -111,11 +124,29 @@ export type ActionMessage =
     data: MessageAttributes;
   };
 
-  export type ActionModal =
+export type ActionModal =
   {
     type: "SET_SHOW";
     data: Modalttributes;
   }
+
+  export type listAttributes =
+  {
+
+    trackid: string;
+  }
+
+  export type ActionList =
+  {
+    type: "ADD";
+    data: listAttributes;
+  }|
+  {
+    type: "REMOVE";
+    data: listAttributes;
+  };
+
+
 
 
 export interface SpotifyTracks {
@@ -189,6 +220,7 @@ export interface SpotifyExternalIds {
   isrc: string;
 
 }
+
 
 
 export interface SpotifArtistUrl {
