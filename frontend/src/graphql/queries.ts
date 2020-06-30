@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client'
 
+/*
 const search = gql`
 query filter($name: String,$page: Int) {
     search(track: $name,page: $page) 
@@ -7,7 +8,22 @@ query filter($name: String,$page: Int) {
           tracks
           total
     }
-  }`
+  }
+  `
+  */
+
+ const search = gql`
+ query filter($name: String,$page: Int) {
+     search(track: $name,page: $page) 
+     {
+      tracks {
+          name,
+          uri
+        }
+        total
+      }
+   }
+   `
 
 const createUser = gql`
   mutation Create($username: String!,$password: String!,$firstname: String!,$lastname: String!
