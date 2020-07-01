@@ -45,54 +45,28 @@ export interface List2Type {
 }
 
 
-export interface PaginationType {
-  pagination: PaginationAttributes;
-}
-
-export interface PaginationAttributes {
-  start: number;
-  last: number;
-  searchvalue: string;
-  currentPage: number;
-}
-
 export interface UserType {
   firstname: string;
   lastname: string;
   id: string;
 }
 
-export type Action =
-  {
-    type: "UPDATE";
-    data: PaginationAttributes;
-  } |
-  {
-    type: "SET";
-    data: PaginationAttributes;
-  } |
-  {
-    type: "SETPAGE";
-    data: PaginationAttributes;
-  };
 
 export interface Track {
   name: string;
   uri: string;
 }
 
-export interface SearchResult {
-
-  //tracks: string[];
-  tracks: Track[];
-  total: number;
-
-}
-
-export interface Query {
+export interface QueryResult {
 
   search: SearchResult;
+  
+}
 
+export interface SearchResult {
+
+  tracks: Track[];
+  total: number;
 
 }
 
@@ -105,15 +79,6 @@ export interface MessageAttributes {
   msgtype: string;
 }
 
-export interface ModalType {
-  modal: Modalttributes;
-}
-
-export interface Modalttributes {
-  show: boolean;
-}
-
-
 export type ActionMessage =
   {
     type: "SET_MESSAGE";
@@ -124,29 +89,62 @@ export type ActionMessage =
     data: MessageAttributes;
   };
 
+
+export interface ModalType {
+  modal: Modalttributes;
+}
+
+export interface Modalttributes {
+  show: boolean;
+}
+
 export type ActionModal =
   {
     type: "SET_SHOW";
     data: Modalttributes;
   }
-
-  export type listAttributes =
+ 
+export type listAttributes =
   {
 
     trackid: string;
   }
 
-  export type ActionList =
+export type ActionList =
   {
     type: "ADD";
     data: listAttributes;
-  }|
+  } |
   {
     type: "REMOVE";
     data: listAttributes;
   };
 
 
+  export interface PaginationType {
+    pagination: PaginationAttributes;
+  }
+  
+  export interface PaginationAttributes {
+    start: number;
+    last: number;
+    searchvalue: string;
+    currentPage: number;
+  }
+
+export type ActionPagination =
+  {
+    type: "UPDATE";
+    data: PaginationAttributes;
+  } |
+  {
+    type: "SET";
+    data: PaginationAttributes;
+  } |
+  {
+    type: "SETPAGE";
+    data: PaginationAttributes;
+  };
 
 
 export interface SpotifyTracks {
@@ -220,8 +218,6 @@ export interface SpotifyExternalIds {
   isrc: string;
 
 }
-
-
 
 export interface SpotifArtistUrl {
   spotify: string;

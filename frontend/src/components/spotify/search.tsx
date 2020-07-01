@@ -1,5 +1,5 @@
 import React, { FormEvent, ChangeEvent } from 'react';
-import { BasicComponent, Query, Track, ListType } from '../../type'
+import { BasicComponent, QueryResult, Track, ListType } from '../../type'
 import { Button, ListGroup, Col, Form, FormControl, InputGroup } from 'react-bootstrap'
 import Resultpagination from './pagination';
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,7 +12,7 @@ import queries from '../../graphql/queries';
 
 const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
-  const [getTracks, trackObject] = useLazyQuery(queries.search, {
+  const [getTracks, results] = useLazyQuery(queries.search, {
     fetchPolicy: "network-only", errorPolicy: 'none',
     /*
     // Causes endles loop
@@ -22,14 +22,11 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
     */
   })
 
-
   const listState = (state: ListType) => state
   const dataList = useSelector(listState)
 
-  const data = trackObject.data;
-
-  const searchresult = data as unknown
-  const fetchedData: Query = searchresult as Query
+  const searchresult = results.data as unknown
+  const fetchedData: QueryResult = searchresult as QueryResult
 
 
   const dispatch = useDispatch()
