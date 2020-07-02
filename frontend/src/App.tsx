@@ -9,7 +9,7 @@ import Registaration from './components/users/registaration';
 import UserSearch from './components/users/userSearch';
 import Details from './components/users/userDetails';
 import Login from './components/users/login';
-import { useRouteMatch, Route, Switch,useLocation  } from 'react-router-dom';
+import { useRouteMatch, Route, Switch, useLocation } from 'react-router-dom';
 
 
 const App: React.FC = () => {
@@ -30,8 +30,13 @@ const App: React.FC = () => {
 
   };
 
+  // location.pathname
+
+  const noAlert = /details|registaration/i;
 
   const matchRoute = useRouteMatch("/details/:id")
+
+  console.log(noAlert.test(location.pathname))
 
   let id = ''
 
@@ -62,13 +67,16 @@ const App: React.FC = () => {
         </Navbar.Collapse>
       </Navbar>
       <Container className="search">
-        <Row>
-          <div className="col-xs-2">
 
-             <Message text={rootstate.message.text} msgtype={rootstate.message.msgtype} /> 
+        {!noAlert.test(location.pathname) ?
+          <Row>
+            <div className="col-xs-2">
 
-          </div>
-        </Row>
+              <Message text={rootstate.message.text} msgtype={rootstate.message.msgtype} />
+
+            </div>
+          </Row>
+          : ''}
 
         <Row>
           <div className="col-xs-2">
