@@ -14,8 +14,11 @@ export interface ComponentAttribueId extends BasicComponent {
   id: string;
 }
 
-export interface ComponentAttributeUser extends BasicComponent {
+export interface ComponentAttributeUser extends ComponentAttributeModal {
   user: UserType;
+}
+
+export interface ComponentAttributeModal extends BasicComponent {
   show: boolean;
 }
 
@@ -30,6 +33,10 @@ export interface UserType {
   id: string;
 }
 
+export interface UseId {
+  id: string;
+}
+
 
 
 export interface UseId {
@@ -37,20 +44,9 @@ export interface UseId {
 }
 
 export interface ListType {
-  list: List2Type;
-}
-
-export interface List2Type {
   list: string[];
 }
 
-/*
-export interface UserType {
-  firstname: string;
-  lastname: string;
-  id: string;
-}
-*/
 
 export interface Track {
   name: string;

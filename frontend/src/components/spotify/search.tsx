@@ -53,6 +53,12 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
     const input = event.target as HTMLInputElement
 
+    console.log(input.parentNode?.nextSibling?.textContent)
+
+    const key = input.parentNode?.nextSibling?.textContent;
+
+
+
     if (input.checked === true) {
 
       dispatch(addItem(input.value))
@@ -81,7 +87,7 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
             <Col>
             <br/>
               <Button type="submit" variant="primary" >Search </Button>
-
+              <Button type="button"  className="buttonSpace" variant="primary"   >Save </Button>
             </Col>
           </Form.Row>
         </form>
@@ -92,7 +98,7 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
               <Col>
                 <InputGroup.Prepend>
 
-                  {dataList.list.list.includes(track.uri) ?
+                  {dataList.list.includes(track.uri) ?
                     <InputGroup.Checkbox onChange={changeFavorite} defaultChecked value={track.uri} />
                     :
                     <InputGroup.Checkbox onChange={changeFavorite} value={track.uri} />

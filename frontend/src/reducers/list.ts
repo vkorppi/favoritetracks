@@ -2,6 +2,7 @@
 
 import { ActionList } from '../type'
 
+const defaultState: string[]=[]
 
 export const addItem = (trackid:string) => {
 
@@ -16,18 +17,15 @@ export const removeItem = (trackid: string) => {
 }
 
 
-const reducer = (state = { list:[''] }, action: ActionList) => {
+const reducer = (state = defaultState , action: ActionList) => {
 
     switch (action.type) {
         case 'ADD':
-            return {
-                list: state.list.concat(action.data.trackid)
-            }
+            return state.concat(action.data.trackid)
+            
         case 'REMOVE':
-            return {
-                
-                list: state.list.filter((id: string) => (action.data.trackid !== id) )
-            }
+            return  state.filter((id: string) => (action.data.trackid !== id) )
+            
 
         default:
             return state
