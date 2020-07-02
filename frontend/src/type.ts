@@ -121,6 +121,29 @@ export type ActionList =
   };
 
 
+  export type AlertType =
+  {
+    alert: AlertAttributes;
+  } 
+
+  export type AlertAction =
+  {
+    type: "SET";
+    data: AlertAttributes;
+  } 
+
+  export type AlertAttributes = {
+	
+    firstname: boolean;
+    lastname: boolean;
+    birthdate: boolean;
+    email: boolean;
+    address: boolean;
+    username: boolean;
+    password: boolean;	
+  }
+
+
   export interface PaginationType {
     pagination: PaginationAttributes;
   }

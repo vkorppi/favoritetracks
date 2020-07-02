@@ -1,19 +1,25 @@
 
 import React, { FormEvent } from 'react';
-import { Modal, Form, Button, Col, FormControl, Card } from 'react-bootstrap';
-import { ComponentAttributeUser, MessageType } from '../../type';
+import { Modal, Form, Button, Col, FormControl, Card,Alert } from 'react-bootstrap';
+import { ComponentAttributeUser, MessageType, AlertType } from '../../type';
 import { setShow } from '../../reducers/modal';
 import { useDispatch, useSelector } from 'react-redux';
 import queries from '../../graphql/queries';
 import { useHistory } from "react-router-dom"
 import { useMutation } from '@apollo/client';
 import Message from '../spotify/message';
+import { isInputName, isInputEmail, isInputDate, isInputString } from '../../utils/userInputValidators'
+import { setAlerts } from "../../reducers/alerts";
 
 const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show }) => {
 
     const dispatch = useDispatch()
     const selector = (state: MessageType) => state
     const rootstate = useSelector(selector)
+
+    const selectorAlert = (state: AlertType) => state
+    const alertState = useSelector(selectorAlert)
+    const alertObject = alertState.alert
 
     const history = useHistory()
 
@@ -35,17 +41,39 @@ const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show 
         const email = form[3] as HTMLInputElement;
         const address = form[4] as HTMLInputElement;
 
-        const success = await updateUser({
-            variables: {
-                firstname: firstname.value, lastname: lastname.value,
-                birthdate: birthdate.value, email: email.value, address: address.value, id: user.id
-            }
-        });
+        isInputName(firstname.value) ? alertObject.firstname = false : alertObject.firstname = true
+        isInputName(lastname.value) ? alertObject.lastname = false : alertObject.lastname = true
 
-        if (success) {
-            dispatch(setShow(false))
-            showmessage(`User was updated: ${firstname.value} ${lastname.value}`, 'primary')
-            history.push('/users')
+        isInputDate(birthdate.value) ? alertObject.birthdate = false : alertObject.birthdate = true
+        isInputEmail(email.value) ? alertObject.email = false : alertObject.email = true
+
+        isInputString(address.value) ? alertObject.address = false : alertObject.address = true
+
+        const validationFailed =
+            alertObject.firstname ||
+            alertObject.lastname ||
+            alertObject.birthdate ||
+            alertObject.email ||
+            alertObject.address ||
+            alertObject.username ||
+            alertObject.password
+
+        dispatch(setAlerts(alertObject))
+
+        if (!validationFailed) {
+
+            const success = await updateUser({
+                variables: {
+                    firstname: firstname.value, lastname: lastname.value,
+                    birthdate: birthdate.value, email: email.value, address: address.value, id: user.id
+                }
+            });
+
+            if (success) {
+                dispatch(setShow(false))
+                showmessage(`User was updated: ${firstname.value} ${lastname.value}`, 'primary')
+                history.push('/users')
+            }
         }
     }
 
@@ -59,7 +87,7 @@ const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show 
     return (
         <Modal centered show={show}>
             <Modal.Body>
-            <Message text={rootstate.message.text} msgtype={rootstate.message.msgtype} />
+                <Message text={rootstate.message.text} msgtype={rootstate.message.msgtype} />
                 <Card>
                     <Card.Header></Card.Header>
                     <Card.Body>
@@ -68,31 +96,66 @@ const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show 
                                 <form onSubmit={save}>
                                     <Form.Row>
                                         <Col>
-                                            <FormControl defaultValue={user.firstname} id="firstname" type="text" />
+                                        {
+                                    alertObject.firstname ?
+                                    <Alert variant={'danger'}>
+                                        Firstname must start with uppercasleter followed by lowercase letters
+                                    </Alert>
+                                        : ''
+                                    }
+                                    <FormControl defaultValue={user.firstname} placeholder="firstname" id="firstname" />
                                         </Col>
                                     </Form.Row>
                                     <br />
                                     <Form.Row>
                                         <Col>
-                                            <FormControl defaultValue={user.lastname} id="lastname" type="text" />
+                                        {
+                                    alertObject.lastname ?
+                                    <Alert variant={'danger'}>
+                                        Lastname must start with uppercasleter followed by lowercase letters
+                                    </Alert>
+                                        : ''
+                                    }
+                                    <FormControl defaultValue={user.lastname} placeholder="lastname" id="lastname" />
                                         </Col>
                                     </Form.Row>
                                     <br />
                                     <Form.Row>
                                         <Col>
-                                            <FormControl defaultValue={user.birthdate} id="birthdate" type="text" />
+                                        {
+                                    alertObject.birthdate ?
+                                    <Alert variant={'danger'}>
+                                         Birthdate must be in dd.mm.yyyy format
+                                     </Alert>
+                                        : ''
+                                    }
+                                    <FormControl defaultValue={user.birthdate} placeholder="dd.mm.yyyy" id="birthdate" />
                                         </Col>
                                     </Form.Row>
                                     <br />
                                     <Form.Row>
                                         <Col>
-                                            <FormControl defaultValue={user.email} id="email" type="text" />
+                                        {
+                                    alertObject.email ?
+                                    <Alert variant={'danger'}>
+                                         Email was not in correct format
+                                     </Alert>
+                                        : ''
+                                    }
+                                    <FormControl defaultValue={user.email} placeholder="email" id="email" />
                                         </Col>
                                     </Form.Row>
                                     <br />
                                     <Form.Row>
                                         <Col>
-                                            <FormControl defaultValue={user.address} id="address" type="text" />
+                                        {
+                                    alertObject.address ?
+                                    <Alert variant={'danger'}>
+                                         Address was not a string
+                                    </Alert>
+                                    : ''
+                                    }
+                                    <FormControl defaultValue={user.address} placeholder="address" id="address" />
                                         </Col>
                                     </Form.Row>
                                     <br />

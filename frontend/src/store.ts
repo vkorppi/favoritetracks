@@ -7,6 +7,7 @@ import paginationReducer from './reducers/pagination'
 import messageReducer from './reducers/message'
 import modalReducer from './reducers/modal'
 import listReducer from './reducers/list'
+import alertsReducer from './reducers/alerts'
 
 
 const reducer = combineReducers({
@@ -14,6 +15,7 @@ const reducer = combineReducers({
     message: messageReducer,
     modal: modalReducer,
     list: listReducer,
+    alert:alertsReducer
   })
 
 const store = createStore( reducer,composeWithDevTools(applyMiddleware(thunk)))

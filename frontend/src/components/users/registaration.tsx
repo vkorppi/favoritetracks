@@ -1,17 +1,20 @@
 
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent } from 'react';
 import { Button, Card, Form, Col, FormControl, Alert } from 'react-bootstrap';
-import { BasicComponent } from "../../type";
+import { BasicComponent, AlertType } from "../../type";
 import { useMutation } from '@apollo/client';
 import queries from '../../graphql/queries';
 import { useHistory } from "react-router-dom"
-import { isInputName, isInputEmail, isInputDate, isInputString } from '../../utils/userInputValidators'
+import { isInputName, isInputEmail, isInputDate, isInputString,InputNotEmpty } from '../../utils/userInputValidators'
+import { useSelector, useDispatch } from 'react-redux';
+import { setAlerts } from "../../reducers/alerts";
 
 const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
 
-    const [AlertFirstName, setAlertFirstName] = useState(false)
-
-
+    const selector = (state: AlertType) => state
+    const alertState = useSelector(selector)
+    const alertObject = alertState.alert
+    const dispatch = useDispatch()
 
     const [createNewUser] = useMutation(queries.createUser, {
         errorPolicy: 'none', onError: (error) => {
@@ -21,8 +24,8 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
 
     const history = useHistory()
 
-    const createUser = async (event: FormEvent) => {
 
+    const createUser = async (event: FormEvent) => {
 
         event.preventDefault()
         const form = event.target as HTMLFormElement;
@@ -35,10 +38,30 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
         const username = form[5] as HTMLInputElement;
         const password = form[6] as HTMLInputElement;
 
-        isInputName(firstname.value) ? setAlertFirstNm(true) : setAlertFirstNm(false)
+        isInputName(firstname.value) ? alertObject.firstname = false : alertObject.firstname = true
+        isInputName(lastname.value) ? alertObject.lastname = false : alertObject.lastname = true
+        
+        isInputDate(birthdate.value) ? alertObject.birthdate = false : alertObject.birthdate = true
+        isInputEmail(email.value) ? alertObject.email = false : alertObject.email = true
 
+        isInputString(address.value) ? alertObject.address = false : alertObject.address = true
+        InputNotEmpty(username.value) ? alertObject.username = false : alertObject.username = true
+        InputNotEmpty(password.value) ? alertObject.password = false : alertObject.password = true
+		
+		
 
-        if (firstNameAlert) {
+        const validationFailed= 
+            alertObject.firstname ||
+            alertObject.lastname  || 
+            alertObject.birthdate ||
+            alertObject.email     ||
+            alertObject.address   ||
+            alertObject.username  ||
+            alertObject.password
+
+        dispatch(setAlerts(alertObject))
+
+        if (!validationFailed) {
 
             const success = await createNewUser({
                 variables:
@@ -53,7 +76,6 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
                 }
             });
 
-
             username.value = ''
             password.value = ''
             firstname.value = ''
@@ -67,10 +89,6 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
                 history.push('/users')
             }
         }
-        else {
-            setShow(true)
-        }
-
     }
 
     const close = () => {
@@ -91,10 +109,12 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
                         <form onSubmit={createUser}>
                             <Form.Row>
                                 <Col>
-                                    {firstNameAlert ?
-                                        <Alert variant={'danger'}>
-                                            Firstname must start with uppercasleter followed by lowercase letters
-                                      </Alert> : ''
+                                    {
+                                    alertObject.firstname ?
+                                    <Alert variant={'danger'}>
+                                        Firstname must start with uppercasleter followed by lowercase letters
+                                    </Alert>
+                                        : ''
                                     }
                                     <FormControl placeholder="firstname" id="firstname" />
                                 </Col>
@@ -102,14 +122,26 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
                             <br />
                             <Form.Row>
                                 <Col>
-                                    <Alert variant={'danger'}> Lastname must start with uppercasleter followed by lowercase letters </Alert>
+                                    {
+                                    alertObject.lastname ?
+                                    <Alert variant={'danger'}>
+                                        Lastname must start with uppercasleter followed by lowercase letters
+                                    </Alert>
+                                        : ''
+                                    }
                                     <FormControl placeholder="lastname" id="lastname" />
                                 </Col>
                             </Form.Row>
                             <br />
                             <Form.Row>
                                 <Col>
-                                    <Alert variant={'danger'}> Birthdate must be in dd.mm.yyyy format </Alert>
+                                    {
+                                    alertObject.birthdate ?
+                                    <Alert variant={'danger'}>
+                                         Birthdate must be in dd.mm.yyyy format
+                                     </Alert>
+                                        : ''
+                                    }
                                     <FormControl placeholder="dd.mm.yyyy" id="birthdate" />
                                 </Col>
                             </Form.Row>
@@ -117,28 +149,52 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
                             <Form.Row>
 
                                 <Col>
-                                    <Alert variant={'danger'}> Email was not in correct format </Alert>
+                                    {
+                                    alertObject.email ?
+                                    <Alert variant={'danger'}>
+                                         Email was not in correct format
+                                     </Alert>
+                                        : ''
+                                    }
                                     <FormControl placeholder="email" id="email" />
                                 </Col>
                             </Form.Row>
                             <br />
                             <Form.Row>
                                 <Col>
-                                    <Alert variant={'danger'}> Address was not a string </Alert>
+                                    {
+                                    alertObject.address ?
+                                    <Alert variant={'danger'}>
+                                         Address was not a string
+                                    </Alert>
+                                    : ''
+                                    }
                                     <FormControl placeholder="address" id="address" />
                                 </Col>
                             </Form.Row>
                             <br />
                             <Form.Row>
                                 <Col>
-                                    <Alert variant={'danger'}> Username was not a string </Alert>
+                                {
+                                alertObject.username ?
+                                <Alert variant={'danger'}>
+                                    Username can´t be empty 
+                                </Alert>
+                                : ''
+                                }
                                     <FormControl placeholder="Username" id="username" />
                                 </Col>
                             </Form.Row>
                             <br />
                             <Form.Row>
                                 <Col>
-                                    <Alert variant={'danger'}> Password was not a string </Alert>
+                                {
+                                 alertObject.password ?
+                                <Alert variant={'danger'}> 
+                                    Password can´t be empty 
+                                </Alert>
+                                : ''
+                                }
                                     <FormControl placeholder="Password" type="password" id="password" />
                                 </Col>
                             </Form.Row>

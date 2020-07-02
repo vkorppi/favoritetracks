@@ -9,21 +9,25 @@ export const isInputName = (value:string): boolean => {
 export const isInputEmail = (value:string): boolean => {
 
     const emailCheck = /.*\..*@.*\..*/i;
-    return emailCheck.test(value)
+    return value ==='' || emailCheck.test(value)
     
 }
 
 export const isInputDate = (value:string): boolean => {
 
     const birthdateCheck =/^(([0-2][0-9])|([3][0-2]))\.((0[1-9])|(1[0-2]))\.([1-9][0-9][0-9][0-9])$/i;
-    return birthdateCheck.test(value)
+    return value ==='' || birthdateCheck.test(value)
 }
 
 
 export const isInputString = (value: string): boolean => {
 
-    return typeof value === 'string';
+    return typeof value === 'string' ;
+}
 
+export const InputNotEmpty = (value: string): boolean => {
+
+    return value !== '' ;
 }
 
 export default {
