@@ -8,7 +8,7 @@ import typeparsers from '../utils/typeparsers';
 import User from '../mongo/user';
 import bcrypt from 'bcryptjs';
 import { verify } from 'jsonwebtoken';
-import { DecodedToken, UserSchemaType } from '../types';
+import { decodedTokenType, UserSchemaType } from '../types';
 
 
 import dotenv from 'dotenv';
@@ -214,7 +214,7 @@ describe('Testing usermanagement services', () => {
     const encodedtoken = await user.login('usernameTest', 'passwordTest');
 
     const decodedtoken = verify(encodedtoken.value, parser(env.SECRET, secretError));
-    const jsonToken = decodedtoken as DecodedToken;
+    const jsonToken = decodedtoken as decodedTokenType;
 
     expect(jsonToken.id === fetchedUser?.id).toBe(true);
     expect(jsonToken.username === fetchedUser?.username).toBe(true);

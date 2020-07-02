@@ -10,7 +10,7 @@ import express from 'express';
 import jsonwebtoken from 'jsonwebtoken';
 import { getSessionEnvs } from './utils/envFunctions';
 import user from './services/user';
-import { userToken } from './types';
+import { decodedTokenType } from './types';
 
 dotenv.config();
 
@@ -53,7 +53,7 @@ const server = new ApolloServer({
 
       if (hasAuthHeader) {
         encodedToken = auth?.replace('bearer ', '') as string;
-        const decodedToken = jsonwebtoken.verify(encodedToken, secret) as userToken;
+        const decodedToken = jsonwebtoken.verify(encodedToken, secret) as decodedTokenType;
 
         const userdata =user.getUser(decodedToken.id);
 

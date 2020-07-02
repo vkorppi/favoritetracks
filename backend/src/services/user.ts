@@ -15,37 +15,32 @@ const env = process.env;
 import { getMessage } from '../utils/errorFunctions';
 import { getSessionEnvs } from '../utils/envFunctions';
 
+const firstnameError = getMessage('string', 'firstname', true);
+const lastnameError = getMessage('string', 'lastname', true);
+const birthdateError = getMessage('format', 'birthdate', true);
+const emailError =getMessage('format', 'email', true);
+const addressError =getMessage('string', 'address', true);
 
 export const create = async (username: string, password: string, firstname: string, lastname: string, birthdate: string, email: string, address: string): Promise<UserType> => {
 
     const fetchedUser = await User.findOne({ username: username });
+
+    const usernameError = getMessage('string', 'username', true);
+
 
     if (fetchedUser) {
         throw new UserInputError('userInput: username was reserverd ');
     }
 
     const userInput: UserSchemaType = {
-        username: parser(
-            username,
-            getMessage('string', 'username', true)
-        ),
+
+        username: parser(username, usernameError),
         password: hashPassword(password),
-        firstname: parser(
-            firstname,
-            getMessage('string', 'firstname', true)
-        ),
-        lastname: parser(
-            lastname,
-            getMessage('string', 'lastname', true)),
-        birthdate: birthdate ? dateParser(
-            birthdate,
-            getMessage('format', 'birthdate', true)) : '',
-        email: email ? emailParser(
-            email,
-            getMessage('format', 'email', true)) : '',
-        address: address ? parser(
-            address,
-            getMessage('string', 'address', true)) : ''
+        firstname: parser(firstname, firstnameError),
+        lastname: parser(lastname, lastnameError),
+        birthdate: birthdate ? dateParser(birthdate,birthdateError ) : '',
+        email: email ? emailParser(email,emailError) : '',
+        address: address ? parser(address,addressError ) : ''
 
     } as UserSchemaType;
 
@@ -72,25 +67,16 @@ const addList = async (favorites: string, id: string): Promise<string> => {
 
 const update = async (firstname: string, lastname: string, birthdate: string, email: string, address: string, id: string): Promise<void> => {
 
+
     await User.updateOne({ _id: id },
         {
             $set:
             {
-                "firstname": parser(
-                    firstname,
-                    getMessage('string', 'firstname', true)),
-                "lastname": parser(
-                    lastname,
-                    getMessage('string', 'lastname', true)),
-                "birthdate": birthdate ? dateParser(
-                    birthdate
-                    , getMessage('format', 'birthdate', true)) : '',
-                "email": email ? emailParser(
-                    email,
-                    getMessage('format', 'email', true)) : '',
-                "address": address ? parser(
-                    address,
-                    getMessage('string', 'address', true)) : ''
+                "firstname": parser(firstname,firstnameError),
+                "lastname": parser(lastname,lastnameError),
+                "birthdate": birthdate ? dateParser(birthdate, birthdateError) : '',
+                "email": email ? emailParser(email,emailError) : '',
+                "address": address ? parser(address,addressError) : ''
             }
         });
 

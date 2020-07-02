@@ -3,7 +3,7 @@ import user from '../services/user';
 import spotify from '../services/spotify';
 import { ApolloError, UserInputError } from 'apollo-server-express';
 import { MongoError } from 'mongodb';
-import { UserSchemaType, searchResult,/* spotifyTrack, */spotifyTrackMinimal, TokenType,UserSchemaType } from '../types';
+import { UserSchemaType, searchResult,spotifyTrackMinimal, TokenType,UserSchemaType } from '../types';
 
 
 export const resolvers = {
@@ -137,7 +137,6 @@ export const resolvers = {
 
 
             return await user.create(username, password, firstname, lastname, birthdate, email, address).then(result => {
-                console.log(result);
                 return true;
 
             }).catch((error: Error) => {
@@ -171,7 +170,6 @@ export const resolvers = {
 
 
             return await user.update(firstname, lastname,birthdate,email,address,id).then(result => {
-                console.log(result);
                 return true;
 
             }).catch((error: Error) => {
@@ -200,7 +198,7 @@ export const resolvers = {
             const id: string = args.id;
 
             return await user.updatePassword(password, id).then(result => {
-                console.log(result);
+               
                 return true;
 
             }).catch((error: Error) => {
@@ -226,7 +224,7 @@ export const resolvers = {
             const id: string = args.id;
 
             return await user.remove(id).then(result => {
-                console.log(result);
+                
                 return true;
 
             }).catch((error: Error) => {
@@ -251,7 +249,7 @@ export const resolvers = {
             const password: string = args.password;
 
             return await user.login(username, password).then(result => {
-                console.log(result);
+                
                 return result;
 
             }).catch((error: Error) => {

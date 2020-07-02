@@ -20,14 +20,12 @@ export interface query {
 
   search: searchResult
 
-
 }
 
 
 export interface spotifyResult {
 
   tracks: spotifyTracks
-
 
 }
 
@@ -154,7 +152,7 @@ export interface tracksEnv {
   trackpart3: string;
 }
 
-export interface userToken {
+export interface decodedTokenType {
   username: string;
   id: string;
 }
@@ -175,11 +173,6 @@ export interface UserSchemaType extends Document {
 
 export interface TokenType {
   value: string;
-}
-
-export interface DecodedToken {
-  username: string;
-  id: string
 }
 
 export interface UserType {
