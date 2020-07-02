@@ -79,7 +79,9 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
           </Form.Row>
           <Form.Row>
             <Col>
+            <br/>
               <Button type="submit" variant="primary" >Search </Button>
+
             </Col>
           </Form.Row>
         </form>

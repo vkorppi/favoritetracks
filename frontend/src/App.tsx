@@ -34,7 +34,6 @@ const App: React.FC = () => {
 
   const matchRoute = useRouteMatch("/details/:id")
 
-  console.log(noAlert.test(location.pathname))
 
   let id = ''
 
@@ -59,6 +58,7 @@ const App: React.FC = () => {
             <Nav.Link href="/registaration">Registaration</Nav.Link>
             <Nav.Link href="/reset">reset password</Nav.Link>
             <Nav.Link href="/login">Login</Nav.Link>
+            <Nav.Link href="/Selected">Selected favorites</Nav.Link>
             <Nav.Link href="#" onClick={() => logout()}>logout</Nav.Link>
           </Nav>
 
