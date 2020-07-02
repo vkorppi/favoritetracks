@@ -8,7 +8,7 @@ import typeparsers from '../utils/typeparsers';
 import User from '../mongo/user';
 import bcrypt from 'bcryptjs';
 import { verify } from 'jsonwebtoken';
-import { DecodedToken, UserInputType } from '../types';
+import { DecodedToken, UserSchemaType } from '../types';
 
 
 import dotenv from 'dotenv';
@@ -113,22 +113,22 @@ describe('Testing usermanagement services', () => {
 
     await User.deleteMany({});
 
-    const testuser: UserInputType = {
+    const testuser: UserSchemaType = {
       username: 'usernameTest',
       password: hashPassword('passwordTest'),
       firstname: 'firstnameTest',
       lastname: 'lastnameTest'
-    } as UserInputType;
+    } as UserSchemaType;
 
     const userTest = new User(testuser);
     await userTest.save();
 
-    const testuser2: UserInputType = {
+    const testuser2: UserSchemaType = {
       username: 'username2daTest',
       password: hashPassword('passworqedTest'),
       firstname: 'firstqwenameTest',
       lastname: 'lastnameTest'
-    } as UserInputType;
+    } as UserSchemaType;
 
     const userTest2 = new User(testuser2);
     await userTest2.save();
@@ -275,12 +275,12 @@ describe('Testing services that use database and spotify', () => {
 
     await User.deleteMany({});
 
-    const testuser: UserInputType = {
+    const testuser: UserSchemaType = {
       username: 'usernameTest',
       password: hashPassword('passwordTest'),
       firstname: 'firstnameTest',
       lastname: 'lastnameTest'
-    } as UserInputType;
+    } as UserSchemaType;
 
     const userTest = new User(testuser);
     await userTest.save();

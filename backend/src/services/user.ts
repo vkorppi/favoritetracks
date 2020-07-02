@@ -2,7 +2,7 @@
 
 import typeparsers from '../utils/typeparsers';
 import User from '../mongo/user';
-import { UserInputType, TokenType, UserType, UserSchemaType } from '../types';
+import { UserSchemaType, TokenType, UserType } from '../types';
 import { hashPassword } from '../utils/userFunctions';
 import { sign } from 'jsonwebtoken';
 import { UserInputError } from 'apollo-server-express';
@@ -24,7 +24,7 @@ export const create = async (username: string, password: string, firstname: stri
         throw new UserInputError('userInput: username was reserverd ');
     }
 
-    const userInput: UserInputType = {
+    const userInput: UserSchemaType = {
         username: parser(
             username,
             getMessage('string', 'username', true)
@@ -47,7 +47,7 @@ export const create = async (username: string, password: string, firstname: stri
             address,
             getMessage('string', 'address', true)) : ''
 
-    } as UserInputType;
+    } as UserSchemaType;
 
     const user = new User(userInput);
     return await user.save();

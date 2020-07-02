@@ -2,7 +2,7 @@
 import ApolloClient from 'apollo-boost';
 import { gql } from 'apollo-server-express';
 import 'cross-fetch/polyfill';
-import { query, UserInputType, UserType } from '../types';
+import { query, UserSchemaType, UserType } from '../types';
 import mongoose from 'mongoose';
 import typeparsers from '../utils/typeparsers';
 import User from '../mongo/user';
@@ -86,12 +86,12 @@ describe('Testing usermanagement', () => {
 
 		await User.deleteMany({});
 
-		const testuser: UserInputType = {
+		const testuser: UserSchemaType = {
 			username: 'usernameTest',
 			password: hashPassword('passwordTest'),
 			firstname: 'firstnameTest',
 			lastname: 'lastnameTest'
-		} as UserInputType;
+		} as UserSchemaType;
 
 		const userTest = new User(testuser);
 		await userTest.save();
@@ -332,12 +332,12 @@ describe('Testing spotify mutations and queries that require authorization heade
 
 		await User.deleteMany({});
 
-		const testuser: UserInputType = {
+		const testuser: UserSchemaType = {
 			username: 'usernameTest',
 			password: hashPassword('passwordTest'),
 			firstname: 'firstnameTest',
 			lastname: 'lastnameTest'
-		} as UserInputType;
+		} as UserSchemaType;
 
 
 

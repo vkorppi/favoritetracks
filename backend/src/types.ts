@@ -172,17 +172,6 @@ export interface UserSchemaType extends Document {
   favorites:string
 }
 
-export interface UserInputType extends Document {
-  username: UserSchemaType['username'];
-  password: UserSchemaType['password'];
-  firstname: UserSchemaType['firstname'];
-  lastname: UserSchemaType['lastname'];
-  birthdate: UserSchemaType['birthdate'];
-  email: UserSchemaType['email'];
-  address: UserSchemaType['address'];
-  favorites: UserSchemaType['favorites'];
-
-}
 
 export interface TokenType {
   value: string;
