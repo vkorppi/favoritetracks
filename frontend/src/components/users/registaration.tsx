@@ -1,14 +1,17 @@
 
-import React, { FormEvent } from 'react';
-import { Button, Card, Form, Col, FormControl, Modal, Alert } from 'react-bootstrap';
+import React, { FormEvent, useState } from 'react';
+import { Button, Card, Form, Col, FormControl, Alert } from 'react-bootstrap';
 import { BasicComponent } from "../../type";
 import { useMutation } from '@apollo/client';
 import queries from '../../graphql/queries';
 import { useHistory } from "react-router-dom"
-
-import {isInputName,isInputEmail,isInputDate,isInputString} from '../../utils/userInputValidators'
+import { isInputName, isInputEmail, isInputDate, isInputString } from '../../utils/userInputValidators'
 
 const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
+
+    const [AlertFirstName, setAlertFirstName] = useState(false)
+
+
 
     const [createNewUser] = useMutation(queries.createUser, {
         errorPolicy: 'none', onError: (error) => {
@@ -32,33 +35,40 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
         const username = form[5] as HTMLInputElement;
         const password = form[6] as HTMLInputElement;
 
+        isInputName(firstname.value) ? setAlertFirstNm(true) : setAlertFirstNm(false)
 
 
-        const success = await createNewUser({
-            variables:
-            {
-                username: username.value,
-                password: password.value,
-                firstname: firstname.value,
-                lastname: lastname.value,
-                birthdate: birthdate.value,
-                email: email.value,
-                address: address.value
+        if (firstNameAlert) {
+
+            const success = await createNewUser({
+                variables:
+                {
+                    username: username.value,
+                    password: password.value,
+                    firstname: firstname.value,
+                    lastname: lastname.value,
+                    birthdate: birthdate.value,
+                    email: email.value,
+                    address: address.value
+                }
+            });
+
+
+            username.value = ''
+            password.value = ''
+            firstname.value = ''
+            lastname.value = ''
+            birthdate.value = ''
+            email.value = ''
+            address.value = ''
+
+            if (success) {
+                showmessage('New user created', 'primary')
+                history.push('/users')
             }
-        });
-
-
-        username.value = ''
-        password.value = ''
-        firstname.value = ''
-        lastname.value = ''
-        birthdate.value = ''
-        email.value = ''
-        address.value = ''
-
-        if (success) {
-            showmessage('New user created', 'primary')
-            history.push('/users')
+        }
+        else {
+            setShow(true)
         }
 
     }
@@ -67,80 +77,84 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
 
         history.push('/users')
 
-        
+
     }
 
 
     return (
         <div >
 
-                    <Card>
-                        <Card.Header>Sign up</Card.Header>
-                        <Card.Body>
-                            <Form.Group>
-                                <form onSubmit={createUser}>
-                                    <Form.Row>
-                                        <Col>
-                                        <Alert variant= { 'danger' }> Firstname must start with uppercasleter followed by lowercase letters </Alert>
-                                            <FormControl placeholder="firstname" id="firstname" />
-                                        </Col>
-                                    </Form.Row>
-                                    <br />
-                                    <Form.Row>
-                                        <Col>
-                                        <Alert variant= { 'danger' }> Lastname must start with uppercasleter followed by lowercase letters </Alert>
-                                            <FormControl placeholder="lastname" id="lastname" />
-                                        </Col>
-                                    </Form.Row>
-                                    <br />
-                                    <Form.Row>
-                                        <Col>
-                                        <Alert variant= { 'danger' }> Birthdate must be in dd.mm.yyyy format </Alert>
-                                            <FormControl placeholder="dd.mm.yyyy" id="birthdate" />
-                                        </Col>
-                                    </Form.Row>
-                                    <br />
-                                    <Form.Row>
-                                    
-                                        <Col>
-                                        <Alert variant= { 'danger' }> Email was not in correct format </Alert>
-                                            <FormControl placeholder="email" id="email" />
-                                        </Col>
-                                    </Form.Row>
-                                    <br />
-                                    <Form.Row>
-                                        <Col>
-                                        <Alert variant= { 'danger' }> Address was not a string </Alert>
-                                            <FormControl placeholder="address" id="address" />
-                                        </Col>
-                                    </Form.Row>
-                                    <br />
-                                    <Form.Row>
-                                        <Col>
-                                        <Alert variant= { 'danger' }> Username was not a string </Alert>
-                                            <FormControl placeholder="Username" id="username" />
-                                        </Col>
-                                    </Form.Row>
-                                    <br />
-                                    <Form.Row>
-                                        <Col>
-                                        <Alert variant= { 'danger' }> Password was not a string </Alert>
-                                            <FormControl placeholder="Password" type="password" id="password" />
-                                        </Col>
-                                    </Form.Row>
-                                    <br />
-                                    <Form.Row>
-                                        <Col>
-                                            <Button type="submit" variant="primary" >Register </Button>
-                                            <Button className="buttonSpace"  type="button" variant="primary" onClick={() => close()}  >Close </Button>
-                                        </Col>
-                                    </Form.Row>
-                                </form>
-                            </Form.Group>
-                        </Card.Body>
-                    </Card>
-          
-            
+            <Card>
+                <Card.Header>Sign up</Card.Header>
+                <Card.Body>
+                    <Form.Group>
+                        <form onSubmit={createUser}>
+                            <Form.Row>
+                                <Col>
+                                    {firstNameAlert ?
+                                        <Alert variant={'danger'}>
+                                            Firstname must start with uppercasleter followed by lowercase letters
+                                      </Alert> : ''
+                                    }
+                                    <FormControl placeholder="firstname" id="firstname" />
+                                </Col>
+                            </Form.Row>
+                            <br />
+                            <Form.Row>
+                                <Col>
+                                    <Alert variant={'danger'}> Lastname must start with uppercasleter followed by lowercase letters </Alert>
+                                    <FormControl placeholder="lastname" id="lastname" />
+                                </Col>
+                            </Form.Row>
+                            <br />
+                            <Form.Row>
+                                <Col>
+                                    <Alert variant={'danger'}> Birthdate must be in dd.mm.yyyy format </Alert>
+                                    <FormControl placeholder="dd.mm.yyyy" id="birthdate" />
+                                </Col>
+                            </Form.Row>
+                            <br />
+                            <Form.Row>
+
+                                <Col>
+                                    <Alert variant={'danger'}> Email was not in correct format </Alert>
+                                    <FormControl placeholder="email" id="email" />
+                                </Col>
+                            </Form.Row>
+                            <br />
+                            <Form.Row>
+                                <Col>
+                                    <Alert variant={'danger'}> Address was not a string </Alert>
+                                    <FormControl placeholder="address" id="address" />
+                                </Col>
+                            </Form.Row>
+                            <br />
+                            <Form.Row>
+                                <Col>
+                                    <Alert variant={'danger'}> Username was not a string </Alert>
+                                    <FormControl placeholder="Username" id="username" />
+                                </Col>
+                            </Form.Row>
+                            <br />
+                            <Form.Row>
+                                <Col>
+                                    <Alert variant={'danger'}> Password was not a string </Alert>
+                                    <FormControl placeholder="Password" type="password" id="password" />
+                                </Col>
+                            </Form.Row>
+                            <br />
+                            <Form.Row>
+                                <Col>
+                                    <Button type="submit" variant="primary" >Register </Button>
+                                    <Button className="buttonSpace" type="button" variant="primary" onClick={() => close()}  >Close </Button>
+                                </Col>
+                            </Form.Row>
+                        </form>
+                    </Form.Group>
+                </Card.Body>
+            </Card>
+
+
         </div>
     );
 
