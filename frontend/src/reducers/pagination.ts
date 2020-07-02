@@ -1,6 +1,6 @@
 
 
-import { Action } from '../type'
+import { ActionPagination } from '../type'
 
 
 export const setPagination = (start: number, last: number, searchvalue: string, currentPage: number) => {
@@ -19,7 +19,7 @@ export const setPage = (currentPage: number) => {
 }
 
 
-const reducer = (state = { start: 1, last: 10, searchvalue: '', currentPage: 1 }, action: Action) => {
+const reducer = (state = { start: 1, last: 10, searchvalue: '', currentPage: 1 }, action: ActionPagination) => {
 
     switch (action.type) {
         case 'SET':

@@ -33,7 +33,6 @@ const Resultpagination: React.FC<SearchAttributes> = ({total,search}) => {
             pageNumber = Number(pageValue); 
         }
 
-         
         search({ variables: { name:  data.pagination.searchvalue, page: pageNumber} })
 
         if(pageNumber > data.pagination.last) {
@@ -61,6 +60,7 @@ const Resultpagination: React.FC<SearchAttributes> = ({total,search}) => {
         pages.push(i)
     }
 
+    console.log(total)
     
     return (
         <Pagination>

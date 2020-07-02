@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import { ApolloClient, ApolloProvider, HttpLink, InMemoryCache, ApolloLink, RequestHandler } from '@apollo/client'
+import { ApolloClient, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/client'
 import './index.css'
 import store from './store'
 import { Provider } from 'react-redux'

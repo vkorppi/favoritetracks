@@ -32,7 +32,7 @@ export interface UserType {
 
 
 
-export interface UserParamType {
+export interface UseId {
   id: string;
 }
 
@@ -44,13 +44,13 @@ export interface List2Type {
   list: string[];
 }
 
-
+/*
 export interface UserType {
   firstname: string;
   lastname: string;
   id: string;
 }
-
+*/
 
 export interface Track {
   name: string;

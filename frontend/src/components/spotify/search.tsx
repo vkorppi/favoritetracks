@@ -6,30 +6,27 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setPagination } from '../../reducers/pagination'
 import { addItem, removeItem } from '../../reducers/list'
 import { useLazyQuery } from '@apollo/client';
+
+
 import queries from '../../graphql/queries';
 
 
 
 const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
-  const [getTracks, results] = useLazyQuery(queries.search, {
+  const [getTracks, { data, error }] = useLazyQuery(queries.search, {
     fetchPolicy: "network-only", errorPolicy: 'none',
-    /*
-    // Causes endles loop
-    onError: (error) => {
-      showmessage(error.message, 'danger')
-    }
-    */
   })
 
   const listState = (state: ListType) => state
   const dataList = useSelector(listState)
 
-  const searchresult = results.data as unknown
+  const searchresult = data as unknown
   const fetchedData: QueryResult = searchresult as QueryResult
 
 
   const dispatch = useDispatch()
+  let total = 0;
 
   const searchTracks = (event: FormEvent) => {
 
@@ -42,9 +39,15 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
     input.value = ''
 
 
-    getTracks({ variables: { name: inputvalue, page: 1 } })
+    // getTracks({ variables: { name: inputvalue, page: 1 } })
+
+    getTracks({ variables: { name: inputvalue, page: 0 } })
 
     dispatch(setPagination(1, 10, inputvalue, 1))
+
+    if (error) {
+      showmessage(error?.message, 'danger')
+    }
 
   }
 
@@ -62,7 +65,10 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
     }
   }
 
-
+  if (fetchedData) {
+    total = fetchedData.search.total
+    total= Math.floor(total / 10)
+  }
 
   return (
     <div >

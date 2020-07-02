@@ -65,7 +65,7 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
           
           {data ? data.searchUser.map((user: UserType) => (
 
-            <div key={Math.ceil(Math.random() * 100000)} className="form-group row">
+            <div key={user.id} className="form-group row">
               <div className="col-xs-2">
                 <ListGroup.Item><a href={`/details/${user.id}`}>{`${user.firstname} ${user.lastname} ${user.username}`}</a></ListGroup.Item>
               </div>

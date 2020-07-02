@@ -1,18 +1,20 @@
 
 import React, { FormEvent } from 'react';
-import { Button, Card, Form, Col, FormControl } from 'react-bootstrap';
+import { Button, Card, Form, Col, FormControl, Modal } from 'react-bootstrap';
 import { BasicComponent } from "../../type";
 import { useMutation } from '@apollo/client';
 import queries from '../../graphql/queries';
-
+import { useHistory } from "react-router-dom"
 
 const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
 
     const [createNewUser] = useMutation(queries.createUser, {
         errorPolicy: 'none', onError: (error) => {
-            showmessage(error.message,'danger')
+            showmessage(error.message, 'danger')
         }
     })
+
+    const history = useHistory()
 
     const createUser = async (event: FormEvent) => {
 
@@ -30,11 +32,20 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
 
 
 
-         const success = await createNewUser({ variables: { username: username.value, password: password.value,
-         firstname: firstname.value, lastname: lastname.value,birthdate: birthdate.value,email:email.value,
-         address:address.value } });
+        const success = await createNewUser({
+            variables:
+            {
+                username: username.value,
+                password: password.value,
+                firstname: firstname.value,
+                lastname: lastname.value,
+                birthdate: birthdate.value,
+                email: email.value,
+                address: address.value
+            }
+        });
 
-   
+
         username.value = ''
         password.value = ''
         firstname.value = ''
@@ -44,70 +55,82 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
         address.value = ''
 
         if (success) {
-            showmessage('New user created','primary')
+            showmessage('New user created', 'primary')
+            history.push('/users')
         }
+
+    }
+
+    const close = () => {
+
+        history.push('/users')
+
         
     }
 
 
     return (
         <div >
-            <Card>
-                <Card.Header>Sign up</Card.Header>
-                <Card.Body>
-                    <Form.Group>
-                        <form onSubmit={createUser}>
-                            <Form.Row>
-                                <Col>
-                                    <FormControl placeholder="firstname" id="firstname" />
-                                </Col>
-                            </Form.Row>
-                            <br />
-                            <Form.Row>
-                                <Col>
-                                    <FormControl placeholder="lastname" id="lastname" />
-                                </Col>
-                            </Form.Row>
-                            <br />
-                            <Form.Row>
-                                <Col>
-                                    <FormControl placeholder="dd.mm.yyyy" id="birthdate" />
-                                </Col>
-                            </Form.Row>
-                            <br />
-                            <Form.Row>
-                                <Col>
-                                    <FormControl placeholder="email" id="email" />
-                                </Col>
-                            </Form.Row>
-                            <br />
-                            <Form.Row>
-                                <Col>
-                                    <FormControl placeholder="address" id="address" />
-                                </Col>
-                            </Form.Row>
-                            <br />
-                            <Form.Row>
-                                <Col>
-                                    <FormControl placeholder="Username" id="username" />
-                                </Col>
-                            </Form.Row>
-                            <br />
-                            <Form.Row>
-                                <Col>
-                                    <FormControl placeholder="Password" type="password" id="password" />
-                                </Col>
-                            </Form.Row>
-                            <br />
-                            <Form.Row>
-                                <Col>
-                                    <Button type="submit" variant="primary" >Register </Button>
-                                </Col>
-                            </Form.Row>
-                        </form>
-                    </Form.Group>
-                </Card.Body>
-            </Card>
+
+                    <Card>
+                        <Card.Header>Sign up</Card.Header>
+                        <Card.Body>
+                            <Form.Group>
+                                <form onSubmit={createUser}>
+                                    <Form.Row>
+                                        <Col>
+                                            <FormControl placeholder="firstname" id="firstname" />
+                                        </Col>
+                                    </Form.Row>
+                                    <br />
+                                    <Form.Row>
+                                        <Col>
+                                            <FormControl placeholder="lastname" id="lastname" />
+                                        </Col>
+                                    </Form.Row>
+                                    <br />
+                                    <Form.Row>
+                                        <Col>
+                                            <FormControl placeholder="dd.mm.yyyy" id="birthdate" />
+                                        </Col>
+                                    </Form.Row>
+                                    <br />
+                                    <Form.Row>
+                                        <Col>
+                                            <FormControl placeholder="email" id="email" />
+                                        </Col>
+                                    </Form.Row>
+                                    <br />
+                                    <Form.Row>
+                                        <Col>
+                                            <FormControl placeholder="address" id="address" />
+                                        </Col>
+                                    </Form.Row>
+                                    <br />
+                                    <Form.Row>
+                                        <Col>
+                                            <FormControl placeholder="Username" id="username" />
+                                        </Col>
+                                    </Form.Row>
+                                    <br />
+                                    <Form.Row>
+                                        <Col>
+                                            <FormControl placeholder="Password" type="password" id="password" />
+                                        </Col>
+                                    </Form.Row>
+                                    <br />
+                                    <Form.Row>
+                                        <Col>
+                                            <Button type="submit" variant="primary" >Register </Button>
+                                            <Button className="buttonSpace"  type="button" variant="primary" onClick={() => close()}  >Close </Button>
+                                        </Col>
+                                    </Form.Row>
+                                </form>
+                            </Form.Group>
+                        </Card.Body>
+                    </Card>
+          
+            
         </div>
     );
 

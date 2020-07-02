@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Button, Form, Col } from 'react-bootstrap';
+import { Button, Form, Col, Card } from 'react-bootstrap';
 import { ComponentAttribueId, ModalType } from "../../type";
 import queries from '../../graphql/queries';
 import { useQuery, useMutation } from '@apollo/client';
@@ -26,27 +26,26 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
     const [deleteUser] = useMutation(queries.deleteUser, {
         errorPolicy: 'none',
     })
-
-
-
-
-
-
+    
     const history = useHistory()
 
     if (error) {
-        showmessage(error?.message,'danger')
+        showmessage(error?.message, 'danger')
     }
 
     const removeUser = () => {
         deleteUser({ variables: { id: id } });
-        showmessage('User was deleted','primary')
+        showmessage('User was deleted', 'primary')
         history.push('/users')
     }
 
     const modifyUser = () => {
-        console.log(data2.modal.show)
         dispatch(setShow(true))
+    }
+
+    const close = () => {
+
+        history.push('/users')
     }
 
 
@@ -54,47 +53,56 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
         <div >
 
             {data ?
-                <Form.Group>
-                    <form >
-                        <Form.Row>
-                            <Col>
-                                <Form.Label>{`${data.getUser.firstname} ${data.getUser.lastname}`}</Form.Label>
-                            </Col>
-                        </Form.Row>
 
-                        <Form.Row>
-                            <Col>
-                                <Form.Label>{`${data.getUser.birthdate}`}</Form.Label>
-                            </Col>
-                        </Form.Row>
+                <Card>
+                    <Card.Header></Card.Header>
+                    <Card.Body>
+                        <Form.Group>
+                            <form >
+                                <Form.Row>
+                                    <Col>
+                                        <Form.Label className="rowPadding">{`${data.getUser.firstname} ${data.getUser.lastname}`}</Form.Label>
+                                    </Col>
+                                </Form.Row>
 
-                        <Form.Row>
-                            <Col>
-                                <Form.Label>{`${data.getUser.email}`}</Form.Label>
-                            </Col>
-                        </Form.Row>
+                                <Form.Row>
+                                    <Col>
+                                        <Form.Label className="rowPadding">{`${data.getUser.birthdate}`}</Form.Label>
+                                    </Col>
+                                </Form.Row>
 
-                        <Form.Row>
-                            <Col>
-                                <Form.Label>{`${data.getUser.address}`}</Form.Label>
-                            </Col>
-                        </Form.Row>
+                                <Form.Row>
+                                    <Col>
+                                        <Form.Label className="rowPadding">{`${data.getUser.email}`}</Form.Label>
+                                    </Col>
+                                </Form.Row>
 
-                        <Form.Row>
-                            <Col>
-                                <Form.Label>{data.getUser.username}</Form.Label>
-                            </Col>
-                        </Form.Row>
-                        <Form.Row>
-                            <Col>
-                                <Button type="button" variant="primary" id="remove" onClick={() => removeUser()}  >Delete </Button>
-                                <Button type="button" id="modify" className="buttonSpace" variant="primary" onClick={() => modifyUser()}  >Modify </Button>
-                            </Col>
-                        </Form.Row>
-                    </form>
-                    {data2 ? <ModifyUser showmessage={showmessage} user={data.getUser} show={data2.modal.show} /> : ''}
-                </Form.Group>
+                                <Form.Row>
+                                    <Col>
+                                        <Form.Label className="rowPadding">{`${data.getUser.address}`}</Form.Label>
+                                    </Col>
+                                </Form.Row>
 
+                                <Form.Row>
+                                    <Col>
+                                        <Form.Label className="rowPadding">{data.getUser.username}</Form.Label>
+                                    </Col>
+                                </Form.Row>
+                                <Form.Row>
+                                    <Col>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                        <Button type="button" variant="primary" id="remove" onClick={() => removeUser()}  >Delete </Button>
+                                        <Button type="button" id="modify" className="buttonSpace" variant="primary" onClick={() => modifyUser()}  >Modify </Button>
+                                        <Button className="buttonSpace"  type="button" variant="primary" onClick={() => close()}  >Close </Button>
+                                    </Col>
+                                </Form.Row>
+                            </form>
+                            {data2 ? <ModifyUser showmessage={showmessage} user={data.getUser} show={data2.modal.show} /> : ''}
+                        </Form.Group>
+                    </Card.Body>
+                </Card>
                 : ''}
 
         </div>
