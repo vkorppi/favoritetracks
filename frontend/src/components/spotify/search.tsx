@@ -39,9 +39,7 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
     input.value = ''
 
 
-    // getTracks({ variables: { name: inputvalue, page: 1 } })
-
-    getTracks({ variables: { name: inputvalue, page: 0 } })
+     getTracks({ variables: { name: inputvalue, page: 1 } })
 
     dispatch(setPagination(1, 10, inputvalue, 1))
 
@@ -106,7 +104,7 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
           )) : ''}
         </ListGroup>
       </Form.Group>
-      {fetchedData ? <Resultpagination total={fetchedData.search.total} search={getTracks} /> : ''}
+      {fetchedData ? <Resultpagination total={total} search={getTracks} /> : ''}
     </div>
   );
 

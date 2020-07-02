@@ -112,7 +112,7 @@ const search = async (track: string, page: number): Promise<spotifyResult> => {
     const envs = getSearchEnvs();
 
     const pageError = getMessage('number', page.toString(), false);
-    const offset = parserNum(page, pageError);
+    const offset = (parserNum(page, pageError)-1) * 10;
 	
     const trackError = getMessage('string', track, true);
     const parsedTrack = parserString(track, trackError);
