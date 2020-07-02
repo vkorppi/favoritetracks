@@ -57,8 +57,7 @@ const parseEmailUserInput = (value: any, error: string): string => {
 
 const parseBirthdate = (value: any, error: string): string => {
 
-  console.log('Debug');
-  console.log(typeguards.isDate(value));
+  console.debug(typeguards.isDate(value));
 
   if (!value || !typeguards.isString(value) || !typeguards.isDate(value)) {
 

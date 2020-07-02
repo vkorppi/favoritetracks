@@ -11,7 +11,6 @@ import bcrypt from 'bcryptjs';
 const parser = typeparsers.parseString;
 const emailParser = typeparsers.parseEmailUserInput;
 const dateParser = typeparsers.parseBirthdate;
-const env = process.env;
 import { getMessage } from '../utils/errorFunctions';
 import { getSessionEnvs } from '../utils/envFunctions';
 
@@ -21,11 +20,13 @@ const birthdateError = getMessage('format', 'birthdate', true);
 const emailError =getMessage('format', 'email', true);
 const addressError =getMessage('string', 'address', true);
 
+
 export const create = async (username: string, password: string, firstname: string, lastname: string, birthdate: string, email: string, address: string): Promise<UserType> => {
 
     const fetchedUser = await User.findOne({ username: username });
 
     const usernameError = getMessage('string', 'username', true);
+
 
 
     if (fetchedUser) {

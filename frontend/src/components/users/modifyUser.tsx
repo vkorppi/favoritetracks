@@ -1,20 +1,21 @@
 
 import React, { FormEvent } from 'react';
 import { Modal, Form, Button, Col, FormControl, Card } from 'react-bootstrap';
-import { ComponentAttributeUser } from '../../type';
+import { ComponentAttributeUser, MessageType } from '../../type';
 import { setShow } from '../../reducers/modal';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import queries from '../../graphql/queries';
 import { useHistory } from "react-router-dom"
 import { useMutation } from '@apollo/client';
+import Message from '../spotify/message';
 
 const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show }) => {
 
     const dispatch = useDispatch()
+    const selector = (state: MessageType) => state
+    const rootstate = useSelector(selector)
 
     const history = useHistory()
-
-
 
     const [updateUser] = useMutation(queries.updateUser, {
         errorPolicy: 'none',
@@ -23,7 +24,7 @@ const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show 
         }
     })
 
-    const save = (event: FormEvent) => {
+    const save = async (event: FormEvent) => {
 
         event.preventDefault()
         const form = event.target as HTMLFormElement;
@@ -34,17 +35,18 @@ const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show 
         const email = form[3] as HTMLInputElement;
         const address = form[4] as HTMLInputElement;
 
-        updateUser({
+        const success = await updateUser({
             variables: {
                 firstname: firstname.value, lastname: lastname.value,
                 birthdate: birthdate.value, email: email.value, address: address.value, id: user.id
             }
         });
 
-        dispatch(setShow(false))
-        showmessage(`User was updated: ${firstname.value} ${lastname.value}`, 'primary')
-        history.push('/users')
-
+        if (success) {
+            dispatch(setShow(false))
+            showmessage(`User was updated: ${firstname.value} ${lastname.value}`, 'primary')
+            history.push('/users')
+        }
     }
 
 
@@ -57,6 +59,7 @@ const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show 
     return (
         <Modal centered show={show}>
             <Modal.Body>
+            <Message text={rootstate.message.text} msgtype={rootstate.message.msgtype} />
                 <Card>
                     <Card.Header></Card.Header>
                     <Card.Body>

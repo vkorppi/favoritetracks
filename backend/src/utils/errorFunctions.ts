@@ -14,13 +14,13 @@ export const getMessage = (type: string, value: string,inpunFromUser:boolean): s
             return `${flag} ${value} was not a number`;
             break;
         case 'format':
-            `${flag} ${value} was not in correct format`;
+            return `${flag} ${value} was not in correct format`;
             break;
         case 'EnvString':
-            `Enviroment variable: ${value} was not a string`;
+            return `Enviroment variable: ${value} was not a string`;
             break;
         case 'EnvNumber':
-            `Enviroment variable: ${value} was not a numbers`;
+            return `Enviroment variable: ${value} was not a numbers`;
             break;
         default:
             return '';

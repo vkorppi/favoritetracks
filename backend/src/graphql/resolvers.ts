@@ -3,7 +3,7 @@ import user from '../services/user';
 import spotify from '../services/spotify';
 import { ApolloError, UserInputError } from 'apollo-server-express';
 import { MongoError } from 'mongodb';
-import { UserSchemaType, searchResult,spotifyTrackMinimal, TokenType,UserSchemaType } from '../types';
+import { UserSchemaType, searchResult, spotifyTrackMinimal, TokenType, UserSchemaType } from '../types';
 
 
 export const resolvers = {
@@ -12,23 +12,20 @@ export const resolvers = {
 
 
 
-        search: async (_root: any, args: { track: string; page: number; } ): Promise<searchResult | void> => {
+        search: async (_root: any, args: { track: string; page: number; }): Promise<searchResult | void> => {
 
             const track: string = args.track;
             const page: number = args.page;
-           // let tracks: spotifyTrack[] | null = null;
-           let tracks: spotifyTrackMinimal[] | null = null;
-           // let fetchedTracks: string[];
+
+            let tracks: spotifyTrackMinimal[] | null = null;
+
             let total: number;
 
             return track.includes('Test_') ? spotify.test(track, page) :
                 await spotify.search(track, page).then(result => {
 
                     tracks = result.tracks.items;
-                    //fetchedTracks = tracks.map(value => value.name);
                     total = result.tracks.total;
-
-                    
 
                     return { tracks: tracks, total: total };
 
@@ -96,15 +93,15 @@ export const resolvers = {
 
         },
 
-        getList: async (_root: any, args: any, userdata:UserSchemaType): Promise<void | string[]> => {
+        getList: async (_root: any, args: any, userdata: UserSchemaType): Promise<void | string[]> => {
 
-            
-             return await spotify.GetList(userdata.id).then(result => {
+
+            return await spotify.GetList(userdata.id).then(result => {
 
                 return result.items.map(value => value.track.name);
 
-             }).catch((error: Error) => {
-                
+            }).catch((error: Error) => {
+
                 console.error(error.stack);
 
                 if (error instanceof ApolloError) {
@@ -159,7 +156,7 @@ export const resolvers = {
 
         },
 
-        updateUser: async (_root: any, args: { firstname: string, lastname: string,birthdate: string,email: string,address: string, id: string }): Promise<boolean | void> => {
+        updateUser: async (_root: any, args: { firstname: string, lastname: string, birthdate: string, email: string, address: string, id: string }): Promise<boolean | void> => {
 
             const firstname: string = args.firstname;
             const lastname: string = args.lastname;
@@ -169,20 +166,24 @@ export const resolvers = {
             const address: string = args.address;
 
 
-            return await user.update(firstname, lastname,birthdate,email,address,id).then(result => {
+            return await user.update(firstname, lastname, birthdate, email, address, id).then(result => {
                 return true;
 
             }).catch((error: Error) => {
 
                 console.error(error.stack);
 
-                if (error instanceof ApolloError) {
-                    throw new ApolloError(error.message);
-                }
-                else if (error instanceof UserInputError) {
+
+                if (error instanceof UserInputError) {
+                    console.debug('UserInputError');
                     throw new UserInputError(error.message);
                 }
+                else if (error instanceof ApolloError) {
+                    console.debug('ApolloError');
+                    throw new ApolloError(error.message);
+                }
                 else if (error instanceof MongoError) {
+                    console.debug('MongoError');
                     throw new UserInputError(error.message);
                 }
 
@@ -198,7 +199,7 @@ export const resolvers = {
             const id: string = args.id;
 
             return await user.updatePassword(password, id).then(result => {
-               
+
                 return true;
 
             }).catch((error: Error) => {
@@ -224,7 +225,7 @@ export const resolvers = {
             const id: string = args.id;
 
             return await user.remove(id).then(result => {
-                
+
                 return true;
 
             }).catch((error: Error) => {
@@ -249,7 +250,7 @@ export const resolvers = {
             const password: string = args.password;
 
             return await user.login(username, password).then(result => {
-                
+
                 return result;
 
             }).catch((error: Error) => {
@@ -269,13 +270,13 @@ export const resolvers = {
         },
 
 
-        addTrackToList: async (_root: any, args: { tracks: string[] }, userdata:UserSchemaType): Promise<boolean> => {
+        addTrackToList: async (_root: any, args: { tracks: string[] }, userdata: UserSchemaType): Promise<boolean> => {
 
             const tracks: string[] = args.tracks;
 
-            
-            await spotify.AddToList(tracks,userdata.id).catch((error: Error) => {
-                
+
+            await spotify.AddToList(tracks, userdata.id).catch((error: Error) => {
+
                 console.error(error.stack);
 
                 if (error instanceof ApolloError) {
@@ -286,9 +287,9 @@ export const resolvers = {
                 }
 
             });
-            
+
             return true;
-            
+
         }
 
 
