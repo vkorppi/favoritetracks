@@ -1,10 +1,12 @@
 
 import React, { FormEvent } from 'react';
-import { Button, Card, Form, Col, FormControl, Modal } from 'react-bootstrap';
+import { Button, Card, Form, Col, FormControl, Modal, Alert } from 'react-bootstrap';
 import { BasicComponent } from "../../type";
 import { useMutation } from '@apollo/client';
 import queries from '../../graphql/queries';
 import { useHistory } from "react-router-dom"
+
+import {isInputName,isInputEmail,isInputDate,isInputString} from '../../utils/userInputValidators'
 
 const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
 
@@ -79,42 +81,50 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
                                 <form onSubmit={createUser}>
                                     <Form.Row>
                                         <Col>
+                                        <Alert variant= { 'danger' }> Firstname must start with uppercasleter followed by lowercase letters </Alert>
                                             <FormControl placeholder="firstname" id="firstname" />
                                         </Col>
                                     </Form.Row>
                                     <br />
                                     <Form.Row>
                                         <Col>
+                                        <Alert variant= { 'danger' }> Lastname must start with uppercasleter followed by lowercase letters </Alert>
                                             <FormControl placeholder="lastname" id="lastname" />
                                         </Col>
                                     </Form.Row>
                                     <br />
                                     <Form.Row>
                                         <Col>
+                                        <Alert variant= { 'danger' }> Birthdate must be in dd.mm.yyyy format </Alert>
                                             <FormControl placeholder="dd.mm.yyyy" id="birthdate" />
                                         </Col>
                                     </Form.Row>
                                     <br />
                                     <Form.Row>
+                                    
                                         <Col>
+                                        <Alert variant= { 'danger' }> Email was not in correct format </Alert>
                                             <FormControl placeholder="email" id="email" />
                                         </Col>
                                     </Form.Row>
                                     <br />
                                     <Form.Row>
                                         <Col>
+                                        <Alert variant= { 'danger' }> Address was not a string </Alert>
                                             <FormControl placeholder="address" id="address" />
                                         </Col>
                                     </Form.Row>
                                     <br />
                                     <Form.Row>
                                         <Col>
+                                        <Alert variant= { 'danger' }> Username was not a string </Alert>
                                             <FormControl placeholder="Username" id="username" />
                                         </Col>
                                     </Form.Row>
                                     <br />
                                     <Form.Row>
                                         <Col>
+                                        <Alert variant= { 'danger' }> Password was not a string </Alert>
                                             <FormControl placeholder="Password" type="password" id="password" />
                                         </Col>
                                     </Form.Row>

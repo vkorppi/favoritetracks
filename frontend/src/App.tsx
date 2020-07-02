@@ -30,8 +30,6 @@ const App: React.FC = () => {
 
   };
 
-  // location.pathname
-
   const noAlert = /details|registaration/i;
 
   const matchRoute = useRouteMatch("/details/:id")
