@@ -41,13 +41,11 @@ const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show 
         const email = form[3] as HTMLInputElement;
         const address = form[4] as HTMLInputElement;
 
-        isInputName(firstname.value) ? alertObject.firstname = false : alertObject.firstname = true
-        isInputName(lastname.value) ? alertObject.lastname = false : alertObject.lastname = true
-
-        isInputDate(birthdate.value) ? alertObject.birthdate = false : alertObject.birthdate = true
-        isInputEmail(email.value) ? alertObject.email = false : alertObject.email = true
-
-        isInputString(address.value) ? alertObject.address = false : alertObject.address = true
+        alertObject.firstname = !isInputName(firstname.value)
+        alertObject.lastname= !isInputName(lastname.value)
+        alertObject.birthdate = !isInputDate(birthdate.value) 
+        alertObject.email = !isInputEmail(email.value) 
+        alertObject.address = !isInputString(address.value) 
 
         const validationFailed =
             alertObject.firstname ||
