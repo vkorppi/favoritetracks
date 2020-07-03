@@ -14,7 +14,7 @@ const reducer = (state = {
      
         firstname: false, lastname: false, birthdate: false, email: false,
         address: false, username: false, password: false
-    
+       
 },
     action: AlertAction) => {
 

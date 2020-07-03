@@ -1,19 +1,19 @@
 
 
-import { ActionList } from '../type'
+import { ActionList,ListAttributes } from '../type'
 
-const defaultState: string[]=[]
+const defaultState: ListAttributes[]=[]
 
-export const addItem = (trackid:string) => {
+export const addItem = (uri: string, value: string) => {
 
    
-    return { type: 'ADD', data: { trackid: trackid } }
+    return { type: 'ADD', data: { uri: uri, value: value} }
 }
 
-export const removeItem = (trackid: string) => {
+export const removeItem = (uri: string) => {
 
 
-    return { type: 'REMOVE', data: { trackid: trackid } }
+    return { type: 'REMOVE', data: { uri: uri } }
 }
 
 
@@ -21,10 +21,10 @@ const reducer = (state = defaultState , action: ActionList) => {
 
     switch (action.type) {
         case 'ADD':
-            return state.concat(action.data.trackid)
+            return state.concat({uri:action.data.uri,name:action.data.name})
             
         case 'REMOVE':
-            return  state.filter((id: string) => (action.data.trackid !== id) )
+            return  state.filter((id: number) => (action.data.uri !== id) )
             
 
         default:

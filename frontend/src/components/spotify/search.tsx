@@ -1,5 +1,5 @@
 import React, { FormEvent, ChangeEvent } from 'react';
-import { BasicComponent, QueryResult, Track, ListType } from '../../type'
+import { BasicComponent, QueryResult, Track, ListType, ModalType } from '../../type'
 import { Button, ListGroup, Col, Form, FormControl, InputGroup } from 'react-bootstrap'
 import Resultpagination from './pagination';
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,6 +9,8 @@ import { useLazyQuery } from '@apollo/client';
 
 
 import queries from '../../graphql/queries';
+import { setShow } from '../../reducers/modal';
+import SelectedFavorites from './selectedFavorites';
 
 
 
@@ -17,6 +19,10 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
   const [getTracks, { data, error }] = useLazyQuery(queries.search, {
     fetchPolicy: "network-only", errorPolicy: 'none',
   })
+
+
+  const modalState = (state: ModalType) => state
+  const data2 = useSelector(modalState)
 
   const listState = (state: ListType) => state
   const dataList = useSelector(listState)
@@ -39,7 +45,7 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
     input.value = ''
 
 
-     getTracks({ variables: { name: inputvalue, page: 1 } })
+    getTracks({ variables: { name: inputvalue, page: 1 } })
 
     dispatch(setPagination(1, 10, inputvalue, 1))
 
@@ -47,6 +53,11 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
       showmessage(error?.message, 'danger')
     }
 
+  }
+
+  const save = () => {
+    dispatch(setShow(true))
+    
   }
 
   const changeFavorite = (event: ChangeEvent<HTMLInputElement>) => {
@@ -71,11 +82,12 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
   if (fetchedData) {
     total = fetchedData.search.total
-    total= Math.floor(total / 10)
+    total = Math.floor(total / 10)
   }
 
   return (
     <div >
+      <SelectedFavorites list={dataList} showmessage={showmessage}  show={data2.modal.show} />
       <Form.Group>
         <form onSubmit={searchTracks}>
           <Form.Row>
@@ -85,12 +97,12 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
           </Form.Row>
           <Form.Row>
             <Col>
-            <br/>
+              <br />
               <Button type="submit" variant="outline-primary" >Search </Button>
-              <Button type="button"  className="buttonSpace" variant="outline-info"   >Save </Button>
+              <Button type="button" className="buttonSpace" variant="outline-info" onClick={() => save()}  >Save </Button>
             </Col>
           </Form.Row>
-          <br/>
+          <br />
         </form>
         <ListGroup variant="flush">
           {fetchedData ? fetchedData.search.tracks.map((track: Track) => (

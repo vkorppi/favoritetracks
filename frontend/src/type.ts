@@ -22,6 +22,12 @@ export interface ComponentAttributeModal extends BasicComponent {
   show: boolean;
 }
 
+export interface ComponentAttributeList extends ComponentAttributeModal {
+  list: ListType;
+}
+
+
+
 
 export interface UserType {
   firstname: string;
@@ -43,9 +49,7 @@ export interface UseId {
   id: string;
 }
 
-export interface ListType {
-  list: string[];
-}
+
 
 
 export interface Track {
@@ -100,21 +104,28 @@ export type ActionModal =
     data: Modalttributes;
   }
 
-export type listAttributes =
-  {
 
-    trackid: string;
+  export interface ListAttributes {
+    uri: string;
+    name: string;
   }
 
 export type ActionList =
   {
     type: "ADD";
-    data: listAttributes;
+    data: ListAttributes;
   } |
   {
     type: "REMOVE";
-    data: listAttributes;
+    data: ListAttributes;
   };
+
+  export interface ListType {
+    list: ListAttributes;
+  }
+  
+
+  
 
 
 export type AlertType =
