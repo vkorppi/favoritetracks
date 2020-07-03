@@ -80,6 +80,13 @@ const updatePassword = gql`
   }
  `;
 
+ const addTrack = gql`
+
+ mutation AddTrackToList($tracks: [String!]!){
+  addTrackToList(tracks: $tracks)  
+  }
+ `;
+
 export default {
   search,
   createUser,
@@ -88,5 +95,6 @@ export default {
   deleteUser,
   updateUser,
   updatePassword,
-  login
+  login,
+  addTrack
 }
