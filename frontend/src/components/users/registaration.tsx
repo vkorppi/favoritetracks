@@ -38,7 +38,14 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
         const username = form[5] as HTMLInputElement;
         const password = form[6] as HTMLInputElement;
 
-        isInputName(firstname.value) ? alertObject.firstname = false : alertObject.firstname = true
+
+        if(isInputName(firstname.value)) {
+            alertObject.firstname = false
+        }
+        else {
+            alertObject.firstname = true
+        }
+
         isInputName(lastname.value) ? alertObject.lastname = false : alertObject.lastname = true
         
         isInputDate(birthdate.value) ? alertObject.birthdate = false : alertObject.birthdate = true
@@ -47,7 +54,8 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
         isInputString(address.value) ? alertObject.address = false : alertObject.address = true
         InputNotEmpty(username.value) ? alertObject.username = false : alertObject.username = true
         InputNotEmpty(password.value) ? alertObject.password = false : alertObject.password = true
-		
+        
+ 
 		
 
         const validationFailed= 

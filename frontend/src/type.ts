@@ -56,7 +56,7 @@ export interface Track {
 export interface QueryResult {
 
   search: SearchResult;
-  
+
 }
 
 export interface SearchResult {
@@ -99,7 +99,7 @@ export type ActionModal =
     type: "SET_SHOW";
     data: Modalttributes;
   }
- 
+
 export type listAttributes =
   {
 
@@ -117,39 +117,33 @@ export type ActionList =
   };
 
 
-  export type AlertType =
+export type AlertType =
   {
     alert: AlertAttributes;
-  } 
+  }
 
-  export type AlertAction =
+export type AlertAction =
   {
     type: "SET";
     data: AlertAttributes;
-  } 
-
-  export type AlertAttributes = {
-	
-    firstname: boolean;
-    lastname: boolean;
-    birthdate: boolean;
-    email: boolean;
-    address: boolean;
-    username: boolean;
-    password: boolean;	
   }
 
+export type AlertAttributes = {
 
-  export interface PaginationType {
-    pagination: PaginationAttributes;
-  }
-  
-  export interface PaginationAttributes {
-    start: number;
-    last: number;
-    searchvalue: string;
-    currentPage: number;
-  }
+  [key: string]: boolean;
+}
+
+
+export interface PaginationType {
+  pagination: PaginationAttributes;
+}
+
+export interface PaginationAttributes {
+  start: number;
+  last: number;
+  searchvalue: string;
+  currentPage: number;
+}
 
 export type ActionPagination =
   {
