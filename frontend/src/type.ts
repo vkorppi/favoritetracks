@@ -106,8 +106,7 @@ export type ActionModal =
 
 
   export interface ListAttributes {
-    uri: string;
-    name: string;
+    [key: string]: string;
   }
 
 export type ActionList =

@@ -1,6 +1,6 @@
 import React, { FormEvent, ChangeEvent } from 'react';
-import { ComponentAttributeList, Track } from '../../type'
-import { Button, ListGroup, Col, Form, FormControl, Modal, Card, InputGroup } from 'react-bootstrap'
+import { ComponentAttributeList } from '../../type'
+import { Button, ListGroup, Col, Form, Modal, Card, InputGroup } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { addItem, removeItem } from '../../reducers/list'
 import { setShow } from '../../reducers/modal';
@@ -25,19 +25,24 @@ const SelectedFavorites: React.FC<ComponentAttributeList> = ({ show, list }) => 
 
     const input = event.target as HTMLInputElement
 
+    const value = input.parentNode?.nextSibling?.textContent as string;
+    const key = input.value
+    
+
     if (input.checked === true) {
 
-      dispatch(addItem(input.value))
+      dispatch(addItem(key,value))
     }
     else {
 
-      dispatch(removeItem(input.value))
+      dispatch(removeItem(key))
     }
   }
 
   const close = () => {
 
     dispatch(setShow(false))
+   
   }
 
 
@@ -51,16 +56,13 @@ const SelectedFavorites: React.FC<ComponentAttributeList> = ({ show, list }) => 
             <Form.Group>
               <form onSubmit={saveTracks}>
                 <ListGroup variant="flush">
-                  {list ? list.list.map((uri: string) => (
+                  {list ? Object.keys(list.list).map((uri: string) => (
 
                     <Form.Row key={uri} >
                       <Col>
-                        <InputGroup.Prepend>
-
-                         
+                        <InputGroup.Prepend>            
                             <InputGroup.Checkbox defaultChecked onChange={changeSelected} value={uri} />
-                          
-                          <ListGroup.Item>{uri}</ListGroup.Item>
+                          <ListGroup.Item>{list.list[uri]}</ListGroup.Item>
                         </InputGroup.Prepend>
 
                       </Col>

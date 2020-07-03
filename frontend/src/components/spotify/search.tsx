@@ -16,6 +16,7 @@ import SelectedFavorites from './selectedFavorites';
 
 const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
+
   const [getTracks, { data, error }] = useLazyQuery(queries.search, {
     fetchPolicy: "network-only", errorPolicy: 'none',
   })
@@ -66,17 +67,17 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
     console.log(input.parentNode?.nextSibling?.textContent)
 
-    const key = input.parentNode?.nextSibling?.textContent;
-
+    const value = input.parentNode?.nextSibling?.textContent as string;
+    const key = input.value
 
 
     if (input.checked === true) {
 
-      dispatch(addItem(input.value))
+      dispatch(addItem(key,value))
     }
     else {
 
-      dispatch(removeItem(input.value))
+      dispatch(removeItem(key))
     }
   }
 
@@ -87,7 +88,7 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
   return (
     <div >
-      <SelectedFavorites list={dataList} showmessage={showmessage}  show={data2.modal.show} />
+      <SelectedFavorites list={dataList} showmessage={showmessage}   show={data2.modal.show} />
       <Form.Group>
         <form onSubmit={searchTracks}>
           <Form.Row>
@@ -111,7 +112,7 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
               <Col>
                 <InputGroup.Prepend>
 
-                  {dataList.list.includes(track.uri) ?
+                  {dataList.list[track.uri] ?
                     <InputGroup.Checkbox onChange={changeFavorite} defaultChecked value={track.uri} />
                     :
                     <InputGroup.Checkbox onChange={changeFavorite} value={track.uri} />
