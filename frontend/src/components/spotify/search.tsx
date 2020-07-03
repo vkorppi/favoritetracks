@@ -86,10 +86,11 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
           <Form.Row>
             <Col>
             <br/>
-              <Button type="submit" variant="primary" >Search </Button>
-              <Button type="button"  className="buttonSpace" variant="primary"   >Save </Button>
+              <Button type="submit" variant="outline-primary" >Search </Button>
+              <Button type="button"  className="buttonSpace" variant="outline-info"   >Save </Button>
             </Col>
           </Form.Row>
+          <br/>
         </form>
         <ListGroup variant="flush">
           {fetchedData ? fetchedData.search.tracks.map((track: Track) => (
