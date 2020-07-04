@@ -50,6 +50,15 @@ const getUser = gql`
       }
     }`;
 
+  const getList = gql`
+  query {
+    getList {
+        name,
+        uri
+    }
+  }`
+  ;
+
 const deleteUser = gql`
 
   mutation Remove($id: String!){
@@ -90,6 +99,13 @@ const updatePassword = gql`
   }
  `;
 
+ const removeTrack = gql`
+
+ mutation removeItem($tracks: [String!]!){
+   removeItem(tracks: $tracks) 
+     
+   }`;
+
 export default {
   search,
   createUser,
@@ -99,5 +115,7 @@ export default {
   updateUser,
   updatePassword,
   login,
-  addTrack
+  addTrack,
+  getList,
+  removeTrack
 }

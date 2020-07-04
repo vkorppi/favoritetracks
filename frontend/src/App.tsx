@@ -10,6 +10,7 @@ import UserSearch from './components/users/userSearch';
 import Details from './components/users/userDetails';
 import Login from './components/users/login';
 import { useRouteMatch, Route, Switch, useLocation } from 'react-router-dom';
+import Favorites from './components/spotify/favorites';
 
 
 const App: React.FC = () => {
@@ -51,7 +52,7 @@ const App: React.FC = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link href="/">Tracks</Nav.Link>
-            <Nav.Link href="#Favorites">Favorites</Nav.Link>
+            <Nav.Link href="/favorites">Favorites</Nav.Link>
             <Nav.Link href="#Published">Published</Nav.Link>
             <Nav.Link href="/users">Users</Nav.Link>
             <Nav.Link href="#Roles">Roles</Nav.Link>
@@ -79,6 +80,9 @@ const App: React.FC = () => {
           <div className="col-xs-2">
 
             <Switch>
+            <Route path="/favorites">
+                <Favorites showmessage={showAlert} />
+              </Route>
               <Route path="/login">
                 <Login showmessage={showAlert} />
               </Route>

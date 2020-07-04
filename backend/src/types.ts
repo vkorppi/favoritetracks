@@ -69,6 +69,12 @@ export interface spotifyTrackMinimal {
   external_urls:ExternalUrlType
 }
 
+export interface spotifyTrackCapsulated {
+
+  track:spotifyTrackMinimal
+
+}
+
 export interface ExternalUrlType {
   spotify: string,
 }

@@ -406,7 +406,10 @@ describe('Testing spotify mutations and queries that require authorization heade
 		const favoritesQuery = gql`
 
 		query {
-			getList
+			getList {
+				name,
+				uri
+			}
 		}`;
 
 		interface dataType2 {

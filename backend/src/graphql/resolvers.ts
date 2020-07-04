@@ -3,7 +3,7 @@ import user from '../services/user';
 import spotify from '../services/spotify';
 import { ApolloError, UserInputError } from 'apollo-server-express';
 import { MongoError } from 'mongodb';
-import { UserSchemaType, searchResult, spotifyTrackMinimal, TokenType, UserSchemaType } from '../types';
+import { UserSchemaType, searchResult, spotifyTrackMinimal, TokenType, UserSchemaType,spotifyTrackCapsulated, spotifyTrackMinimal2 } from '../types';
 
 
 export const resolvers = {
@@ -92,13 +92,13 @@ export const resolvers = {
             });
 
         },
+        
+        getList: async (_root: any, args: any, userdata: UserSchemaType): Promise<void | spotifyTrackMinimal2[]> => {
 
-        getList: async (_root: any, args: any, userdata: UserSchemaType): Promise<void | string[]> => {
-
-
-            return await spotify.GetList(userdata.id).then(result => {
-
-                return result.items.map(value => value.track.name);
+        
+            return await spotify.GetList(userdata.id).then(result => {                
+                
+                return result.items.map(value => ({ name: value.track.name, uri: value.track.uri }));
 
             }).catch((error: Error) => {
 
@@ -114,9 +114,6 @@ export const resolvers = {
             });
 
         },
-
-        
-
 
     },
     Mutation: {
