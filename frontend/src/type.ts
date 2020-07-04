@@ -32,6 +32,7 @@ export interface ComponentInput {
   inputMessage: string;
   id: string;
   type: string;
+  defaultInput: string;
 }
 
 

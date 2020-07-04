@@ -4,7 +4,7 @@ import { FormControl, Alert } from 'react-bootstrap';
 import { ComponentInput } from '../../type';
 
 
-const InputForm: React.FC<ComponentInput> = ({ hasError, errorMessage, inputMessage, id, type }) => {
+const InputForm: React.FC<ComponentInput> = ({ hasError, errorMessage, inputMessage, id, type, defaultInput }) => {
 
     return (
 
@@ -12,7 +12,7 @@ const InputForm: React.FC<ComponentInput> = ({ hasError, errorMessage, inputMess
             {
                 hasError ? <Alert variant={'danger'}>{errorMessage}</Alert> : ''
             }
-            <FormControl placeholder={inputMessage} id={id} type={type} />
+            <FormControl defaultValue={defaultInput} placeholder={inputMessage} id={id} type={type} />
 
         </div>
 

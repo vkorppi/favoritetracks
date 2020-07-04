@@ -1,6 +1,6 @@
 
 import React, { FormEvent } from 'react';
-import { Modal, Form, Button, Col, FormControl, Card,Alert } from 'react-bootstrap';
+import { Modal, Form, Button, Col, Card } from 'react-bootstrap';
 import { ComponentAttributeUser, MessageType, AlertType } from '../../type';
 import { setShow } from '../../reducers/modal';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +8,6 @@ import queries from '../../graphql/queries';
 import { useHistory } from "react-router-dom"
 import { useMutation } from '@apollo/client';
 import Message from '../spotify/message';
-import { isInputName, isInputEmail, isInputDate, isInputString } from '../../utils/userInputValidators'
 import { setAlerts } from "../../reducers/alerts";
 import InputForm from '../forms/input';
 import { validateAlert, validationFailed } from '../../utils/alertMessageControllers';
@@ -43,24 +42,21 @@ const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show 
         const email = form[3] as HTMLInputElement;
         const address = form[4] as HTMLInputElement;
 
-        alertObject.firstname = !isInputName(firstname.value)
-        alertObject.lastname= !isInputName(lastname.value)
-        alertObject.birthdate = !isInputDate(birthdate.value) 
-        alertObject.email = !isInputEmail(email.value) 
-        alertObject.address = !isInputString(address.value) 
-
-        const validationFailed =
-            alertObject.firstname ||
-            alertObject.lastname ||
-            alertObject.birthdate ||
-            alertObject.email ||
-            alertObject.address ||
-            alertObject.username ||
-            alertObject.password
+        validateAlert(
+            alertObject,
+            [
+                firstname.value,
+                lastname.value,
+                birthdate.value,
+                email.value,
+                address.value,
+                'empty',
+                'empty'
+            ])
 
         dispatch(setAlerts(alertObject))
 
-        if (!validationFailed) {
+        if (!validationFailed(alertObject)) {
 
             const success = await updateUser({
                 variables: {
@@ -96,66 +92,64 @@ const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show 
                                 <form onSubmit={save}>
                                     <Form.Row>
                                         <Col>
-                                        {
-                                    alertObject.firstname ?
-                                    <Alert variant={'danger'}>
-                                        Firstname must start with uppercasleter followed by lowercase letters
-                                    </Alert>
-                                        : ''
-                                    }
-                                    <FormControl defaultValue={user.firstname} placeholder="firstname" id="firstname" />
+                                        <InputForm
+                                        hasError={alertObject.firstname}
+                                        errorMessage={'Firstname must start with uppercasleter followed by lowercase letters'}
+                                        inputMessage={'firstname'}
+                                        id={'firstname'}
+                                        type={'text'}
+                                        defaultInput={user.firstname}/>
                                         </Col>
                                     </Form.Row>
                                     <br />
                                     <Form.Row>
                                         <Col>
-                                        {
-                                    alertObject.lastname ?
-                                    <Alert variant={'danger'}>
-                                        Lastname must start with uppercasleter followed by lowercase letters
-                                    </Alert>
-                                        : ''
-                                    }
-                                    <FormControl defaultValue={user.lastname} placeholder="lastname" id="lastname" />
+                                        <InputForm
+                                        hasError={alertObject.lastname}
+                                        errorMessage={'Lastname must start with uppercasleter followed by lowercase letters'}
+                                        inputMessage={'lastname'}
+                                        id={'lastname'}
+                                        type={'text'}
+                                        defaultInput={user.lastname}/>
                                         </Col>
                                     </Form.Row>
                                     <br />
                                     <Form.Row>
                                         <Col>
-                                        {
-                                    alertObject.birthdate ?
-                                    <Alert variant={'danger'}>
-                                         Birthdate must be in dd.mm.yyyy format
-                                     </Alert>
-                                        : ''
-                                    }
-                                    <FormControl defaultValue={user.birthdate} placeholder="dd.mm.yyyy" id="birthdate" />
+                                        <InputForm
+                                        hasError={alertObject.birthdate}
+                                        errorMessage={'Birthdate must be in dd.mm.yyyy format'}
+                                        inputMessage={'dd.mm.yyyy'}
+                                        id={'birthdate'}
+                                        type={'text'}
+                                        defaultInput={user.birthdate}/>
                                         </Col>
                                     </Form.Row>
                                     <br />
                                     <Form.Row>
                                         <Col>
-                                        {
-                                    alertObject.email ?
-                                    <Alert variant={'danger'}>
-                                         Email was not in correct format
-                                     </Alert>
-                                        : ''
-                                    }
-                                    <FormControl defaultValue={user.email} placeholder="email" id="email" />
+                                        <InputForm
+                                        hasError={alertObject.email}
+                                        errorMessage={'Email was not in correct format'}
+                                        inputMessage={'email'}
+                                        id={'email'}
+                                        type={'text'}
+                                        defaultInput={user.email}/>
                                         </Col>
                                     </Form.Row>
                                     <br />
                                     <Form.Row>
                                         <Col>
-                                        {
-                                    alertObject.address ?
-                                    <Alert variant={'danger'}>
-                                         Address was not a string
-                                    </Alert>
-                                    : ''
-                                    }
-                                    <FormControl defaultValue={user.address} placeholder="address" id="address" />
+                                        <InputForm
+                                        hasError={alertObject.address}
+                                        errorMessage={
+                                            'Address must start with uppecase letter followed by lowercase letters. ' 
+                                            +'Lowercase letters needs to be followed by space and numbers'
+                                        }
+                                        inputMessage={'address'}
+                                        id={'address'}
+                                        type={'text'}
+                                        defaultInput={user.address}/>
                                         </Col>
                                     </Form.Row>
                                     <br />

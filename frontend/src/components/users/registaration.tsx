@@ -102,12 +102,13 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
                         <form onSubmit={createUser}>
                             <Form.Row>
                                 <Col>
-                                    <InputForm
+                                    <InputForm 
                                         hasError={alertObject.firstname}
                                         errorMessage={'Firstname must start with uppercasleter followed by lowercase letters'}
                                         inputMessage={'firstname'}
                                         id={'firstname'}
                                         type={'text'}
+                                        defaultInput={''}
                                     />
                                 </Col>
                             </Form.Row>
@@ -120,6 +121,7 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
                                         inputMessage={'lastname'}
                                         id={'lastname'}
                                         type={'text'}
+                                        defaultInput={''}
                                     />
                                 </Col>
                             </Form.Row>
@@ -132,6 +134,7 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
                                         inputMessage={'dd.mm.yyyy'}
                                         id={'birthdate'}
                                         type={'text'}
+                                        defaultInput={''}
                                     />
                                 </Col>
                             </Form.Row>
@@ -144,6 +147,7 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
                                         inputMessage={'email'}
                                         id={'email'}
                                         type={'text'}
+                                        defaultInput={''}
                                     />
                                 </Col>
                             </Form.Row>
@@ -159,6 +163,7 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
                                         inputMessage={'address'}
                                         id={'address'}
                                         type={'text'}
+                                        defaultInput={''}
                                     />
                                 </Col>
                             </Form.Row>
@@ -171,6 +176,7 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
                                         inputMessage={'username'}
                                         id={'username'}
                                         type={'text'}
+                                        defaultInput={''}
                                     />
                                 </Col>
                             </Form.Row>
@@ -183,6 +189,7 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
                                         inputMessage={'password'}
                                         id={'password'}
                                         type={'password'}
+                                        defaultInput={''}
                                     />
                                 </Col>
                             </Form.Row>
