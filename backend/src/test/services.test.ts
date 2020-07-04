@@ -276,7 +276,7 @@ describe('Testing services that use database and spotify', () => {
     await User.deleteMany({});
 
     const testuser: UserSchemaType = {
-      username: 'usernameTest',
+      username: 'user919',
       password: hashPassword('passwordTest'),
       firstname: 'firstnameTest',
       lastname: 'lastnameTest'
@@ -291,11 +291,11 @@ describe('Testing services that use database and spotify', () => {
 
   test("service updates user's favorites with created trackslist", async () => {
 
-    const fetchedUser = await User.findOne({ username: 'usernameTest' });
+    const fetchedUser = await User.findOne({ username: 'user919' });
 
-    await spotify.CreateList('usernameTest', fetchedUser?.id);
+    await spotify.CreateList('user919', fetchedUser?.id);
 
-    const fetchedUser2 = await User.findOne({ username: 'usernameTest' });
+    const fetchedUser2 = await User.findOne({ username: 'user919' });
 
     expect(fetchedUser2?.favorites).toBeTruthy();
 
@@ -304,7 +304,7 @@ describe('Testing services that use database and spotify', () => {
 
   test("service adds tracks to user's list and does not fail", async () => {
 
-    const fetchedUser = await User.findOne({ username: 'usernameTest' });
+    const fetchedUser = await User.findOne({ username: 'user919' });
 
     await spotify.AddToList(
       [
@@ -313,16 +313,17 @@ describe('Testing services that use database and spotify', () => {
       ],
       fetchedUser?.id);
 
-    const fetchedUser2 = await User.findOne({ username: 'usernameTest' });
+    const fetchedUser2 = await User.findOne({ username: 'user919' });
 
     expect(fetchedUser2?.favorites).toBeTruthy();
 
   });
+  
 
   test("Added tracks can be fetched from spotify", async () => {
 
 
-    const fetchedUser = await User.findOne({ username: 'usernameTest' });
+    const fetchedUser = await User.findOne({ username: 'user919' });
 
     const id = fetchedUser?.id as string;
 
@@ -331,6 +332,26 @@ describe('Testing services that use database and spotify', () => {
     expect(list.items.length).toBe(2);
 
   });
+
+  
+
+  test("service removes added tracks", async () => {
+
+    const fetchedUser = await User.findOne({ username: 'user919' });
+
+    const id = fetchedUser?.id as string;
+
+    await spotify.removeItem(id,[
+      'spotify:track:59LSFQW38CnzJylvtYJKJu',
+      'spotify:track:6sXK5j92V7XpaIUH2w5GRb'
+    ]);
+
+    const list =await spotify.GetList(id);
+
+    expect(list.items.length).toBe(0);
+
+  });
+  
 
 
   afterAll(async () => {

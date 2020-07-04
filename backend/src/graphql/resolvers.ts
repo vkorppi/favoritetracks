@@ -113,7 +113,9 @@ export const resolvers = {
 
             });
 
-        }
+        },
+
+        
 
 
     },
@@ -276,6 +278,28 @@ export const resolvers = {
 
 
             await spotify.AddToList(tracks, userdata.id).catch((error: Error) => {
+
+                console.error(error.stack);
+
+                if (error instanceof ApolloError) {
+                    throw new ApolloError(error.message);
+                }
+                else if (error instanceof UserInputError) {
+                    throw new UserInputError(error.message);
+                }
+
+            });
+
+            return true;
+
+        },
+
+        removeItem: async (_root: any, args: { tracks: string[] }, userdata: UserSchemaType): Promise<boolean> => {
+
+            const tracks: string[] = args.tracks;
+
+
+            await spotify.removeItem(userdata.id,tracks).catch((error: Error) => {
 
                 console.error(error.stack);
 

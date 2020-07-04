@@ -235,7 +235,35 @@ const GetList = async (userId: string): Promise<favoritesSearchResult> => {
 
 };
 
-// const removeItem = async (userId: string): Promise<boolean> => {};
+const removeItem = async (userId: string,tracks:string[]): Promise<string | void> => {
+
+    if (hasSessionExpired()) {
+        await CreateNewSession();
+    }
+
+    const token = getSessionToken();
+
+    const { trackpart1, trackpart3 } = getTracktEnvs();
+
+    let listid = '';
+
+    const fetcheduser = await user.getUser(userId);
+    listid = fetcheduser?.favorites as string;
+
+    const url = trackpart1 + listid + trackpart3;
+
+    const requestBody = {
+        "uris": tracks
+    };
+
+    const headers = {
+        'Content-Type': 'application/json'
+        , 'authorization': 'Bearer ' + token
+    };
+
+    return await axios.delete(url,{ data: requestBody, headers:headers });
+
+ };
 
 
 
@@ -251,29 +279,25 @@ const test = (track: string, page: number): searchResult => {
 
     let testdata = {
         "tracks": [
-            "test1",
-            "test2",
-            "test3",
-            "test4",
-            "test5",
-            "test6",
-            "test7",
-            "test8",
-            "test9",
-            "test10"
+            {name:'test1',uri:'test1uri',external_urls:{spotify:'url1'}},
+            {name:'test2',uri:'test2uri',external_urls:{spotify:'url2'}},
+            {name:'test3',uri:'test3uri',external_urls:{spotify:'url3'}},
+            {name:'test4',uri:'test4uri',external_urls:{spotify:'url4'}},
+            {name:'test5',uri:'test5uri',external_urls:{spotify:'url5'}}       
         ],
         "total": 90
     };
 
+    
     switch (track) {
         case "Test_TotalUnderTen":
             testdata = {
                 "tracks": [
-                    "test1",
-                    "test2",
-                    "test3",
-                    "test4",
-                    "test5"
+            {name:'test1',uri:'test1uri',external_urls:{spotify:'url1'}},
+            {name:'test2',uri:'test2uri',external_urls:{spotify:'url2'}},
+            {name:'test3',uri:'test3uri',external_urls:{spotify:'url3'}},
+            {name:'test4',uri:'test4uri',external_urls:{spotify:'url4'}},
+            {name:'test5',uri:'test5uri',external_urls:{spotify:'url5'}}     
                 ],
                 "total": 5
             };
@@ -281,16 +305,11 @@ const test = (track: string, page: number): searchResult => {
         case "Test_Total15":
             testdata = {
                 "tracks": [
-                    "test1",
-                    "test2",
-                    "test3",
-                    "test4",
-                    "test5",
-                    "test6",
-                    "test7",
-                    "test8",
-                    "test9",
-                    "test10",
+            {name:'test1',uri:'test1uri',external_urls:{spotify:'url1'}},
+            {name:'test2',uri:'test2uri',external_urls:{spotify:'url2'}},
+            {name:'test3',uri:'test3uri',external_urls:{spotify:'url3'}},
+            {name:'test4',uri:'test4uri',external_urls:{spotify:'url4'}},
+            {name:'test5',uri:'test5uri',external_urls:{spotify:'url5'}}     
                 ],
                 "total": 15
             };
@@ -298,16 +317,17 @@ const test = (track: string, page: number): searchResult => {
         case "Test_Total15_11":
             testdata = {
                 "tracks": [
-                    "test11",
-                    "test12",
-                    "test13",
-                    "test14",
-                    "test15"
+            {name:'test1',uri:'test1uri',external_urls:{spotify:'url1'}},
+            {name:'test2',uri:'test2uri',external_urls:{spotify:'url2'}},
+            {name:'test3',uri:'test3uri',external_urls:{spotify:'url3'}},
+            {name:'test4',uri:'test4uri',external_urls:{spotify:'url4'}},
+            {name:'test5',uri:'test5uri',external_urls:{spotify:'url5'}}     
                 ],
                 "total": 15
             };
             break;
     }
+    
 
     return testdata;
 };
@@ -320,5 +340,6 @@ export default {
     AddToList,
     CreateList,
     GetList,
-    test
+    test,
+    removeItem
 };

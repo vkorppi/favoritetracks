@@ -50,6 +50,9 @@ type Mutation {
     tracks: [String!]!
   ): Boolean 
 
+  removeItem(
+    tracks: [String!]!
+  ): Boolean 
 }
 
 type searchResult {

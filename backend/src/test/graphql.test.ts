@@ -348,17 +348,17 @@ describe('Testing spotify mutations and queries that require authorization heade
 		await userTest.save();
 
 		const token = sign({ username: userTest.username, id: userTest.id as string }, secret);
-		
+
 
 		clientWithHeaders = new ApolloClient({
 
 			uri: 'http://localhost:4000/graphql',
 
-			
+
 			request: config => {
 				config.setContext({ headers: { authorization: `bearer ${token}`, }, });
 			},
-			
+
 
 		});
 
@@ -366,7 +366,7 @@ describe('Testing spotify mutations and queries that require authorization heade
 
 	test('New tracks should be added without any failures', async () => {
 
-		
+
 		const usermutation = gql`
 
 		mutation AddTrackToList($tracks: [String!]!){
@@ -377,12 +377,14 @@ describe('Testing spotify mutations and queries that require authorization heade
 		const user = await User.findOne({ username: 'usernameTest' });
 		const id = user?.id as string;
 
-		const success=await clientWithHeaders.mutate({
-			variables: { tracks: 
-				[ 
-					'spotify:track:59LSFQW38CnzJylvtYJKJu',
-					'spotify:track:6sXK5j92V7XpaIUH2w5GRb'
-				], userId: id },
+		const success = await clientWithHeaders.mutate({
+			variables: {
+				tracks:
+					[
+						'spotify:track:59LSFQW38CnzJylvtYJKJu',
+						'spotify:track:6sXK5j92V7XpaIUH2w5GRb'
+					], userId: id
+			},
 			mutation: usermutation
 		});
 
@@ -395,7 +397,7 @@ describe('Testing spotify mutations and queries that require authorization heade
 		}
 
 		const content = success as dataType;
-		
+
 		expect(content.data.addTrackToList).toBe(true);
 	});
 
@@ -414,17 +416,53 @@ describe('Testing spotify mutations and queries that require authorization heade
 		interface dataType {
 			data: dataType2;
 		}
-		
+
 
 		const fetcheduser = (await clientWithHeaders.query({
 			query: favoritesQuery
 		})) as dataType;
 
-		const items =fetcheduser.data.getList;
+		const items = fetcheduser.data.getList;
 
 		expect(items.length).toBe(2);
 
 	});
+
+	test("Mutation removes tracks", async () => {
+
+		const RemoveTracksmutation = gql`
+
+		mutation removeItem($tracks: [String!]!){
+			removeItem(tracks: $tracks) 
+				
+		  }`;
+
+		  const success = await clientWithHeaders.mutate({
+			variables: {
+				tracks:
+					[
+						'spotify:track:59LSFQW38CnzJylvtYJKJu',
+						'spotify:track:6sXK5j92V7XpaIUH2w5GRb'
+					]
+			},
+			mutation: RemoveTracksmutation
+		});
+
+		interface dataType2 {
+			removeItem: boolean;
+		}
+
+		interface dataType {
+			data: dataType2;
+		}
+
+		const content = success as dataType;
+
+		expect(content.data.removeItem).toBe(true);
+
+	});
+
+
 
 	afterAll(async () => {
 		await User.deleteMany({});
