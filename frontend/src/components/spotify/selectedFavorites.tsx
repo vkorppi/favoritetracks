@@ -18,15 +18,27 @@ const SelectedFavorites: React.FC<ComponentAttributeList> = ({ show, list,showme
     }
 })
 
+const dispatch = useDispatch()
 
+const close = () => {
 
-  const dispatch = useDispatch()
+  dispatch(setShow(false))
+ 
+}
 
-  const saveTracks = (event: FormEvent) => {
+  const saveTracks = async () => {
 
     console.log(Object.keys(list.list))
 
-    event.preventDefault()
+    const success = await addTrack({
+      variables:
+      {
+          tracks: Object.keys(list.list)
+      }
+  });
+  
+  
+  close();
 
 
   }
@@ -43,23 +55,24 @@ const SelectedFavorites: React.FC<ComponentAttributeList> = ({ show, list,showme
 
     if (input.checked === true) {
 
-      checkbox.checked=true
+      if(checkbox) {
+
+        checkbox.checked=true
+      }
 
       dispatch(addItem(key,value))
     }
     else {
   
-      checkbox.checked=false
+      if(checkbox) {
+
+        checkbox.checked=false
+      }
 
       dispatch(removeItem(key))
     }
   }
 
-  const close = () => {
-
-    dispatch(setShow(false))
-   
-  }
 
 
 
@@ -70,7 +83,7 @@ const SelectedFavorites: React.FC<ComponentAttributeList> = ({ show, list,showme
           <Card.Header></Card.Header>
           <Card.Body>
             <Form.Group>
-              <form onSubmit={saveTracks}>
+              <form >
                 <ListGroup variant="flush">
                   {list ? Object.keys(list.list).map((uri: string) => (
 
@@ -91,7 +104,7 @@ const SelectedFavorites: React.FC<ComponentAttributeList> = ({ show, list,showme
                 <Form.Row>
                   <Col>
                     <br />
-                    <Button type="submit" className="buttonSpace" variant="primary"   >Ok </Button>
+                    <Button type="button" className="buttonSpace" variant="primary"   onClick={() => saveTracks()}   >Ok </Button>
                     <Button className="buttonSpace" type="button" variant="primary" onClick={() => close()}  >Close </Button>
                   </Col>
                 </Form.Row>
