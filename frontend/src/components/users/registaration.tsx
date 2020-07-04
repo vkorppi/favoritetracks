@@ -1,14 +1,14 @@
 
 import React, { FormEvent } from 'react';
 import { Button, Card, Form, Col } from 'react-bootstrap';
-import { BasicComponent, AlertType,AlertAttributes } from "../../type";
+import { BasicComponent, AlertType } from "../../type";
 import { useMutation } from '@apollo/client';
 import queries from '../../graphql/queries';
 import { useHistory } from "react-router-dom"
-import { isInputName, isInputEmail, isInputDate, isInputaAddress, InputNotEmpty } from '../../utils/userInputValidators'
 import { useSelector, useDispatch } from 'react-redux';
 import { setAlerts } from "../../reducers/alerts";
 import InputForm from '../forms/input';
+import { validateAlert, validationFailed } from '../../utils/alertMessageControllers';
 
 const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
 
@@ -24,31 +24,6 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
     })
 
     const history = useHistory()
-
-    const validateAlert = (object: AlertAttributes,values: string[]): AlertAttributes => {
-
-        object.firstname = !isInputName(values[0])
-        object.lastname = !isInputName(values[1])
-        object.birthdate = !isInputDate(values[2])
-        object.email = !isInputEmail(values[3])
-        object.address = !isInputaAddress(values[4])
-        object.username = !InputNotEmpty(values[5])
-        object.password = !InputNotEmpty(values[6])
-
-        return object
-    }
-
-    const validationFailed = (object: AlertAttributes): boolean => {
-
-        return  object.firstname ||
-        object.lastname ||
-        object.birthdate ||
-        object.email ||
-        object.address ||
-        object.username ||
-        object.password
-    }
-
 
     const createUser = async (event: FormEvent) => {
 

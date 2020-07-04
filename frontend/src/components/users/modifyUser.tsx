@@ -10,6 +10,8 @@ import { useMutation } from '@apollo/client';
 import Message from '../spotify/message';
 import { isInputName, isInputEmail, isInputDate, isInputString } from '../../utils/userInputValidators'
 import { setAlerts } from "../../reducers/alerts";
+import InputForm from '../forms/input';
+import { validateAlert, validationFailed } from '../../utils/alertMessageControllers';
 
 const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show }) => {
 
