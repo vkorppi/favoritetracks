@@ -49,12 +49,14 @@ export interface UseId {
   id: string;
 }
 
-
-
-
 export interface Track {
   name: string;
   uri: string;
+  external_urls: ExternalUrlsType;
+}
+
+export interface ExternalUrlsType {
+  spotify: string;
 }
 
 export interface QueryResult {

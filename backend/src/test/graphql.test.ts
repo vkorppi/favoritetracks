@@ -41,7 +41,10 @@ describe('Testing spotify', () => {
 			{
       			tracks {
 					name,
-					uri
+					uri,
+					external_urls {
+						spotify
+					  }
 				  }
       			total
     		}

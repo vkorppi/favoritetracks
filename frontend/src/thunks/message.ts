@@ -12,12 +12,12 @@ export const showMessage = (
   if(timeid === 0) {
     dispatch(setMessage(message,messageType)) 
     
-    /*
+    
       timeid=window.setTimeout(() => {
           dispatch(clearMessage())
           timeid=0
         }, time)
-        */
+      
     }
     
   }

@@ -7,7 +7,10 @@ import { gql } from '@apollo/client'
      {
       tracks {
           name,
-          uri
+          uri,
+          external_urls {
+            spotify
+          }
         }
         total
       }

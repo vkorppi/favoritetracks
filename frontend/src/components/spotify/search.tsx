@@ -31,6 +31,10 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
   const searchresult = data as unknown
   const fetchedData: QueryResult = searchresult as QueryResult
 
+  if(fetchedData)
+  {
+    console.log(fetchedData.search.tracks[0].external_urls.spotify)
+  }
 
   const dispatch = useDispatch()
   let total = 0;
@@ -117,7 +121,7 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
                     :
                     <InputGroup.Checkbox onChange={changeFavorite} value={track.uri} />
                   }
-                  <ListGroup.Item>{track.name}</ListGroup.Item>
+                  <ListGroup.Item> <a href={track.external_urls.spotify}>{track.name}</a> </ListGroup.Item>
                 </InputGroup.Prepend>
 
               </Col>

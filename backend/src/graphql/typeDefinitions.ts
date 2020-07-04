@@ -73,6 +73,11 @@ type encodedToken {
 type track {
   name: String!,
   uri: String!
+  external_urls:externalUrl!
+}
+
+type externalUrl {
+  spotify: String!
 }
 
 

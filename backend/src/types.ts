@@ -66,6 +66,11 @@ export interface spotifyTrack {
 export interface spotifyTrackMinimal {
   name: string,
   uri: string
+  external_urls:ExternalUrlType
+}
+
+export interface ExternalUrlType {
+  spotify: string,
 }
 
 export interface spotifyArtist {
