@@ -1,13 +1,14 @@
 
 import React, { FormEvent } from 'react';
-import { Button, Card, Form, Col, FormControl, Alert } from 'react-bootstrap';
-import { BasicComponent, AlertType } from "../../type";
+import { Button, Card, Form, Col } from 'react-bootstrap';
+import { BasicComponent, AlertType,AlertAttributes } from "../../type";
 import { useMutation } from '@apollo/client';
 import queries from '../../graphql/queries';
 import { useHistory } from "react-router-dom"
-import { isInputName, isInputEmail, isInputDate, isInputString,InputNotEmpty } from '../../utils/userInputValidators'
+import { isInputName, isInputEmail, isInputDate, isInputaAddress, InputNotEmpty } from '../../utils/userInputValidators'
 import { useSelector, useDispatch } from 'react-redux';
 import { setAlerts } from "../../reducers/alerts";
+import InputForm from '../forms/input';
 
 const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
 
@@ -24,6 +25,30 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
 
     const history = useHistory()
 
+    const validateAlert = (object: AlertAttributes,values: string[]): AlertAttributes => {
+
+        object.firstname = !isInputName(values[0])
+        object.lastname = !isInputName(values[1])
+        object.birthdate = !isInputDate(values[2])
+        object.email = !isInputEmail(values[3])
+        object.address = !isInputaAddress(values[4])
+        object.username = !InputNotEmpty(values[5])
+        object.password = !InputNotEmpty(values[6])
+
+        return object
+    }
+
+    const validationFailed = (object: AlertAttributes): boolean => {
+
+        return  object.firstname ||
+        object.lastname ||
+        object.birthdate ||
+        object.email ||
+        object.address ||
+        object.username ||
+        object.password
+    }
+
 
     const createUser = async (event: FormEvent) => {
 
@@ -38,26 +63,23 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
         const username = form[5] as HTMLInputElement;
         const password = form[6] as HTMLInputElement;
 
-        alertObject.firstname = !isInputName(firstname.value)
-        alertObject.lastname= !isInputName(lastname.value)
-        alertObject.birthdate = !isInputDate(birthdate.value) 
-        alertObject.email = !isInputEmail(email.value) 
-        alertObject.address = !isInputString(address.value) 
-        alertObject.username = !InputNotEmpty(username.value)
-        alertObject.password = !InputNotEmpty(password.value)
+        validateAlert(
+            alertObject,
+            [
+                firstname.value,
+                lastname.value,
+                birthdate.value,
+                email.value,
+                address.value,
+                username.value,
+                password.value
+            ])
 
-        const validationFailed= 
-            alertObject.firstname ||
-            alertObject.lastname  || 
-            alertObject.birthdate ||
-            alertObject.email     ||
-            alertObject.address   ||
-            alertObject.username  ||
-            alertObject.password
+      
 
         dispatch(setAlerts(alertObject))
 
-        if (!validationFailed) {
+        if (!validationFailed(alertObject)) {
 
             const success = await createNewUser({
                 variables:
@@ -105,93 +127,88 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
                         <form onSubmit={createUser}>
                             <Form.Row>
                                 <Col>
-                                    {
-                                    alertObject.firstname ?
-                                    <Alert variant={'danger'}>
-                                        Firstname must start with uppercasleter followed by lowercase letters
-                                    </Alert>
-                                        : ''
-                                    }
-                                    <FormControl placeholder="firstname" id="firstname" />
+                                    <InputForm
+                                        hasError={alertObject.firstname}
+                                        errorMessage={'Firstname must start with uppercasleter followed by lowercase letters'}
+                                        inputMessage={'firstname'}
+                                        id={'firstname'}
+                                        type={'text'}
+                                    />
                                 </Col>
                             </Form.Row>
                             <br />
                             <Form.Row>
                                 <Col>
-                                    {
-                                    alertObject.lastname ?
-                                    <Alert variant={'danger'}>
-                                        Lastname must start with uppercasleter followed by lowercase letters
-                                    </Alert>
-                                        : ''
-                                    }
-                                    <FormControl placeholder="lastname" id="lastname" />
+                                    <InputForm
+                                        hasError={alertObject.lastname}
+                                        errorMessage={'Lastname must start with uppercasleter followed by lowercase letters'}
+                                        inputMessage={'lastname'}
+                                        id={'lastname'}
+                                        type={'text'}
+                                    />
                                 </Col>
                             </Form.Row>
                             <br />
                             <Form.Row>
                                 <Col>
-                                    {
-                                    alertObject.birthdate ?
-                                    <Alert variant={'danger'}>
-                                         Birthdate must be in dd.mm.yyyy format
-                                     </Alert>
-                                        : ''
-                                    }
-                                    <FormControl placeholder="dd.mm.yyyy" id="birthdate" />
-                                </Col>
-                            </Form.Row>
-                            <br />
-                            <Form.Row>
-
-                                <Col>
-                                    {
-                                    alertObject.email ?
-                                    <Alert variant={'danger'}>
-                                         Email was not in correct format
-                                     </Alert>
-                                        : ''
-                                    }
-                                    <FormControl placeholder="email" id="email" />
+                                <InputForm
+                                        hasError={alertObject.birthdate}
+                                        errorMessage={'Birthdate must be in dd.mm.yyyy format'}
+                                        inputMessage={'dd.mm.yyyy'}
+                                        id={'birthdate'}
+                                        type={'text'}
+                                    />
                                 </Col>
                             </Form.Row>
                             <br />
                             <Form.Row>
                                 <Col>
-                                    {
-                                    alertObject.address ?
-                                    <Alert variant={'danger'}>
-                                         Address was not a string
-                                    </Alert>
-                                    : ''
-                                    }
-                                    <FormControl placeholder="address" id="address" />
+                                <InputForm
+                                        hasError={alertObject.email}
+                                        errorMessage={'Email was not in correct format'}
+                                        inputMessage={'email'}
+                                        id={'email'}
+                                        type={'text'}
+                                    />
                                 </Col>
                             </Form.Row>
                             <br />
                             <Form.Row>
                                 <Col>
-                                {
-                                alertObject.username ?
-                                <Alert variant={'danger'}>
-                                    Username can´t be empty 
-                                </Alert>
-                                : ''
-                                }
-                                    <FormControl placeholder="Username" id="username" />
+                                <InputForm
+                                        hasError={alertObject.address}
+                                        errorMessage={
+                                            'Address must start with uppecase letter followed by lowercase letters. ' 
+                                            +'Lowercase letters needs to be followed by space and numbers'
+                                        }
+                                        inputMessage={'address'}
+                                        id={'address'}
+                                        type={'text'}
+                                    />
                                 </Col>
                             </Form.Row>
                             <br />
                             <Form.Row>
                                 <Col>
-                                {
-                                 alertObject.password ?
-                                <Alert variant={'danger'}> 
-                                    Password can´t be empty 
-                                </Alert>
-                                : ''
-                                }
-                                    <FormControl placeholder="Password" type="password" id="password" />
+                                <InputForm
+                                        hasError={alertObject.username}
+                                        errorMessage={'Username can´t be empty'}
+                                        inputMessage={'username'}
+                                        id={'username'}
+                                        type={'text'}
+                                    />
+                                </Col>
+                            </Form.Row>
+                            <br />
+                            <Form.Row>
+                                <Col>
+                                <InputForm
+                                        hasError={alertObject.password}
+                                        errorMessage={'Password can´t be empty'}
+                                        inputMessage={'password'}
+                                        id={'password'}
+                                        type={'password'}
+                                    />
                                 </Col>
                             </Form.Row>
                             <br />

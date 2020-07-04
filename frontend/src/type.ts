@@ -26,7 +26,13 @@ export interface ComponentAttributeList extends ComponentAttributeModal {
   list: ListType;
 }
 
-
+export interface ComponentInput {
+  hasError: boolean ;
+  errorMessage: string;
+  inputMessage: string;
+  id: string;
+  type: string;
+}
 
 
 export interface UserType {
