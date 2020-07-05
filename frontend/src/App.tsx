@@ -20,6 +20,7 @@ const App: React.FC = () => {
   const rootstate = useSelector(selector)
   let location = useLocation();
 
+
   const showAlert = (message: string, type: string) => {
 
     dispatch(showMessage(message, 5000, type))
@@ -35,6 +36,9 @@ const App: React.FC = () => {
 
   const matchRoute = useRouteMatch("/details/:id")
 
+  const test = new URLSearchParams(useLocation().search)
+
+  console.log(test.get("code"))
 
   let id = ''
 
@@ -44,6 +48,8 @@ const App: React.FC = () => {
     id = param.id
 
   }
+
+ 
 
   return (
     <div>

@@ -1,11 +1,11 @@
 import React, { ChangeEvent } from 'react';
 import { BasicComponent, Track, ListType } from '../../type'
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import queries from '../../graphql/queries';
 import { Form, ListGroup, InputGroup, Col, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { addItem, removeItem } from '../../reducers/list';
-
+import {  useLocation } from 'react-router-dom';
 
 const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
@@ -21,6 +21,23 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
         }
     })
 
+    const param = new URLSearchParams(useLocation().search)
+    
+    const queryObject = useQuery(queries.delegateToken, {
+
+        fetchPolicy: "network-only", errorPolicy: 'none',
+        skip: (!param.get("code") || !(!localStorage.getItem('spotifyToken')) ),
+        variables: { code: param.get("code") }
+      })
+
+
+      if(queryObject) {
+        localStorage.setItem('spotifyRefreshToken',queryObject.data.refresh_token)
+        localStorage.setItem('spotifyToken',queryObject.data.access_token)
+      }  
+
+ 
+
     const listState = (state: ListType) => state
     const dataList = useSelector(listState)
 
@@ -28,14 +45,10 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
     const changeFavorite = (event: ChangeEvent<HTMLInputElement>) => {
 
-        console.log(dataList)
-
         const input = event.target as HTMLInputElement
-
-        console.log(input.parentNode?.nextSibling?.textContent)
-
         const value = input.parentNode?.nextSibling?.textContent as string;
         const key = input.value
+
 
 
         if (input.checked === true) {
@@ -50,7 +63,6 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
     const remove = async () => {
 
-
         const success = await removeTrack({
             variables: {
                 tracks: Object.keys(dataList.list)
@@ -58,11 +70,16 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
         });
 
         await refetch();
-        console.log(Object.keys(dataList.list))
+        
+	
+    }
+
+    const Transfer = async () => {
+
+        window.location.href=process.env.REACT_APP_URL as string
 
     }
 
-    console.log(dataList)
 
     return (
         <div >
@@ -92,7 +109,8 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
                 <Form.Row>
                     <Col>
                         <br />
-                        <Button type="button" className="buttonSpace" variant="outline-info" onClick={() => remove()}  >remove </Button>
+                        <Button type="button"  variant="outline-info" onClick={() => remove()}  >remove </Button>
+                        <Button type="button" className="buttonSpace" variant="outline-info" onClick={() => Transfer()}  >Transfer </Button>
                     </Col>
                 </Form.Row>
             </Form.Group>

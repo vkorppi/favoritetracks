@@ -106,6 +106,16 @@ const updatePassword = gql`
      
    }`;
 
+const delegateToken = gql`
+
+query delegateToken($code: String!){
+  delegateToken(code: $code) 
+    {
+      access_token,
+      refresh_token
+    }
+  }`;
+
 export default {
   search,
   createUser,
@@ -117,5 +127,6 @@ export default {
   login,
   addTrack,
   getList,
-  removeTrack
+  removeTrack,
+  delegateToken
 }
