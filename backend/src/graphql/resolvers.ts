@@ -96,7 +96,9 @@ export const resolvers = {
         getList: async (_root: any, args: any, userdata: UserSchemaType): Promise<void | spotifyTrackMinimal2[]> => {
 
         
-            return await spotify.GetList(userdata.id).then(result => {                
+            return await spotify.GetList(userdata.id).then(result => { 
+                
+                console.log(result.items.map(value => ({ name: value.track.name, uri: value.track.uri })))
                 
                 return result.items.map(value => ({ name: value.track.name, uri: value.track.uri }));
 

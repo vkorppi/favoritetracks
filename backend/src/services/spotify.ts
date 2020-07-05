@@ -265,6 +265,11 @@ const removeItem = async (userId: string,tracks:string[]): Promise<string | void
 
  };
 
+ const delegateToken = async (): Promise<string | void> => {
+
+
+};
+
 
 
 
