@@ -2,7 +2,7 @@ import React, { ChangeEvent } from 'react';
 import { BasicComponent, Track, ListType } from '../../type'
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import queries from '../../graphql/queries';
-import { Form, ListGroup, InputGroup, Col, Button } from 'react-bootstrap';
+import { Form, ListGroup, InputGroup, Col, Button, FormControl } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { addItem, removeItem } from '../../reducers/list';
 import {  useLocation } from 'react-router-dom';
@@ -31,9 +31,10 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
       })
 
 
-      if(queryObject) {
-        localStorage.setItem('spotifyRefreshToken',queryObject.data.refresh_token)
-        localStorage.setItem('spotifyToken',queryObject.data.access_token)
+      if(queryObject && queryObject.data) {
+        localStorage.setItem('spotifyRefreshToken',queryObject.data.delegateToken.refresh_token)
+        localStorage.setItem('spotifyToken',queryObject.data.delegateToken.access_token)
+        console.log('firstTime')
       }  
 
  
@@ -76,8 +77,12 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
     const Transfer = async () => {
 
-        window.location.href=process.env.REACT_APP_URL as string
-
+        if(!localStorage.getItem('spotifyToken')) { 
+            window.location.href=process.env.REACT_APP_URL as string
+        }
+        else {
+            console.log('secondtime')
+        }
     }
 
 
@@ -113,6 +118,11 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
                         <Button type="button" className="buttonSpace" variant="outline-info" onClick={() => Transfer()}  >Transfer </Button>
                     </Col>
                 </Form.Row>
+                <Form.Row>
+                        <Col>
+                        <FormControl placeholder="playlist id" id="playlist" type="text" />
+                        </Col>
+                    </Form.Row>
             </Form.Group>
 
         </div>
