@@ -3,7 +3,7 @@ import user from '../services/user';
 import spotify from '../services/spotify';
 import { ApolloError, UserInputError } from 'apollo-server-express';
 import { MongoError } from 'mongodb';
-import { UserSchemaType, searchResult, spotifyTrackMinimal, TokenType, UserSchemaType,spotifyTrackCapsulated, spotifyTrackMinimal2 } from '../types';
+import { UserSchemaType, searchResult, spotifyTrackMinimal, TokenType, UserSchemaType,spotifyTrackCapsulated, spotifyTrackMinimal2, spotifyToken } from '../types';
 
 
 export const resolvers = {
@@ -116,6 +116,31 @@ export const resolvers = {
             });
 
         },
+
+        delegateToken: async (_root: any, args: { code: string } ): Promise<void | spotifyToken> => {
+
+            const code = args.code ;
+
+            return await spotify.delegateToken(code).then(result => { 
+
+                console.log(result)
+               
+                return result;
+
+            }).catch((error: Error) => {
+
+                console.error(error.stack);
+
+                if (error instanceof ApolloError) {
+                    throw new ApolloError(error.message);
+                }
+                else if (error instanceof UserInputError) {
+                    throw new UserInputError(error.message);
+                }
+
+            });
+
+        }
 
     },
     Mutation: {

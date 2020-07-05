@@ -6,7 +6,7 @@ import querystring from 'querystring';
 
 import enviro from 'dotenv';
 import { getSearchEnvs, getSessionEnvs, getPlayListEnvs, getTracktEnvs } from '../utils/envFunctions';
-import { refreshtoken, spotifyResult, searchResult, favorites, favoritesSearchResult } from '../types';
+import { refreshtoken, spotifyResult, searchResult, favorites, favoritesSearchResult, spotifyToken } from '../types';
 import { getMessage } from '../utils/errorFunctions';
 import user from '../services/user';
 
@@ -265,7 +265,34 @@ const removeItem = async (userId: string,tracks:string[]): Promise<string | void
 
  };
 
- const delegateToken = async (): Promise<string | void> => {
+ const delegateToken = async (spotifyCode: string): Promise<spotifyToken | void> => {
+
+    const { sessionUrl, redirect_uri,granttype_code,code } = getSessionEnvs();
+
+    
+    
+
+    const requestBody = {
+        "grant_type": granttype_code,
+        "code": spotifyCode,
+        "redirect_uri": redirect_uri
+    };
+
+    console.log(querystring.stringify(requestBody))
+
+    const headers = {
+        'Content-Type': 'application/x-www-form-urlencoded'
+        , 'authorization': 'Basic ' + code
+    };
+
+    return   await axios.post(sessionUrl, querystring.stringify(requestBody),
+    { headers: headers }).then( response => {
+
+        console.log(response.data);
+
+        return response.data as spotifyToken;
+        
+    });
 
 
 };
@@ -346,5 +373,6 @@ export default {
     CreateList,
     GetList,
     test,
-    removeItem
+    removeItem,
+    delegateToken
 };

@@ -150,6 +150,8 @@ export interface sessionEnv {
   sessionUrl: string;
   code: string;
   secret: string;
+  redirect_uri: string;
+  granttype_code: string;
 }
 
 export interface playListEnv {
@@ -166,6 +168,11 @@ export interface tracksEnv {
 export interface decodedTokenType {
   username: string;
   id: string;
+}
+
+export interface spotifyToken {
+  access_token: string;
+  refresh_token: string;
 }
 
 

@@ -10,6 +10,7 @@ type Query {
     searchUser(value: String): [User!]!
     getUser(id: String): User!
     getList: [track!]!
+    delegateToken(code: String): spotifyToken!
 }
 
 type Mutation {
@@ -83,6 +84,10 @@ type externalUrl {
   spotify: String!
 }
 
+type spotifyToken {
+  access_token: String!
+  refresh_token: String!
+}
 
 
 `;

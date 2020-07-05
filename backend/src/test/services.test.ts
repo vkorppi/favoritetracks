@@ -84,7 +84,6 @@ describe('Testing spotify services', () => {
 
   });
 
-
 });
 
 describe('Testing usermanagement services', () => {

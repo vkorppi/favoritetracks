@@ -43,7 +43,13 @@ export const getSessionEnvs = (): sessionEnv => {
             getMessage('EnvString', 'CODE', false)),
         secret: parser(
             env.SECRET,
-            getMessage('EnvString', 'SECRET', false))
+            getMessage('EnvString', 'SECRET', false)),
+        redirect_uri: parser(
+            env.REDIRECT_URI,
+            getMessage('EnvString', 'REDIRECT_URI', false)),
+        granttype_code: parser(
+            env.GRANTTYPE_CODE,
+            getMessage('EnvString', 'GRANTTYPE_CODE', false))
     };
 
 };
