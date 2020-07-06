@@ -117,13 +117,23 @@ export const resolvers = {
 
         },
 
-        delegateToken: async (_root: any, args: { code: string } ): Promise<void | spotifyToken> => {
+        delegateToken: async (_root: any, args: { code: string,playlist: string }, userdata: UserSchemaType ): Promise<void | spotifyToken> => {
 
             const code = args.code ;
+            const playlist = args.playlist;
+
+            console.log(playlist);
+            console.log(userdata.id);
+			
+			console.log('user.addPLaylist(playlist,userdata.id)');
+
+            await user.addPLaylist(playlist,userdata.id);
+			
+			console.log('success');
 
             return await spotify.delegateToken(code).then(result => { 
 
-                console.log(result)
+                console.log(result);
                
                 return result;
 

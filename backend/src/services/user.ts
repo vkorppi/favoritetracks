@@ -57,7 +57,7 @@ const addList = async (favorites: string, id: string): Promise<string> => {
             {
                 "favorites": parser(
                     favorites,
-                    getMessage('string', 'favorites', true))
+                    getMessage('string', 'favorites', false))
             }
         });
 
@@ -163,6 +163,22 @@ const getUser = async (id: string): Promise<UserSchemaType | null> => {
     return await User.findOne({ _id: id });
 };
 
+const addPLaylist = async (playlist: string, id: string): Promise<string> => {
+
+    await User.updateOne({ _id: id },
+        {
+            $set:
+            {
+                "playlist": parser(
+                    playlist,
+                    getMessage('string', 'playlist', false))
+            }
+        });
+
+    return id;
+
+};
+
 
 export default {
     create,
@@ -173,5 +189,6 @@ export default {
     check,
     login,
     getUser,
-    addList
+    addList,
+    addPLaylist
 };

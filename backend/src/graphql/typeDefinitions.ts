@@ -10,7 +10,7 @@ type Query {
     searchUser(value: String): [User!]!
     getUser(id: String): User!
     getList: [track!]!
-    delegateToken(code: String): spotifyToken!
+    delegateToken(code: String,playlist: String): spotifyToken!
 }
 
 type Mutation {
