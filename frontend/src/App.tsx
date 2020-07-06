@@ -87,7 +87,7 @@ const App: React.FC = () => {
 
             <Switch>
             <Route path="/favorites">
-                <Favorites showmessage={showAlert} show={false} />
+                <Favorites showmessage={showAlert} />
               </Route>
               <Route path="/login">
                 <Login showmessage={showAlert} />

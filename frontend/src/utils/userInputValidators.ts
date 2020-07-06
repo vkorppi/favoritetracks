@@ -44,6 +44,7 @@ export default {
     isInputEmail,
     isInputDate,
     isInputString,
-    isInputaAddress
+    isInputaAddress,
+    InputNotEmpty
 
 }

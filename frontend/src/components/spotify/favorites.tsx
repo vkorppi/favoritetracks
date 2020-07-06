@@ -1,13 +1,15 @@
 import React, { ChangeEvent } from 'react';
-import { ComponentAttributeModal, Track, ListType } from '../../type'
+import { BasicComponent, Track, ListType, ModalType } from '../../type'
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import queries from '../../graphql/queries';
 import { Form, ListGroup, InputGroup, Col, Button, FormControl } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { addItem, removeItem } from '../../reducers/list';
 import {  useLocation } from 'react-router-dom';
+import Transfer from './transfer';
+import { setShow } from '../../reducers/modal';
 
-const Favorites: React.FC<ComponentAttributeModal> = ({ showmessage,show }) => {
+const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
 
     const { data, refetch } = useQuery(queries.getList, {
@@ -20,6 +22,9 @@ const Favorites: React.FC<ComponentAttributeModal> = ({ showmessage,show }) => {
             showmessage(error.message, 'danger')
         }
     })
+
+    const modalState = (state: ModalType) => state
+    const data2 = useSelector(modalState)
 
     const param = new URLSearchParams(useLocation().search)
     
@@ -75,14 +80,19 @@ const Favorites: React.FC<ComponentAttributeModal> = ({ showmessage,show }) => {
 	
     }
 
-    const Transfer = async () => {
+    const transferFavorites = async () => {
 
+        dispatch(setShow(true))
+        /*
         if(!localStorage.getItem('spotifyToken')) { 
             window.location.href=process.env.REACT_APP_URL as string
         }
         else {
             console.log('secondtime')
         }
+        */
+
+
     }
 
 
@@ -115,9 +125,10 @@ const Favorites: React.FC<ComponentAttributeModal> = ({ showmessage,show }) => {
                     <Col>
                         <br />
                         <Button type="button"  variant="outline-info" onClick={() => remove()}  >remove </Button>
-                        <Button type="button" className="buttonSpace" variant="outline-info" onClick={() => Transfer()}  >Transfer </Button>
+                        <Button type="button" className="buttonSpace" variant="outline-info" onClick={() => transferFavorites()}  >Transfer </Button>
                     </Col>
                 </Form.Row>
+                {data2 ? <Transfer showmessage={showmessage}  show={data2.modal.show} /> : ''}
             </Form.Group>
 
         </div>
