@@ -152,6 +152,13 @@ export const resolvers = {
 
         }
 
+        /*
+    getUserLoggedin: async (_root: any, args: { code: string,playlist: string }, userdata: UserSchemaType ): Promise<void | spotifyToken> => {
+
+    }
+
+    */
+
     },
     Mutation: {
 
