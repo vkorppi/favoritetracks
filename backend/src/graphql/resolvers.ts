@@ -150,14 +150,15 @@ export const resolvers = {
 
             });
 
-        }
+        },
 
-        /*
-    getUserLoggedin: async (_root: any, args: { code: string,playlist: string }, userdata: UserSchemaType ): Promise<void | spotifyToken> => {
+        
+    getUserLoggedin: async (_root: any, args: { code: string,playlist: string }, userdata: UserSchemaType ): Promise<UserSchemaType | null> => {
 
+        return await user.getUser(userdata.id);
     }
 
-    */
+    
 
     },
     Mutation: {

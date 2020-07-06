@@ -465,6 +465,40 @@ describe('Testing spotify mutations and queries that require authorization heade
 
 	});
 
+	test("Query returns userojbect", async () => {
+
+
+		const loggedinUser = gql`
+
+		query {
+			getUserLoggedin {
+				
+					firstname,
+					lastname,
+					username,
+					id
+				
+			}
+		}`;
+
+		interface dataType2 {
+			getUserLoggedin: UserType;
+		}
+
+		interface dataType {
+			data: dataType2;
+		}
+
+
+		const fetcheduser = (await clientWithHeaders.query({
+			query: loggedinUser,
+		})) as dataType;
+
+		const user = fetcheduser.data.getUserLoggedin;
+
+		expect(user).toBeTruthy();
+	
+	});
 
 
 	afterAll(async () => {
