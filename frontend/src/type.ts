@@ -28,6 +28,7 @@ export interface ComponentAttributeList extends ComponentAttributeModal {
 
 export interface ComponentAttributeTrack extends ComponentAttributeModal {
   tracks: Track[];
+  TransferToPlaylist: (tracks: Track[]) => Promise<void>;
 }
 
 export interface ComponentInput {
