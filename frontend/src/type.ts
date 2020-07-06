@@ -26,6 +26,10 @@ export interface ComponentAttributeList extends ComponentAttributeModal {
   list: ListType;
 }
 
+export interface ComponentAttributeTrack extends ComponentAttributeModal {
+  tracks: Track[];
+}
+
 export interface ComponentInput {
   hasError: boolean ;
   errorMessage: string;

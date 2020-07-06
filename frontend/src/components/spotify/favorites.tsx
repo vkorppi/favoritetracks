@@ -1,13 +1,14 @@
 import React, { ChangeEvent } from 'react';
 import { BasicComponent, Track, ListType, ModalType } from '../../type'
-import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import queries from '../../graphql/queries';
-import { Form, ListGroup, InputGroup, Col, Button, FormControl } from 'react-bootstrap';
+import { Form, ListGroup, InputGroup, Col, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { addItem, removeItem } from '../../reducers/list';
 import {  useLocation } from 'react-router-dom';
 import Transfer from './transfer';
 import { setShow } from '../../reducers/modal';
+import axios from 'axios';
 
 const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
@@ -22,6 +23,33 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
             showmessage(error.message, 'danger')
         }
     })
+
+    const  TransferToPlaylist=  async (tracks: Track[]) => {
+
+        const trackpart1 =  process.env.REACT_APP_TRACKSPART1 as string
+        const playlistpart2 = localStorage.getItem('playlist')
+        const trackpart3= process.env.REACT_APP_TRACKSPART3 as string
+        
+        const url = trackpart1+playlistpart2+trackpart3
+        const uris = tracks.map((track: Track) => (track.uri));
+        
+        const token = localStorage.getItem('spotifyToken')
+
+        const requestBody = {
+            "uris": uris
+        };
+
+        const headers = {
+            'Content-Type': 'application/json'
+            , 'authorization': 'Bearer ' + token
+        };
+
+        await axios.post(url, requestBody, { headers: headers });
+
+        console.log(url)
+        
+    }
+
 
     const modalState = (state: ModalType) => state
     const data2 = useSelector(modalState)
@@ -39,7 +67,10 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
       if(queryObject && queryObject.data) {
         localStorage.setItem('spotifyRefreshToken',queryObject.data.delegateToken.refresh_token)
         localStorage.setItem('spotifyToken',queryObject.data.delegateToken.access_token)
-        console.log('firstTime')
+        
+        if(data) {
+            TransferToPlaylist(data.getList)
+        }
       }  
 
  
@@ -86,6 +117,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
      
     }
 
+ 
 
     return (
         <div >
@@ -119,7 +151,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
                         <Button type="button" className="buttonSpace" variant="outline-info" onClick={() => transferFavorites()}  >Transfer </Button>
                     </Col>
                 </Form.Row>
-                {data2 ? <Transfer showmessage={showmessage}  show={data2.modal.show} /> : ''}
+                {data2 && data ? <Transfer showmessage={showmessage}  show={data2.modal.show} tracks={data.getList} /> : ''}
             </Form.Group>
 
         </div>
