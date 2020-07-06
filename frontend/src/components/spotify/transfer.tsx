@@ -4,7 +4,7 @@ import { Modal, Form, Button, Col, Card } from 'react-bootstrap';
 import { ComponentAttributeModal, AlertType, ModalType } from '../../type';
 import InputForm from '../forms/input';
 import { useDispatch, useSelector } from 'react-redux';
-import { validateAlert } from '../../utils/alertMessageControllers';
+import { validateAlert,validationFailed } from '../../utils/alertMessageControllers';
 import { setAlerts } from "../../reducers/alerts";
 
 
@@ -15,8 +15,8 @@ const Transfer: React.FC<ComponentAttributeModal> = ({ showmessage, show }) => {
     const alertObject = alertState.alert
     const modalState = (state: ModalType) => state
     const data2 = useSelector(modalState)
-  
-    
+
+
     const dispatch = useDispatch()
 
     const transferOK = async () => {
@@ -37,9 +37,19 @@ const Transfer: React.FC<ComponentAttributeModal> = ({ showmessage, show }) => {
             ])
 
         dispatch(setAlerts(alertObject))
+		
 
+        if (!alertObject.password) {
 
-        console.log('test')
+            localStorage.setItem('playlist', playlistid.value);
+
+            if (!localStorage.getItem('spotifyToken')) {
+                window.location.href = process.env.REACT_APP_URL as string
+            }
+            else {
+                console.log('secondtime')
+            }
+        }
 
 
     }
@@ -49,7 +59,7 @@ const Transfer: React.FC<ComponentAttributeModal> = ({ showmessage, show }) => {
         <Modal centered show={show}>
             <Modal.Body>
                 <Card>
-                    <Card.Header></Card.Header>
+                    <Card.Header>Do not press ok if you don't have active Spotify session. If you don't have active session you will be logged out</Card.Header>
                     <Card.Body>
                         <div >
                             <Form.Group>
@@ -63,17 +73,17 @@ const Transfer: React.FC<ComponentAttributeModal> = ({ showmessage, show }) => {
                                             id={'Playlistid'}
                                             type={'text'}
                                             defaultInput={''} />
-                                        
-                                      
+
+
                                     </Col>
                                 </Form.Row>
 
                                 <Form.Row>
-                                <Col>
-                                <br/>
-                                <Button type="button" variant="primary" onClick={() => transferOK()} id="okButton">OK</Button>
+                                    <Col>
+                                        <br />
+                                        <Button type="button" variant="primary" onClick={() => transferOK()} id="okButton">OK</Button>
                                         <Button type="button" className="buttonSpace" variant="primary" id="cancelButton">Cancel</Button>
-                                </Col>
+                                    </Col>
                                 </Form.Row>
 
                             </Form.Group>

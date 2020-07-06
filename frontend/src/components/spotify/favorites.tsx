@@ -32,7 +32,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
         fetchPolicy: "network-only", errorPolicy: 'none',
         skip: (!param.get("code") || !(!localStorage.getItem('spotifyToken')) ),
-        variables: { code: param.get("code") }
+        variables: { code: param.get("code"),playlist: localStorage.getItem('playlist')}
       })
 
 
@@ -83,16 +83,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
     const transferFavorites = async () => {
 
         dispatch(setShow(true))
-        /*
-        if(!localStorage.getItem('spotifyToken')) { 
-            window.location.href=process.env.REACT_APP_URL as string
-        }
-        else {
-            console.log('secondtime')
-        }
-        */
-
-
+     
     }
 
 

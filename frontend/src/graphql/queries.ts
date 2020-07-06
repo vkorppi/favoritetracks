@@ -108,8 +108,8 @@ const updatePassword = gql`
 
 const delegateToken = gql`
 
-query delegateToken($code: String!){
-  delegateToken(code: $code) 
+query delegateToken($code: String!, $playlist: String!){
+  delegateToken(code: $code, playlist: $playlist) 
     {
       access_token,
       refresh_token
