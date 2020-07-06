@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from 'react';
-import { BasicComponent, Track, ListType } from '../../type'
+import { ComponentAttributeModal, Track, ListType } from '../../type'
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import queries from '../../graphql/queries';
 import { Form, ListGroup, InputGroup, Col, Button, FormControl } from 'react-bootstrap';
@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addItem, removeItem } from '../../reducers/list';
 import {  useLocation } from 'react-router-dom';
 
-const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
+const Favorites: React.FC<ComponentAttributeModal> = ({ showmessage,show }) => {
 
 
     const { data, refetch } = useQuery(queries.getList, {
@@ -118,11 +118,6 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
                         <Button type="button" className="buttonSpace" variant="outline-info" onClick={() => Transfer()}  >Transfer </Button>
                     </Col>
                 </Form.Row>
-                <Form.Row>
-                        <Col>
-                        <FormControl placeholder="playlist id" id="playlist" type="text" />
-                        </Col>
-                    </Form.Row>
             </Form.Group>
 
         </div>
