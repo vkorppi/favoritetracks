@@ -279,21 +279,27 @@ const removeItem = async (userId: string,tracks:string[]): Promise<string | void
     };
 
     console.log(querystring.stringify(requestBody))
+	
+	//console.log(code)
 
     const headers = {
         'Content-Type': 'application/x-www-form-urlencoded'
         , 'authorization': 'Basic ' + code
     };
 
-    return   await axios.post(sessionUrl, querystring.stringify(requestBody),
+
+    return await axios.post(sessionUrl, querystring.stringify(requestBody),
     { headers: headers }).then( response => {
 
+		console.log('Debug')
         console.log(response.data);
 
         return response.data as spotifyToken;
         
-    });
-
+    })
+  console.log(test)
+  
+// return {access_token: 'test',refresh_token: 'test'} as spotifyToken;
 
 };
 

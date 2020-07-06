@@ -9,13 +9,16 @@ import {  useLocation } from 'react-router-dom';
 import Transfer from './transfer';
 import { setShow } from '../../reducers/modal';
 import axios from 'axios';
+import { useLazyQuery } from '@apollo/client';
 
 const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
+    let user
 
     const { data, refetch } = useQuery(queries.getList, {
         fetchPolicy: "network-only", errorPolicy: 'none'
     })
+
 
     const [removeTrack] = useMutation(queries.removeTrack, {
         errorPolicy: 'none',
@@ -23,6 +26,14 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
             showmessage(error.message, 'danger')
         }
     })
+
+    const [getLoggedInUser, userData] = useLazyQuery(queries.loggedInUser, {
+        fetchPolicy: "network-only", errorPolicy: 'none',
+      })
+    
+      if(userData && userData.data) {
+        user= userData.data.getUserLoggedin
+      }
 
     const  TransferToPlaylist=  async (tracks: Track[]) => {
 
@@ -59,18 +70,22 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
     const queryObject = useQuery(queries.delegateToken, {
 
         fetchPolicy: "network-only", errorPolicy: 'none',
-        skip: (!param.get("code") || !(!localStorage.getItem('spotifyToken')) ),
+        skip: (!param.get("code")),
         variables: { code: param.get("code"),playlist: localStorage.getItem('playlist')}
       })
 
 
       if(queryObject && queryObject.data) {
+
         localStorage.setItem('spotifyRefreshToken',queryObject.data.delegateToken.refresh_token)
         localStorage.setItem('spotifyToken',queryObject.data.delegateToken.access_token)
         
+        
+
         if(data) {
             TransferToPlaylist(data.getList)
         }
+
       }  
 
  
@@ -114,6 +129,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
     const transferFavorites = async () => {
 
         dispatch(setShow(true))
+        getLoggedInUser()
      
     }
 
@@ -151,7 +167,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
                         <Button type="button" className="buttonSpace" variant="outline-info" onClick={() => transferFavorites()}  >Transfer </Button>
                     </Col>
                 </Form.Row>
-                {data2 && data ? <Transfer showmessage={showmessage}  show={data2.modal.show} tracks={data.getList} /> : ''}
+                {data2 && data ? <Transfer showmessage={showmessage}  show={data2.modal.show} tracks={data.getList} TransferToPlaylist={TransferToPlaylist} user={user} /> : ''}
             </Form.Group>
 
         </div>

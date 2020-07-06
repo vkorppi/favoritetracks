@@ -29,6 +29,7 @@ export interface ComponentAttributeList extends ComponentAttributeModal {
 export interface ComponentAttributeTrack extends ComponentAttributeModal {
   tracks: Track[];
   TransferToPlaylist: (tracks: Track[]) => Promise<void>;
+  user: UserType;
 }
 
 export interface ComponentInput {
@@ -49,6 +50,7 @@ export interface UserType {
   address: string;
   username: string;
   id: string;
+  playlist: string;
 }
 
 export interface UseId {

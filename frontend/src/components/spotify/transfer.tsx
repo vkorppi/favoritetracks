@@ -6,9 +6,9 @@ import InputForm from '../forms/input';
 import { useDispatch, useSelector } from 'react-redux';
 import { validateAlert } from '../../utils/alertMessageControllers';
 import { setAlerts } from "../../reducers/alerts";
+import { setShow } from '../../reducers/modal';
 
-
-const Transfer: React.FC<ComponentAttributeTrack> = ({ showmessage, show, tracks }) => {
+const Transfer: React.FC<ComponentAttributeTrack> = ({ showmessage, show, tracks,TransferToPlaylist,user }) => {
 
     const selectorAlert = (state: AlertType) => state
     const alertState = useSelector(selectorAlert)
@@ -17,8 +17,12 @@ const Transfer: React.FC<ComponentAttributeTrack> = ({ showmessage, show, tracks
     const data2 = useSelector(modalState)
 
 
-
     const dispatch = useDispatch()
+
+    const close = () => {
+
+        dispatch(setShow(false))
+    }
 
     const transferOK = async () => {
 
@@ -48,13 +52,15 @@ const Transfer: React.FC<ComponentAttributeTrack> = ({ showmessage, show, tracks
                 window.location.href = process.env.REACT_APP_URL as string
             }
             else {
-                console.log('secondtime')
+                TransferToPlaylist(tracks)
+                close()
             }
         }
 
-       // console.log(tracks)
 
     }
+
+ 
 
 
     return (
@@ -74,7 +80,7 @@ const Transfer: React.FC<ComponentAttributeTrack> = ({ showmessage, show, tracks
                                             inputMessage={'Playlist id'}
                                             id={'Playlistid'}
                                             type={'text'}
-                                            defaultInput={''} />
+                                            defaultInput={user ? user.playlist : ''} />
 
 
                                     </Col>
@@ -84,7 +90,7 @@ const Transfer: React.FC<ComponentAttributeTrack> = ({ showmessage, show, tracks
                                     <Col>
                                         <br />
                                         <Button type="button" variant="primary" onClick={() => transferOK()} id="okButton">OK</Button>
-                                        <Button type="button" className="buttonSpace" variant="primary" id="cancelButton">Cancel</Button>
+                                        <Button type="button" className="buttonSpace" variant="primary" onClick={() => close()}  id="cancelButton">Cancel</Button>
                                     </Col>
                                 </Form.Row>
 

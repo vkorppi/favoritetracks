@@ -116,6 +116,19 @@ query delegateToken($code: String!, $playlist: String!){
     }
   }`;
 
+  const loggedInUser = gql`
+
+  query {
+    getUserLoggedin {
+      
+        firstname,
+        lastname,
+        username,
+        id,
+        playlist
+    }
+  }`;
+
 export default {
   search,
   createUser,
@@ -128,5 +141,6 @@ export default {
   addTrack,
   getList,
   removeTrack,
-  delegateToken
+  delegateToken,
+  loggedInUser
 }

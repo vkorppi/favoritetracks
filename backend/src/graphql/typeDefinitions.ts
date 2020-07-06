@@ -69,6 +69,7 @@ type User {
     email:     String
     address:   String
     id       : String!
+    playlist : String
 }
 
 type encodedToken {
