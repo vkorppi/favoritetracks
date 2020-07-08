@@ -278,9 +278,6 @@ const removeItem = async (userId: string,tracks:string[]): Promise<string | void
         "redirect_uri": redirect_uri
     };
 
-    console.log(querystring.stringify(requestBody))
-	
-	//console.log(code)
 
     const headers = {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -291,15 +288,11 @@ const removeItem = async (userId: string,tracks:string[]): Promise<string | void
     return await axios.post(sessionUrl, querystring.stringify(requestBody),
     { headers: headers }).then( response => {
 
-		console.log('Debug')
-        console.log(response.data);
 
         return response.data as spotifyToken;
         
-    })
-  console.log(test)
-  
-// return {access_token: 'test',refresh_token: 'test'} as spotifyToken;
+    });
+
 
 };
 
