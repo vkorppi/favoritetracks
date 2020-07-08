@@ -38,6 +38,7 @@ const Transfer: React.FC<ComponentAttributeTrack> = ({ showmessage, show, tracks
                 'empty',
                 'empty',
                 'empty',
+                'empty',
                 playlistid.value
             ])
 
@@ -75,7 +76,7 @@ const Transfer: React.FC<ComponentAttributeTrack> = ({ showmessage, show, tracks
                                 <Form.Row>
                                     <Col>
                                         <InputForm
-                                            hasError={alertObject.password}
+                                            hasError={alertObject.other}
                                             errorMessage={`Playlist id can't be empty`}
                                             inputMessage={'Playlist id'}
                                             id={'Playlistid'}

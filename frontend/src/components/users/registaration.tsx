@@ -47,7 +47,8 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
                 email.value,
                 address.value,
                 username.value,
-                password.value
+                password.value,
+                'empty'
             ])
 
       

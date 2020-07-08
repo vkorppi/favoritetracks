@@ -3,13 +3,15 @@ import { AlertAttributes } from "../type"
 
 export const validateAlert = (object: AlertAttributes,values: string[]): AlertAttributes => {
 
-    object.firstname = !isInputName(values[0])
+
+    object.firstname =  !isInputName(values[0])
     object.lastname = !isInputName(values[1])
     object.birthdate = !isInputDate(values[2])
     object.email = !isInputEmail(values[3])
     object.address = !isInputaAddress(values[4])
     object.username = !InputNotEmpty(values[5])
     object.password = !InputNotEmpty(values[6])
+    object.other = !InputNotEmpty(values[7])
 
     return object
 }
@@ -22,7 +24,8 @@ export const validationFailed = (object: AlertAttributes): boolean => {
     object.email ||
     object.address ||
     object.username ||
-    object.password
+    object.password  || 
+    object.other
 }
 
 export default {

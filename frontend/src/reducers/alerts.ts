@@ -5,7 +5,6 @@ import { AlertAction,AlertAttributes } from '../type'
 
 export const setAlerts = (alert: AlertAttributes) => {
 
-	console.log('debug2')
     return { type: 'SET', data: alert }
 }
 
@@ -13,7 +12,7 @@ export const setAlerts = (alert: AlertAttributes) => {
 const reducer = (state = {
      
         firstname: false, lastname: false, birthdate: false, email: false,
-        address: false, username: false, password: false
+        address: false, username: false, password: false,other:false
        
 },
     action: AlertAction) => {
@@ -27,7 +26,8 @@ const reducer = (state = {
                 email: action.data.email,
                 address: action.data.address,
                 username: action.data.username,
-                password: action.data.password
+                password: action.data.password,
+                other:action.data.other
             }
         default:
             return state

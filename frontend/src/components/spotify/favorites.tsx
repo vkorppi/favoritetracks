@@ -16,7 +16,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
     let user
 
     const { data, refetch } = useQuery(queries.getList, {
-        fetchPolicy: "network-only", errorPolicy: 'none'
+        fetchPolicy: "no-cache", errorPolicy: 'none'
     })
 
 
