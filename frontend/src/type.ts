@@ -26,7 +26,7 @@ export interface ComponentAttributeList extends ComponentAttributeModal {
   list: ListType;
 }
 
-export interface ComponentAttributeTrack extends Omit<ComponentAttributeModal, 'showmessage'> {
+export interface ComponentAttributeTrack extends ComponentAttributeModal {
   tracks: Track[];
   TransferToPlaylist: (tracks: Track[]) => Promise<void>;
   user: UserType;

@@ -161,7 +161,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
                         <Button type="button" className="buttonSpace" variant="outline-info" onClick={() => transferFavorites()}  >Transfer </Button>
                     </Col>
                 </Form.Row>
-                {ModalData && data ? <Transfer  show={ModalData.modal.show} tracks={data.getList} TransferToPlaylist={TransferToPlaylist} user={user} /> : ''}
+                {ModalData && data ? <Transfer showmessage={showmessage}  show={ModalData.modal.show} tracks={data.getList} TransferToPlaylist={TransferToPlaylist} user={user} /> : ''}
             </Form.Group>
 
         </div>
