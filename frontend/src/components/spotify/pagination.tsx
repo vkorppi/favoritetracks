@@ -60,8 +60,6 @@ const Resultpagination: React.FC<SearchAttributes> = ({total,search}) => {
         pages.push(i)
     }
 
-    console.log(total)
-    
     return (
         <Pagination>
 

@@ -19,7 +19,7 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
 
 
     const { error, data } = useQuery(queries.getUser, {
-        fetchPolicy: "network-only", errorPolicy: 'none',
+        fetchPolicy: "no-cache", errorPolicy: 'none',
         variables: { id: id }
     })
 

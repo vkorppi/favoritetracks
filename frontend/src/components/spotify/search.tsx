@@ -6,19 +6,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setPagination } from '../../reducers/pagination'
 import { addItem, removeItem } from '../../reducers/list'
 import { useLazyQuery } from '@apollo/client';
-
-
 import queries from '../../graphql/queries';
 import { setShow } from '../../reducers/modal';
 import SelectedFavorites from './selectedFavorites';
-
-
 
 const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
 
   const [getTracks, { data, error }] = useLazyQuery(queries.search, {
-    fetchPolicy: "network-only", errorPolicy: 'none',
+    fetchPolicy: "no-cache", errorPolicy: 'none',
   })
 
 
@@ -30,11 +26,6 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
   const searchresult = data as unknown
   const fetchedData: QueryResult = searchresult as QueryResult
-
-  if(fetchedData)
-  {
-    console.log(fetchedData.search.tracks[0].external_urls.spotify)
-  }
 
   const dispatch = useDispatch()
   let total = 0;
@@ -54,6 +45,7 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
     dispatch(setPagination(1, 10, inputvalue, 1))
 
+
     if (error) {
       showmessage(error?.message, 'danger')
     }
@@ -68,9 +60,6 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
   const changeFavorite = (event: ChangeEvent<HTMLInputElement>) => {
 
     const input = event.target as HTMLInputElement
-
-    console.log(input.parentNode?.nextSibling?.textContent)
-
     const value = input.parentNode?.nextSibling?.textContent as string;
     const key = input.value
 

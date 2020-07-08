@@ -1,4 +1,4 @@
-import React, { FormEvent, ChangeEvent } from 'react';
+import React, {  ChangeEvent } from 'react';
 import { ComponentAttributeList } from '../../type'
 import { Button, ListGroup, Col, Form, Modal, Card, InputGroup } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'

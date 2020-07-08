@@ -1,21 +1,18 @@
 
 import React from 'react';
 import { Modal, Form, Button, Col, Card } from 'react-bootstrap';
-import { ComponentAttributeTrack, AlertType, ModalType } from '../../type';
+import { ComponentAttributeTrack, AlertType } from '../../type';
 import InputForm from '../forms/input';
 import { useDispatch, useSelector } from 'react-redux';
 import { validateAlert } from '../../utils/alertMessageControllers';
 import { setAlerts } from "../../reducers/alerts";
 import { setShow } from '../../reducers/modal';
 
-const Transfer: React.FC<ComponentAttributeTrack> = ({ showmessage, show, tracks,TransferToPlaylist,user }) => {
+const Transfer: React.FC<ComponentAttributeTrack> = ({  show, tracks,TransferToPlaylist,user }) => {
 
     const selectorAlert = (state: AlertType) => state
     const alertState = useSelector(selectorAlert)
     const alertObject = alertState.alert
-    const modalState = (state: ModalType) => state
-    const data2 = useSelector(modalState)
-
 
     const dispatch = useDispatch()
 
@@ -45,7 +42,7 @@ const Transfer: React.FC<ComponentAttributeTrack> = ({ showmessage, show, tracks
         dispatch(setAlerts(alertObject))
 		
 
-        if (!alertObject.password) {
+        if (!alertObject.other) {
 
             localStorage.setItem('playlist', playlistid.value);
 
@@ -60,9 +57,6 @@ const Transfer: React.FC<ComponentAttributeTrack> = ({ showmessage, show, tracks
 
 
     }
-
- 
-
 
     return (
         <Modal centered show={show}>

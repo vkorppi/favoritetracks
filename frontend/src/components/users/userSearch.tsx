@@ -10,7 +10,7 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
   const [searchUser, {data,error}] = useLazyQuery(queries.searchUsers, {
 
-    fetchPolicy: "network-only", errorPolicy: 'none',
+    fetchPolicy: "no-cache", errorPolicy: 'none',
 
     //Causes endless loop
     /*

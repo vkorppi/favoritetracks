@@ -13,12 +13,25 @@ import { useLazyQuery } from '@apollo/client';
 
 const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
+    const dispatch = useDispatch()
+
     let user
 
+    const trackpart1 =  process.env.REACT_APP_TRACKSPART1 as string
+    const trackpart3= process.env.REACT_APP_TRACKSPART3 as string
+
+    const param = new URLSearchParams(useLocation().search)
+
+    const modalState = (state: ModalType) => state
+    const ModalData = useSelector(modalState)
+
+    const listState = (state: ListType) => state
+    const dataList = useSelector(listState)
+
+    
     const { data, refetch } = useQuery(queries.getList, {
         fetchPolicy: "no-cache", errorPolicy: 'none'
     })
-
 
     const [removeTrack] = useMutation(queries.removeTrack, {
         errorPolicy: 'none',
@@ -28,7 +41,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
     })
 
     const [getLoggedInUser, userData] = useLazyQuery(queries.loggedInUser, {
-        fetchPolicy: "network-only", errorPolicy: 'none',
+        fetchPolicy: "no-cache", errorPolicy: 'none',
       })
     
       if(userData && userData.data) {
@@ -37,15 +50,13 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
     const  TransferToPlaylist=  async (tracks: Track[]) => {
 
-        const trackpart1 =  process.env.REACT_APP_TRACKSPART1 as string
+        
         const playlistpart2 = localStorage.getItem('playlist')
-        const trackpart3= process.env.REACT_APP_TRACKSPART3 as string
+        const token = localStorage.getItem('spotifyToken')
         
         const url = trackpart1+playlistpart2+trackpart3
         const uris = tracks.map((track: Track) => (track.uri));
         
-        const token = localStorage.getItem('spotifyToken')
-
         const requestBody = {
             "uris": uris
         };
@@ -55,21 +66,12 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
             , 'authorization': 'Bearer ' + token
         };
 
-        await axios.post(url, requestBody, { headers: headers });
-
-        console.log(url)
-        
+        await axios.post(url, requestBody, { headers: headers });        
     }
 
-
-    const modalState = (state: ModalType) => state
-    const data2 = useSelector(modalState)
-
-    const param = new URLSearchParams(useLocation().search)
-    
     const queryObject = useQuery(queries.delegateToken, {
 
-        fetchPolicy: "network-only", errorPolicy: 'none',
+        fetchPolicy: "no-cache", errorPolicy: 'none',
         skip: (!param.get("code")),
         variables: { code: param.get("code"),playlist: localStorage.getItem('playlist')}
       })
@@ -77,31 +79,23 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
       if(queryObject && queryObject.data) {
 
-        localStorage.setItem('spotifyRefreshToken',queryObject.data.delegateToken.refresh_token)
-        localStorage.setItem('spotifyToken',queryObject.data.delegateToken.access_token)
-        
-        
+        const refresToken = queryObject.data.delegateToken.refresh_token
+        const accesToken = queryObject.data.delegateToken.access_token
 
+        localStorage.setItem('spotifyRefreshToken',refresToken)
+        localStorage.setItem('spotifyToken',accesToken)
+        
         if(data) {
             TransferToPlaylist(data.getList)
         }
 
       }  
-
- 
-
-    const listState = (state: ListType) => state
-    const dataList = useSelector(listState)
-
-    const dispatch = useDispatch()
-
+      
     const changeFavorite = (event: ChangeEvent<HTMLInputElement>) => {
 
         const input = event.target as HTMLInputElement
         const value = input.parentNode?.nextSibling?.textContent as string;
         const key = input.value
-
-
 
         if (input.checked === true) {
 
@@ -167,7 +161,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
                         <Button type="button" className="buttonSpace" variant="outline-info" onClick={() => transferFavorites()}  >Transfer </Button>
                     </Col>
                 </Form.Row>
-                {data2 && data ? <Transfer showmessage={showmessage}  show={data2.modal.show} tracks={data.getList} TransferToPlaylist={TransferToPlaylist} user={user} /> : ''}
+                {ModalData && data ? <Transfer  show={ModalData.modal.show} tracks={data.getList} TransferToPlaylist={TransferToPlaylist} user={user} /> : ''}
             </Form.Group>
 
         </div>
