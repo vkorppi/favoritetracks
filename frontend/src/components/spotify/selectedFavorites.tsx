@@ -12,7 +12,7 @@ import { useMutation } from '@apollo/client';
 const SelectedFavorites: React.FC<ComponentAttributeList> = ({ show, list,showmessage }) => {
 
 
-  const [addTrack, result] = useMutation(queries.addTrack, {
+  const [addTrack] = useMutation(queries.addTrack, {
     errorPolicy: 'none', onError: (error) => {
         showmessage(error.message,'danger')
     }
@@ -30,7 +30,7 @@ const close = () => {
 
     console.log(Object.keys(list.list))
 
-    const success = await addTrack({
+    await addTrack({
       variables:
       {
           tracks: Object.keys(list.list)

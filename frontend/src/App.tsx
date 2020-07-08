@@ -18,7 +18,7 @@ const App: React.FC = () => {
   const dispatch = useDispatch()
   const selector = (state: MessageType) => state
   const rootstate = useSelector(selector)
-  let location = useLocation();
+  const location = useLocation();
 
 
   const showAlert = (message: string, type: string) => {

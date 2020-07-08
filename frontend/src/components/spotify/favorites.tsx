@@ -109,7 +109,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
     const remove = async () => {
 
-        const success = await removeTrack({
+        await removeTrack({
             variables: {
                 tracks: Object.keys(dataList.list)
             }
