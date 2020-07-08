@@ -3,7 +3,7 @@ import user from '../services/user';
 import spotify from '../services/spotify';
 import { ApolloError, UserInputError } from 'apollo-server-express';
 import { MongoError } from 'mongodb';
-import { UserSchemaType, searchResult, spotifyTrackMinimal, TokenType, UserSchemaType,spotifyTrackCapsulated, spotifyTrackMinimal2, spotifyToken } from '../types';
+import { UserSchemaType, searchResult, spotifyTrackMinimal, TokenType, spotifyTrackNoUrls, spotifyToken } from '../types';
 
 
 export const resolvers = {
@@ -93,14 +93,18 @@ export const resolvers = {
 
         },
         
-        getList: async (_root: any, args: any, userdata: UserSchemaType): Promise<void | spotifyTrackMinimal2[]> => {
+        getList: async (_root: any, args: any, userdata: UserSchemaType): Promise<void | spotifyTrackNoUrls[]> => {
 
         
             return await spotify.GetList(userdata.id).then(result => { 
                 
-                console.log(result.items.map(value => ({ name: value.track.name, uri: value.track.uri })))
-                
-                return result.items.map(value => ({ name: value.track.name, uri: value.track.uri }));
+                return result.items.map(value => (
+                { 
+                    name: value.track.name,
+                    uri: value.track.uri,
+                    external_urls: value.track.external_urls 
+                }
+                ));
 
             }).catch((error: Error) => {
 
@@ -122,18 +126,9 @@ export const resolvers = {
             const code = args.code ;
             const playlist = args.playlist;
 
-            console.log(playlist);
-            console.log(userdata.id);
-			
-			console.log('user.addPLaylist(playlist,userdata.id)');
-
             await user.addPLaylist(playlist,userdata.id);
 			
-			console.log('success');
-
             return await spotify.delegateToken(code).then(result => { 
-
-                console.log(result);
                
                 return result;
 
@@ -166,7 +161,7 @@ export const resolvers = {
         create: async (_root: any, args: {
             username: string, password: string, firstname: string,
             lastname: string, birthdate: string, email: string, address: string
-        }): Promise<boolean | void> => {
+        }): Promise<string | void> => {
 
             const firstname: string = args.firstname;
             const lastname: string = args.lastname;
@@ -178,7 +173,8 @@ export const resolvers = {
 
 
             return await user.create(username, password, firstname, lastname, birthdate, email, address).then(result => {
-                return true;
+                return `User was created with following data: username: ${username}, firstname: ${firstname}, lastname:  ${lastname} `+
+                `birthdate: ${birthdate} email: ${email} address: ${address}`;
 
             }).catch((error: Error) => {
 
@@ -200,7 +196,7 @@ export const resolvers = {
 
         },
 
-        updateUser: async (_root: any, args: { firstname: string, lastname: string, birthdate: string, email: string, address: string, id: string }): Promise<boolean | void> => {
+        updateUser: async (_root: any, args: { firstname: string, lastname: string, birthdate: string, email: string, address: string, id: string }): Promise<string | void> => {
 
             const firstname: string = args.firstname;
             const lastname: string = args.lastname;
@@ -211,7 +207,8 @@ export const resolvers = {
 
 
             return await user.update(firstname, lastname, birthdate, email, address, id).then(result => {
-                return true;
+                return `User was updated with following data: firstname: ${firstname}, lastname:  ${lastname} `+
+                `birthdate: ${birthdate} email: ${email} address: ${address}`;
 
             }).catch((error: Error) => {
 
@@ -219,15 +216,12 @@ export const resolvers = {
 
 
                 if (error instanceof UserInputError) {
-                    console.debug('UserInputError');
                     throw new UserInputError(error.message);
                 }
                 else if (error instanceof ApolloError) {
-                    console.debug('ApolloError');
                     throw new ApolloError(error.message);
                 }
                 else if (error instanceof MongoError) {
-                    console.debug('MongoError');
                     throw new UserInputError(error.message);
                 }
 
@@ -237,14 +231,14 @@ export const resolvers = {
 
         },
 
-        updatePassword: async (_root: any, args: { password: string, id: string }): Promise<boolean | void> => {
+        updatePassword: async (_root: any, args: { password: string, id: string }): Promise<string | void> => {
 
             const password: string = args.password;
             const id: string = args.id;
 
             return await user.updatePassword(password, id).then(result => {
 
-                return true;
+                return `User's password was updated. User's id was ${id}`;
 
             }).catch((error: Error) => {
 
@@ -264,13 +258,13 @@ export const resolvers = {
             });
         },
 
-        remove: async (_root: any, args: { id: string }): Promise<boolean | void> => {
+        remove: async (_root: any, args: { id: string }): Promise<string | void> => {
 
             const id: string = args.id;
 
             return await user.remove(id).then(result => {
 
-                return true;
+                return `User with id: ${id} was removed`;
 
             }).catch((error: Error) => {
 
@@ -314,7 +308,7 @@ export const resolvers = {
         },
 
 
-        addTrackToList: async (_root: any, args: { tracks: string[] }, userdata: UserSchemaType): Promise<boolean> => {
+        addTrackToList: async (_root: any, args: { tracks: string[] }, userdata: UserSchemaType): Promise<string> => {
 
             const tracks: string[] = args.tracks;
 
@@ -332,15 +326,15 @@ export const resolvers = {
 
             });
 
-            return true;
+            return `Tracks: ${tracks.toString()} was added succesfully`;
 
         },
 
-        removeItem: async (_root: any, args: { tracks: string[] }, userdata: UserSchemaType): Promise<boolean> => {
+        removeItem: async (_root: any, args: { tracks: string[] }, userdata: UserSchemaType): Promise<string> => {
 
             const tracks: string[] = args.tracks;
 
-
+            
             await spotify.removeItem(userdata.id,tracks).catch((error: Error) => {
 
                 console.error(error.stack);
@@ -354,7 +348,7 @@ export const resolvers = {
 
             });
 
-            return true;
+            return `Tracks: ${tracks.toString()} was removed succesfully`;
 
         }
 

@@ -69,6 +69,9 @@ export interface spotifyTrackMinimal {
   external_urls:ExternalUrlType
 }
 
+export type spotifyTrackNoUrls = Omit<spotifyTrackMinimal, 'external_urls' >;
+
+
 export interface spotifyTrackCapsulated {
 
   track:spotifyTrackMinimal

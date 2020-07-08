@@ -23,7 +23,7 @@ type Mutation {
     birthdate: String
     email: String
     address: String
-  ): Boolean 
+  ): String 
 
   updateUser(
     firstname: String!
@@ -32,16 +32,16 @@ type Mutation {
     email: String
     address: String
     id:String!     
-  ): Boolean 
+  ): String 
 
   updatePassword(
     password: String!
     id:String!
-  ): Boolean 
+  ): String 
 
   remove(
     id: String!
-  ): Boolean 
+  ): String 
 
   login(
     username: String!
@@ -50,11 +50,11 @@ type Mutation {
 
   addTrackToList(
     tracks: [String!]!
-  ): Boolean 
+  ): String 
 
   removeItem(
     tracks: [String!]!
-  ): Boolean 
+  ): String 
 }
 
 type searchResult {

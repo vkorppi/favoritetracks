@@ -119,7 +119,7 @@ describe('Testing usermanagement', () => {
 			mutation: userMutation
 		})).data as createType;
 
-		expect(success.create).toBe(true);
+		expect(success.create).toBeTruthy();
 
 	});
 
@@ -151,7 +151,7 @@ describe('Testing usermanagement', () => {
 		})).data as updateType;
 
 
-		expect(success.updateUser).toBe(true);
+		expect(success.updateUser).toBeTruthy();
 
 
 	});
@@ -178,7 +178,7 @@ describe('Testing usermanagement', () => {
 			mutation: userMutation,
 		})).data as updateType;
 
-		expect(success.updatePassword).toBe(true);
+		expect(success.updatePassword).toBeTruthy();
 
 
 	});
@@ -205,7 +205,7 @@ describe('Testing usermanagement', () => {
 			mutation: userMutation,
 		})).data as updateType;
 
-		expect(success.remove).toBe(true);
+		expect(success.remove).toBeTruthy();
 	});
 
 	test('Login works', async () => {
@@ -398,7 +398,7 @@ describe('Testing spotify mutations and queries that require authorization heade
 
 		const content = success as dataType;
 
-		expect(content.data.addTrackToList).toBe(true);
+		expect(content.data.addTrackToList).toBeTruthy();
 	});
 
 	test("Query returns user's favorites", async () => {
@@ -461,7 +461,7 @@ describe('Testing spotify mutations and queries that require authorization heade
 
 		const content = success as dataType;
 
-		expect(content.data.removeItem).toBe(true);
+		expect(content.data.removeItem).toBeTruthy();
 
 	});
 
