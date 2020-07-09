@@ -30,6 +30,7 @@ const close = () => {
 
     console.log(Object.keys(list.list))
 
+    
     await addTrack({
       variables:
       {
@@ -38,6 +39,11 @@ const close = () => {
   });
   
   
+  const collection = Object.values(document.getElementsByTagName('input'));
+  const checkboxes = collection.filter(element => element.checked === true) 
+
+  checkboxes.forEach(element => element.checked=false)
+
   close();
 
 
@@ -50,24 +56,24 @@ const close = () => {
     const value = input.parentNode?.nextSibling?.textContent as string;
     const key = input.value
 
-    const collection = Object.values(document.getElementsByTagName('input'));
-    const checkbox = collection.find(element => element.value === key) as HTMLInputElement
+    //const collection = Object.values(document.getElementsByTagName('input'));
+    //const checkbox = collection.find(element => element.value === key) as HTMLInputElement
 
     if (input.checked === true) {
 
-      if(checkbox) {
+      //if(checkbox) {
 
-        checkbox.checked=true
-      }
+        //checkbox.checked=true
+      //}
 
       dispatch(addItem(key,value))
     }
     else {
   
-      if(checkbox) {
+      //if(checkbox) {
 
-        checkbox.checked=false
-      }
+        //checkbox.checked=false
+      //}
 
       dispatch(removeItem(key))
     }
