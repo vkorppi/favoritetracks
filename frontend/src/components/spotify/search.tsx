@@ -1,11 +1,11 @@
 import React, { FormEvent, ChangeEvent } from 'react';
-import { BasicComponent, QueryResult, Track, ListType, ModalType } from '../../type'
+import { BasicComponent, QueryResult, Track, ListType, ModalType, trackNoExternalUrl } from '../../type'
 import { Button, ListGroup, Col, Form, FormControl, InputGroup } from 'react-bootstrap'
 import Resultpagination from './pagination';
 import { useDispatch, useSelector } from 'react-redux'
 import { setPagination } from '../../reducers/pagination'
 import { addItem, removeItem } from '../../reducers/list'
-import { useLazyQuery } from '@apollo/client';
+import { useLazyQuery, useQuery } from '@apollo/client';
 import queries from '../../graphql/queries';
 import { setShow } from '../../reducers/modal';
 import SelectedFavorites from './selectedFavorites';
@@ -16,6 +16,19 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
   const [getTracks, { data, error }] = useLazyQuery(queries.search, {
     fetchPolicy: "no-cache", errorPolicy: 'none',
   })
+
+  let uris: string[];
+
+
+  const listObject = useQuery(queries.getList, {
+    fetchPolicy: "no-cache", errorPolicy: 'none'
+  })
+
+  if (listObject && listObject.data) {
+
+    uris = listObject.data.getList.map((track: trackNoExternalUrl) => (track.uri));
+    
+  }
 
 
   const modalState = (state: ModalType) => state
@@ -54,7 +67,7 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
   const save = () => {
     dispatch(setShow(true))
-    
+
   }
 
   const changeFavorite = (event: ChangeEvent<HTMLInputElement>) => {
@@ -66,7 +79,7 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
     if (input.checked === true) {
 
-      dispatch(addItem(key,value))
+      dispatch(addItem(key, value))
     }
     else {
 
@@ -81,7 +94,7 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
   return (
     <div >
-      <SelectedFavorites list={dataList} showmessage={showmessage}   show={data2.modal.show} />
+      <SelectedFavorites list={dataList} showmessage={showmessage} show={data2.modal.show} />
       <Form.Group>
         <form onSubmit={searchTracks}>
           <Form.Row>
@@ -105,11 +118,8 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
               <Col>
                 <InputGroup.Prepend>
 
-                  {dataList.list[track.uri] ?
-                    <InputGroup.Checkbox onChange={changeFavorite} defaultChecked value={track.uri} />
-                    :
-                    <InputGroup.Checkbox onChange={changeFavorite} value={track.uri} />
-                  }
+                  <InputGroup.Checkbox onChange={changeFavorite} disabled={uris.includes(track.uri)} defaultChecked={dataList.list[track.uri] !== undefined} value={track.uri} />
+
                   <ListGroup.Item> <a href={track.external_urls.spotify}>{track.name}</a> </ListGroup.Item>
                 </InputGroup.Prepend>
 

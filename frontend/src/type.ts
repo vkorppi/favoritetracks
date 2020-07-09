@@ -69,6 +69,8 @@ export interface Track {
   external_urls: ExternalUrlsType;
 }
 
+export type trackNoExternalUrl = Omit<Track, 'external_urls' >;
+
 export interface ExternalUrlsType {
   spotify: string;
 }
@@ -133,14 +135,25 @@ export type ActionList =
   {
     type: "REMOVE";
     data: ListAttributes;
+  } |
+  {
+    type: "CLEAR";
+    data: ListAttributes;
   };
 
   export interface ListType {
     list: ListAttributes;
   }
   
-
+  export type ActionFavorites =
+  {
+    type: "SET";
+    data: FavoritesAttributes;
+  };
   
+  export interface FavoritesAttributes {
+    tracks: Track[];
+  }
 
 
 export type AlertType =

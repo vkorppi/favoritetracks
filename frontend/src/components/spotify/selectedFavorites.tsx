@@ -1,50 +1,49 @@
-import React, {  ChangeEvent } from 'react';
+import React, { ChangeEvent } from 'react';
 import { ComponentAttributeList } from '../../type'
 import { Button, ListGroup, Col, Form, Modal, Card, InputGroup } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
-import { addItem, removeItem } from '../../reducers/list'
+import { addItem, removeItem, clearItems } from '../../reducers/list'
 import { setShow } from '../../reducers/modal';
 import queries from '../../graphql/queries';
 import { useMutation } from '@apollo/client';
 
 
 
-const SelectedFavorites: React.FC<ComponentAttributeList> = ({ show, list,showmessage }) => {
+const SelectedFavorites: React.FC<ComponentAttributeList> = ({ show, list, showmessage }) => {
 
 
   const [addTrack] = useMutation(queries.addTrack, {
     errorPolicy: 'none', onError: (error) => {
-        showmessage(error.message,'danger')
+      showmessage(error.message, 'danger')
     }
-})
+  })
 
-const dispatch = useDispatch()
 
-const close = () => {
+  const dispatch = useDispatch()
 
-  dispatch(setShow(false))
- 
-}
+  const close = () => {
+
+    dispatch(setShow(false))
+
+  }
 
   const saveTracks = async () => {
 
-    console.log(Object.keys(list.list))
-
-    
     await addTrack({
       variables:
       {
-          tracks: Object.keys(list.list)
+        tracks: Object.keys(list.list)
       }
-  });
-  
-  
-  const collection = Object.values(document.getElementsByTagName('input'));
-  const checkboxes = collection.filter(element => element.checked === true) 
+    });
 
-  checkboxes.forEach(element => element.checked=false)
 
-  close();
+    const collection = Object.values(document.getElementsByTagName('input'));
+    const checkboxes = collection.filter(element => element.checked === true)
+    checkboxes.forEach(element => { element.checked = false; element.disabled = true })
+
+    dispatch(clearItems())
+
+    close();
 
 
   }
@@ -56,24 +55,14 @@ const close = () => {
     const value = input.parentNode?.nextSibling?.textContent as string;
     const key = input.value
 
-    //const collection = Object.values(document.getElementsByTagName('input'));
-    //const checkbox = collection.find(element => element.value === key) as HTMLInputElement
 
     if (input.checked === true) {
 
-      //if(checkbox) {
 
-        //checkbox.checked=true
-      //}
-
-      dispatch(addItem(key,value))
+      dispatch(addItem(key, value))
     }
     else {
-  
-      //if(checkbox) {
 
-        //checkbox.checked=false
-      //}
 
       dispatch(removeItem(key))
     }
@@ -95,10 +84,10 @@ const close = () => {
 
                     <Form.Row key={uri} >
                       <Col>
-                        <InputGroup.Prepend> 
-                             
-                            <InputGroup.Checkbox  defaultChecked onChange={changeSelected} value={uri} />
-                              
+                        <InputGroup.Prepend>
+
+                          <InputGroup.Checkbox defaultChecked onChange={changeSelected} value={uri} />
+
                           <ListGroup.Item>{list.list[uri]}</ListGroup.Item>
                         </InputGroup.Prepend>
 
@@ -110,7 +99,7 @@ const close = () => {
                 <Form.Row>
                   <Col>
                     <br />
-                    <Button type="button" className="buttonSpace" variant="primary"   onClick={() => saveTracks()}   >Ok </Button>
+                    <Button type="button" className="buttonSpace" variant="primary" onClick={() => saveTracks()}   >Ok </Button>
                     <Button className="buttonSpace" type="button" variant="primary" onClick={() => close()}  >Close </Button>
                   </Col>
                 </Form.Row>

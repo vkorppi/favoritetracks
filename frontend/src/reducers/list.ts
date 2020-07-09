@@ -14,6 +14,12 @@ export const removeItem = (uri: string) => {
     return { type: 'REMOVE', data: { uri: uri } }
 }
 
+export const clearItems = () => {
+
+    return { type: 'CLEAR', data: {} }
+}
+
+
 const reducer = (state = defaultState , action: ActionList) => {
 
     switch (action.type) {
@@ -26,6 +32,10 @@ const reducer = (state = defaultState , action: ActionList) => {
         case 'REMOVE':
 
             delete state[action.data.uri]
+            return  state
+
+        case 'CLEAR':
+            Object.keys(state).forEach(key => { delete state[key] })
             return  state
 
         default:

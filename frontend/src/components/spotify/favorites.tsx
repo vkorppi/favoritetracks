@@ -43,10 +43,13 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
     const [getLoggedInUser, userData] = useLazyQuery(queries.loggedInUser, {
         fetchPolicy: "no-cache", errorPolicy: 'none',
       })
+
+
     
       if(userData && userData.data) {
         user= userData.data.getUserLoggedin
       }
+
 
     const  TransferToPlaylist=  async (tracks: Track[]) => {
 
