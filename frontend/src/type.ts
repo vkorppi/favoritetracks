@@ -198,6 +198,10 @@ export type ActionPagination =
     data: PaginationAttributes;
   };
 
+export interface RefreshedToken {
+  access_token: string;
+  expires_in: string;
+}
 
 export interface SpotifyTracks {
 
