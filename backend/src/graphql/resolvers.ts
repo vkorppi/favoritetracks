@@ -3,7 +3,7 @@ import user from '../services/user';
 import spotify from '../services/spotify';
 import { ApolloError, UserInputError } from 'apollo-server-express';
 import { MongoError } from 'mongodb';
-import { UserSchemaType, searchResult, spotifyTrackMinimal, TokenType, spotifyTrackNoUrls, spotifyToken } from '../types';
+import { UserSchemaType, searchResult, spotifyTrackMinimal, TokenType, spotifyTrackNoUrls, spotifyToken, refreshtoken } from '../types';
 
 
 export const resolvers = {
@@ -153,7 +153,7 @@ export const resolvers = {
         return await user.getUser(userdata.id);
     },
 
-    delegateRefreshedToken: async (_root: any, args: { refreshedToken: string }, userdata: UserSchemaType ): Promise<void | refreshtoken> => {
+    delegateRefreshedToken: async (_root: any, args: { refreshedToken: string;}): Promise<void | refreshtoken> => {
 
         const refreshedToken = args.refreshedToken ;
                 

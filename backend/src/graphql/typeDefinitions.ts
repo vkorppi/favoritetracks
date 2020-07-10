@@ -12,6 +12,7 @@ type Query {
     getList: [track!]!
     delegateToken(code: String,playlist: String): spotifyToken!
     getUserLoggedin:User!
+    delegateRefreshedToken(refreshedToken: String!): refreshedToken!
 }
 
 type Mutation {
