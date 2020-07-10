@@ -10,6 +10,7 @@ import Transfer from './transfer';
 import { setShow } from '../../reducers/modal';
 import axios from 'axios';
 import { useLazyQuery } from '@apollo/client';
+import { getTimeWhenTokenExpires } from '../../utils/sessionControllers';
 
 const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
@@ -84,9 +85,11 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
         const refresToken = queryObject.data.delegateToken.refresh_token
         const accesToken = queryObject.data.delegateToken.access_token
+        const expiration = queryObject.data.delegateToken.expires_in
 
         localStorage.setItem('spotifyRefreshToken',refresToken)
         localStorage.setItem('spotifyToken',accesToken)
+        localStorage.setItem('Expiration',getTimeWhenTokenExpires(expiration))
         
         if(data) {
             TransferToPlaylist(data.getList)

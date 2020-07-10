@@ -280,8 +280,3 @@ export interface RegistarationType {
   name: string;
 
 }
-
-export interface NewToken {
-  access_token: string;
-  expires_in: number;
-};
