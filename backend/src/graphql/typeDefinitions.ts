@@ -91,5 +91,12 @@ type spotifyToken {
   refresh_token: String!
 }
 
+type refreshedToken {
+  access_token: String!
+  token_type: String!
+  expires_in: Int!
+  scope: String!
+}
+
 
 `;

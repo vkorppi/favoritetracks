@@ -151,9 +151,31 @@ export const resolvers = {
     getUserLoggedin: async (_root: any, args: { code: string,playlist: string }, userdata: UserSchemaType ): Promise<UserSchemaType | null> => {
 
         return await user.getUser(userdata.id);
+    },
+
+    delegateRefreshedToken: async (_root: any, args: { refreshedToken: string }, userdata: UserSchemaType ): Promise<void | refreshtoken> => {
+
+        const refreshedToken = args.refreshedToken ;
+                
+        return await spotify.delegateRefreshedToken(refreshedToken).then(result => { 
+           
+            return result;
+
+        }).catch((error: Error) => {
+
+            console.error(error.stack);
+
+            if (error instanceof ApolloError) {
+                throw new ApolloError(error.message);
+            }
+            else if (error instanceof UserInputError) {
+                throw new UserInputError(error.message);
+            }
+
+        });
+
     }
 
-    
 
     },
     Mutation: {

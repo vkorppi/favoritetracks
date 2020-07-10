@@ -296,6 +296,30 @@ const removeItem = async (userId: string,tracks:string[]): Promise<string | void
 
 };
 
+const delegateRefreshedToken = async (refreshToken: string): Promise<refreshtoken> => {
+
+
+    const env = getSessionEnvs();
+
+    const requestBody = {
+        "grant_type": env.granttype,
+        "refresh_token": refreshToken
+    };
+
+    const headers = {
+        'Content-Type': 'application/x-www-form-urlencoded'
+        , 'authorization': 'Basic ' + env.code
+    };
+
+    return await axios.post(env.sessionUrl, querystring.stringify(requestBody),
+        { headers: headers }).then(newtoken => {
+
+            return newtoken.data as refreshtoken;
+
+        });
+
+};
+
 
 
 
@@ -373,5 +397,6 @@ export default {
     GetList,
     test,
     removeItem,
-    delegateToken
+    delegateToken,
+    delegateRefreshedToken
 };
