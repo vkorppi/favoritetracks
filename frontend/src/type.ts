@@ -30,6 +30,7 @@ export interface ComponentAttributeTrack extends ComponentAttributeModal {
   tracks: Track[];
   TransferToPlaylist: (tracks: Track[]) => Promise<void>;
   user: UserType;
+  newtoken: RefreshedToken;
 }
 
 export interface ComponentInput {

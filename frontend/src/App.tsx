@@ -36,9 +36,6 @@ const App: React.FC = () => {
 
   const matchRoute = useRouteMatch("/details/:id")
 
-  const test = new URLSearchParams(useLocation().search)
-
-  console.log(test.get("code"))
 
   let id = ''
 

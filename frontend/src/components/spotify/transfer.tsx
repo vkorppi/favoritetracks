@@ -8,8 +8,11 @@ import { validateAlert } from '../../utils/alertMessageControllers';
 import { setAlerts } from "../../reducers/alerts";
 import { setShow } from '../../reducers/modal';
 import Message from '../spotify/message';
+import { getTimeWhenTokenExpires } from '../../utils/sessionControllers';
 
-const Transfer: React.FC<ComponentAttributeTrack> = ({ show, tracks, TransferToPlaylist, user }) => {
+const Transfer: React.FC<ComponentAttributeTrack> = ({ show, tracks, TransferToPlaylist, user,newtoken }) => {
+
+
 
     const selectorAlert = (state: AlertType) => state
     const alertState = useSelector(selectorAlert)
@@ -54,6 +57,14 @@ const Transfer: React.FC<ComponentAttributeTrack> = ({ show, tracks, TransferToP
                 window.location.href = process.env.REACT_APP_URL as string
             }
             else {
+
+
+               if(newtoken) 
+                {
+                    localStorage.setItem('spotifyToken',newtoken.access_token)
+                    localStorage.setItem('Expiration',getTimeWhenTokenExpires(Number(newtoken.expires_in)))
+                }
+
                 TransferToPlaylist(tracks)
                 close()
             }

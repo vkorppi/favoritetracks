@@ -1,6 +1,3 @@
-import { RefreshedToken } from "../type";
-
-
 
 export const getTimeWhenTokenExpires = (expiration: number): string => {
 
@@ -10,12 +7,6 @@ export const getTimeWhenTokenExpires = (expiration: number): string => {
     return expirationTime.getTime().toString();
 };
 
-const refreshToken = async (refreshToken: string): Promise<RefreshedToken> => {
-
-    // Change refresh token for new token
-
-
-};
 
 
 

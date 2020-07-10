@@ -158,6 +158,8 @@ export const resolvers = {
         const refreshedToken = args.refreshedToken ;
                 
         return await spotify.delegateRefreshedToken(refreshedToken).then(result => { 
+		
+			console.log(result)
            
             return result;
 

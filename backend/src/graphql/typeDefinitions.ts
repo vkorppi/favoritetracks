@@ -90,6 +90,7 @@ type externalUrl {
 type spotifyToken {
   access_token: String!
   refresh_token: String!
+  expires_in: Int!
 }
 
 type refreshedToken {

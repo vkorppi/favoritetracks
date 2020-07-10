@@ -17,6 +17,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
     const dispatch = useDispatch()
 
     let user
+    let tokenObject
 
     const trackpart1 =  process.env.REACT_APP_TRACKSPART1 as string
     const trackpart3= process.env.REACT_APP_TRACKSPART3 as string
@@ -45,18 +46,25 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
         fetchPolicy: "no-cache", errorPolicy: 'none',
       })
 
+      const [deletegateNewToken, newtoken] = useLazyQuery(queries.delegateRefreshedToken, {
+        fetchPolicy: "no-cache", errorPolicy: 'none',
+      })
 
     
       if(userData && userData.data) {
         user= userData.data.getUserLoggedin
       }
 
+      if(newtoken && newtoken.data) {
+        tokenObject= newtoken.data.delegateRefreshedToken
+      }
 
     const  TransferToPlaylist=  async (tracks: Track[]) => {
 
         
         const playlistpart2 = localStorage.getItem('playlist')
         const token = localStorage.getItem('spotifyToken')
+
         
         const url = trackpart1+playlistpart2+trackpart3
         const uris = tracks.map((track: Track) => (track.uri));
@@ -82,6 +90,8 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
 
       if(queryObject && queryObject.data) {
+
+        console.log('debug123')
 
         const refresToken = queryObject.data.delegateToken.refresh_token
         const accesToken = queryObject.data.delegateToken.access_token
@@ -128,9 +138,23 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
     const transferFavorites = async () => {
 
+        const refreshToken = localStorage.getItem('spotifyRefreshToken') 
+        const expiration = localStorage.getItem('Expiration') 
+
         dispatch(setShow(true))
         getLoggedInUser()
      
+        if(refreshToken && expiration)  {
+
+            const current = new Date();
+
+            if (current.getTime()  > Number(expiration))
+            {
+               
+                deletegateNewToken({ variables: { refreshedToken: refreshToken} })
+            }
+        }
+
     }
 
  
@@ -167,7 +191,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
                         <Button type="button" className="buttonSpace" variant="outline-info" onClick={() => transferFavorites()}  >Transfer </Button>
                     </Col>
                 </Form.Row>
-                {ModalData && data ? <Transfer showmessage={showmessage}  show={ModalData.modal.show} tracks={data.getList} TransferToPlaylist={TransferToPlaylist} user={user} /> : ''}
+                {ModalData && data ? <Transfer showmessage={showmessage}  show={ModalData.modal.show} tracks={data.getList} TransferToPlaylist={TransferToPlaylist} user={user} newtoken={tokenObject} /> : ''}
             </Form.Group>
 
         </div>
