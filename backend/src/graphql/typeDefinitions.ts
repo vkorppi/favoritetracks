@@ -9,7 +9,7 @@ type Query {
     search(track: String,page: Int):  searchResult! 
     searchUser(value: String): [User!]!
     getUser(id: String): User!
-    getList: [track!]!
+    getList: [track!]
     delegateToken(code: String,playlist: String): spotifyToken!
     getUserLoggedin:User!
     delegateRefreshedToken(refreshedToken: String!): refreshedToken!

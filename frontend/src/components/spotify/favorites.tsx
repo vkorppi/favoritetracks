@@ -154,7 +154,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
             <Form.Group>
                 <ListGroup variant="flush">
-                    {data ? data.getList.map((track: Track) => (
+                    { (data && data.getList) ? data.getList.map((track: Track) => (
 
                         <Form.Row key={track.uri} >
                             <Col>

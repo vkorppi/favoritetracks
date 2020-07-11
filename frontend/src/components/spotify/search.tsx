@@ -25,7 +25,7 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
     fetchPolicy: "no-cache", errorPolicy: 'none'
   })
 
-  if (listObject && listObject.data) {
+  if (listObject && listObject.data && listObject.data.getList) {
 
     uris = listObject.data.getList.map((track: trackNoExternalUrl) => (track.uri));
 

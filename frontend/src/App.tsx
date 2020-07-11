@@ -9,7 +9,7 @@ import Registaration from './components/users/registaration';
 import UserSearch from './components/users/userSearch';
 import Details from './components/users/userDetails';
 import Login from './components/users/login';
-import { useRouteMatch, Route, Switch, useLocation } from 'react-router-dom';
+import { useRouteMatch, Route, Switch, useLocation,Redirect,useHistory } from 'react-router-dom';
 import Favorites from './components/spotify/favorites';
 
 
@@ -19,7 +19,8 @@ const App: React.FC = () => {
   const selector = (state: MessageType) => state
   const rootstate = useSelector(selector)
   const location = useLocation();
-
+  const token = localStorage.getItem('Token')
+  const history = useHistory()
 
   const showAlert = (message: string, type: string) => {
 
@@ -29,7 +30,7 @@ const App: React.FC = () => {
   const logout = () => {
 
     localStorage.clear()
-
+    history.push("/")
   };
 
   const noAlert = /details|registaration/i;
@@ -55,14 +56,11 @@ const App: React.FC = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link href="/">Tracks</Nav.Link>
-            <Nav.Link href="/favorites">Favorites</Nav.Link>
-            <Nav.Link href="#Published">Published</Nav.Link>
-            <Nav.Link href="/users">Users</Nav.Link>
-            <Nav.Link href="#Roles">Roles</Nav.Link>
-            <Nav.Link href="/registaration">Registaration</Nav.Link>
-            <Nav.Link href="/reset">reset password</Nav.Link>
-            <Nav.Link href="/login">Login</Nav.Link>
-            <Nav.Link href="#" onClick={() => logout()}>logout</Nav.Link>
+            {token ? <Nav.Link href="/favorites">Favorites</Nav.Link> :  ''}  
+            {token ? <Nav.Link href="/users">Users</Nav.Link> :  ''}  
+            {token ?  <Nav.Link href="/registaration">Registaration</Nav.Link> :  ''}  
+            {!token ? <Nav.Link href="/login">Login</Nav.Link> :  ''}  
+            {token ? <Nav.Link href="#" onClick={() => logout()}>logout</Nav.Link> :  ''} 
           </Nav>
 
         </Navbar.Collapse>
@@ -84,28 +82,34 @@ const App: React.FC = () => {
 
             <Switch>
             <Route path="/favorites">
-                <Favorites showmessage={showAlert} />
+            {token ? <Favorites showmessage={showAlert} /> :  <Redirect to="/login" />}  
               </Route>
               <Route path="/login">
                 <Login showmessage={showAlert} />
               </Route>
               <Route path="/details">
-                <Modal centered show={true}>
+              {token ?
+              <Modal centered show={true}>
                   <Modal.Body>
                     <Details showmessage={showAlert} id={id} />
                   </Modal.Body>
                 </Modal>
+                 :  <Redirect to="/login" />}  
               </Route>
               <Route path="/users">
+              {token ?
                 <UserSearch showmessage={showAlert} />
+                :  <Redirect to="/login" />}  
               </Route>
               <Route path="/registaration">
+              {token ?
                 <Modal centered show={true}>
                   <Modal.Body>
                     <Message text={rootstate.message.text} msgtype={rootstate.message.msgtype} />
                     <Registaration showmessage={showAlert} />
                   </Modal.Body>
                 </Modal>
+                 :  <Redirect to="/login" />} 
               </Route>
               <Route path="/">
                 <Search showmessage={showAlert} />

@@ -4,7 +4,7 @@ import { Button, Card, Form, Col, FormControl } from 'react-bootstrap';
 import { BasicComponent } from "../../type";
 import { useMutation } from '@apollo/client';
 import queries from '../../graphql/queries';
-
+import {useHistory} from "react-router-dom"
 
 const Login: React.FC<BasicComponent> = ({ showmessage }) => {
 
@@ -13,6 +13,8 @@ const Login: React.FC<BasicComponent> = ({ showmessage }) => {
             showmessage(error.message,'danger')
         }
     })
+
+    const history = useHistory()
 
     const submitCredentials = async (event: FormEvent) => {
 
@@ -23,10 +25,12 @@ const Login: React.FC<BasicComponent> = ({ showmessage }) => {
         const username = form[0] as HTMLInputElement;
         const password = form[1] as HTMLInputElement;
 
-        login({ variables: { username: username.value, password: password.value} });
+        const loginResult = login({ variables: { username: username.value, password: password.value} });
    
         username.value = ''
         password.value = ''
+
+     
 
     }
 
@@ -36,7 +40,7 @@ const Login: React.FC<BasicComponent> = ({ showmessage }) => {
         
         const value = result.data.login.value as string;
         localStorage.setItem('Token',value)
-
+        history.push("/")
     }
 
     return (

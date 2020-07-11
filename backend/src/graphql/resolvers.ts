@@ -93,11 +93,14 @@ export const resolvers = {
 
         },
         
-        getList: async (_root: any, args: any, userdata: UserSchemaType): Promise<void | spotifyTrackNoUrls[]> => {
+        getList: async (_root: any, args: any, userdata: UserSchemaType): Promise<void | spotifyTrackNoUrls[] | null> => {
 
+            if(!userdata || !userdata.id) {
+                return null;
+            }
         
             return await spotify.GetList(userdata.id).then(result => { 
-                
+    
                 return result.items.map(value => (
                 { 
                     name: value.track.name,
