@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent,MouseEvent } from 'react';
 import { BasicComponent, Track, ListType, ModalType } from '../../type'
 import { useQuery, useMutation } from '@apollo/client';
 import queries from '../../graphql/queries';
@@ -11,10 +11,13 @@ import { setShow } from '../../reducers/modal';
 import axios from 'axios';
 import { useLazyQuery } from '@apollo/client';
 import { getTimeWhenTokenExpires } from '../../utils/sessionControllers';
+import { useHistory } from "react-router-dom"
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
     const dispatch = useDispatch()
+	const history = useHistory()
 
     let user
     let tokenObject
@@ -78,7 +81,9 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
             , 'authorization': 'Bearer ' + token
         };
 
-        await axios.post(url, requestBody, { headers: headers });        
+        await axios.post(url, requestBody, { headers: headers });    
+
+		history.push('/favorites')
     }
 
     const queryObject = useQuery(queries.delegateToken, {
@@ -90,8 +95,6 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
 
       if(queryObject && queryObject.data) {
-
-        console.log('debug123')
 
         const refresToken = queryObject.data.delegateToken.refresh_token
         const accesToken = queryObject.data.delegateToken.access_token
@@ -107,6 +110,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
       }  
       
+      /*
     const changeFavorite = (event: ChangeEvent<HTMLInputElement>) => {
 
         const input = event.target as HTMLInputElement
@@ -123,6 +127,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
         }
     }
 
+    
     const remove = async () => {
 
         await removeTrack({
@@ -135,6 +140,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
         
 	
     }
+    */
 
     const transferFavorites = async () => {
 
@@ -157,6 +163,12 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
     }
 
+    const remove = (event: MouseEvent) => {
+
+        let removeIcon = event.target as SVGElement
+        console.log( removeIcon.id)
+    }
+
  
 
     return (
@@ -168,13 +180,19 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
                         <Form.Row key={track.uri} >
                             <Col>
-                                <InputGroup.Prepend>
+                           {
+                               /*
+                                 <InputGroup.Prepend>
 
                                     <InputGroup.Checkbox onChange={changeFavorite} value={track.uri} />
 
                                     <ListGroup.Item> {track.name} </ListGroup.Item>
                                 </InputGroup.Prepend>
-
+                               */
+                           }
+                             
+                                    <ListGroup.Item> <DeleteForeverIcon onClick={remove} id={track.uri} /> {track.name} </ListGroup.Item>
+                             
                             </Col>
                         </Form.Row>
 
@@ -187,7 +205,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
                 <Form.Row>
                     <Col>
                         <br />
-                        <Button type="button"  variant="outline-info" onClick={() => remove()}  >remove </Button>
+                        {/* <Button type="button"  variant="outline-info" onClick={() => remove()}  >remove </Button> */}
                         <Button type="button" className="buttonSpace" variant="outline-info" onClick={() => transferFavorites()}  >Transfer </Button>
                     </Col>
                 </Form.Row>

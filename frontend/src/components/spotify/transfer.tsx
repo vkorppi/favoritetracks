@@ -28,6 +28,9 @@ const Transfer: React.FC<ComponentAttributeTrack> = ({ show, tracks, TransferToP
         dispatch(setShow(false))
     }
 
+
+  
+
     const transferOK = async () => {
 
 
