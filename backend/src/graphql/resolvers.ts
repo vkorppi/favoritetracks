@@ -306,7 +306,18 @@ export const resolvers = {
             });
         },
 
-        remove: async (_root: any, args: { id: string }): Promise<string | void> => {
+        remove: async (_root: any, args: { id: string }, userdata: UserSchemaType): Promise<string | void> => {
+            
+
+            const loggedUser =await user.getUser(userdata.id) as UserSchemaType;
+
+            if(!loggedUser) {
+                throw new ForbiddenError("Unauthorized action");
+            }
+
+            if(!loggedUser.admin) {
+                throw new ForbiddenError("Unauthorized action");
+            }
 
             const id: string = args.id;
 

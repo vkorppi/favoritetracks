@@ -72,7 +72,7 @@ const server = new ApolloServer({
 
   formatError: (err) => {
 
-    const userError = /userInput:.*/i;
+    const userError = /userInput:.*|Unauthorized action/i;
 
     console.log(err.message);
 

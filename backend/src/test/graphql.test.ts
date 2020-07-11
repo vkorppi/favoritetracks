@@ -11,6 +11,7 @@ import dotenv from 'dotenv';
 import { hashPassword } from '../utils/userFunctions';
 import { getSessionEnvs } from '../utils/envFunctions';
 import { sign } from 'jsonwebtoken';
+import { UniqueTypeNamesRule } from 'graphql';
 
 
 dotenv.config();
@@ -101,6 +102,7 @@ describe('Testing usermanagement', () => {
 
 	});
 
+	/*
 	test('User was created', async () => {
 
 		interface createType {
@@ -122,7 +124,9 @@ describe('Testing usermanagement', () => {
 		expect(success.create).toBeTruthy();
 
 	});
+	*/
 
+	/*
 	test('User was updated', async () => {
 
 
@@ -155,6 +159,7 @@ describe('Testing usermanagement', () => {
 
 
 	});
+	*/
 
 	test('Password was updated', async () => {
 
@@ -183,6 +188,7 @@ describe('Testing usermanagement', () => {
 
 	});
 
+	/*
 	test('User was removed', async () => {
 
 		interface updateType {
@@ -207,6 +213,7 @@ describe('Testing usermanagement', () => {
 
 		expect(success.remove).toBeTruthy();
 	});
+	*/
 
 	test('Login works', async () => {
 
@@ -309,7 +316,8 @@ describe('Testing usermanagement', () => {
 });
 
 
-describe('Testing spotify mutations and queries that require authorization header', () => {
+
+describe('Testing  mutations and queries that require authorization header', () => {
 
 	const parser = typeparsers.parseString;
 	let clientWithHeaders: ApolloClient<unknown>;
@@ -339,7 +347,8 @@ describe('Testing spotify mutations and queries that require authorization heade
 			username: 'usernameTest',
 			password: hashPassword('passwordTest'),
 			firstname: 'firstnameTest',
-			lastname: 'lastnameTest'
+			lastname: 'lastnameTest',
+			admin: true
 		} as UserSchemaType;
 
 
@@ -498,6 +507,138 @@ describe('Testing spotify mutations and queries that require authorization heade
 
 		expect(user).toBeTruthy();
 	
+	});
+
+	test('User was created', async () => {
+
+		interface createType {
+			create: boolean;
+		}
+
+		const userMutation = gql`
+
+			mutation {
+				create(username: "username",password: "password",firstname:"first",lastname:"last",
+				birthdate: "11.11.1999",email: "test.testi@test.com",address:"street 11") 
+    		}
+		  `;
+
+		const success = (await clientWithHeaders.mutate({
+			mutation: userMutation
+		})).data as createType;
+
+		expect(success.create).toBeTruthy();
+
+		let message = '';
+
+		try {
+
+		await apolloclient.mutate({
+			mutation: userMutation,
+		});
+		}
+		catch(error) {
+			const test: Error = error as Error;
+			message = test.message;
+		}
+
+		expect(message).toContain('Unauthorized action');
+
+	});
+
+	test('User was updated', async () => {
+
+
+		interface updateType {
+			updateUser: boolean;
+		}
+
+		const user = await User.findOne({ username: 'usernameTest' });
+		const id = user?.id as string;
+
+		const userMutation = gql`
+
+			mutation UpdateUser($firstname: String!,$lastname: String!,$birthdate: String,
+				$email: String,$address: String,$id: String!){
+				updateUser(firstname:$firstname,lastname:$lastname,birthdate:$birthdate
+				,email:$email,address:$address,id:$id) 
+    		}
+		  `;
+
+		const success = (await clientWithHeaders.mutate({
+			variables: {
+				firstname: 'first', lastname: 'last',
+				birthdate: '11.11.2011', email: 'test.test.@test.com', address: 'street 12', id: id
+			},
+			mutation: userMutation,
+		})).data as updateType;
+
+
+		expect(success.updateUser).toBeTruthy();
+
+		let message = '';
+
+		try {
+
+		await apolloclient.mutate({
+			variables: {
+				firstname: 'first', lastname: 'last',
+				birthdate: '11.11.2011', email: 'test.test.@test.com', address: 'street 12', id: id
+			},
+			mutation: userMutation,
+		});
+		}
+		catch(error) {
+			const test: Error = error as Error;
+			message = test.message;
+		}
+
+		expect(message).toContain('Unauthorized action');
+
+
+	});
+
+	test('User was removed', async () => {
+
+		interface updateType {
+			remove: boolean;
+		}
+
+		const user = await User.findOne({ username: 'usernameTest' });
+		const id = user?.id as string;
+
+		const userMutation = gql`
+
+			mutation Remove($id: String!){
+				remove(id:$id) 
+    		}
+		  `;
+
+
+		let message = '';
+
+		try {
+
+		await apolloclient.mutate({
+			variables: { id: id },
+			mutation: userMutation,
+		});
+		}
+		catch(error) {
+			const test: Error = error as Error;
+			message = test.message;
+		}
+
+		expect(message).toContain('Unauthorized action');
+
+
+		const success = (await clientWithHeaders.mutate({
+			variables: { id: id },
+			mutation: userMutation,
+		})).data as updateType;
+
+		expect(success).toBeTruthy();
+
 	});
 
 
