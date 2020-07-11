@@ -71,6 +71,7 @@ type User {
     address:   String
     id       : String!
     playlist : String
+    admin : Boolean
 }
 
 type encodedToken {
