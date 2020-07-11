@@ -41,7 +41,8 @@ export const create = async (username: string, password: string, firstname: stri
         lastname: parser(lastname, lastnameError),
         birthdate: birthdate ? dateParser(birthdate,birthdateError ) : '',
         email: email ? emailParser(email,emailError) : '',
-        address: address ? parser(address,addressError ) : ''
+        address: address ? parser(address,addressError ) : '',
+        admin: false
 
     } as UserSchemaType;
 

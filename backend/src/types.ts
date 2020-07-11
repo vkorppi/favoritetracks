@@ -190,6 +190,7 @@ export interface UserSchemaType extends Document {
   email: string,
   address: string,
   favorites:string
+  admin: boolean;
 }
 
 

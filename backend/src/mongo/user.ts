@@ -11,7 +11,8 @@ const userSchema: Schema = new Schema({
   email: { type: String },
   address: { type: String },
   favorites: { type: String },
-  playlist: { type: String }
+  playlist: { type: String },
+  admin: { type: Boolean }
 });
 
 
