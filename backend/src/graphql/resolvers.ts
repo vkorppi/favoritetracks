@@ -1,7 +1,7 @@
 
 import user from '../services/user';
 import spotify from '../services/spotify';
-import { ApolloError, UserInputError } from 'apollo-server-express';
+import { ApolloError, UserInputError, ForbiddenError } from 'apollo-server-express';
 import { MongoError } from 'mongodb';
 import { UserSchemaType, searchResult, spotifyTrackMinimal, TokenType, spotifyTrackNoUrls, spotifyToken, refreshtoken } from '../types';
 
@@ -188,7 +188,18 @@ export const resolvers = {
         create: async (_root: any, args: {
             username: string, password: string, firstname: string,
             lastname: string, birthdate: string, email: string, address: string
-        }): Promise<string | void> => {
+        }, userdata: UserSchemaType): Promise<string | void> => {
+
+
+            const loggedUser =await user.getUser(userdata.id) as UserSchemaType;
+
+            if(!loggedUser) {
+                throw new ForbiddenError("Unauthorized action");
+            }
+
+            if(!loggedUser.admin) {
+                throw new ForbiddenError("Unauthorized action");
+            }
 
             const firstname: string = args.firstname;
             const lastname: string = args.lastname;
@@ -223,7 +234,8 @@ export const resolvers = {
 
         },
 
-        updateUser: async (_root: any, args: { firstname: string, lastname: string, birthdate: string, email: string, address: string, id: string }): Promise<string | void> => {
+        updateUser: async (_root: any, args: { firstname: string, lastname: string, birthdate: string, email: string, address: string, id: string }
+            , userdata: UserSchemaType): Promise<string | void> => {
 
             const firstname: string = args.firstname;
             const lastname: string = args.lastname;
@@ -232,6 +244,15 @@ export const resolvers = {
             const email: string = args.email;
             const address: string = args.address;
 
+            const loggedUser =await user.getUser(userdata.id) as UserSchemaType;
+
+            if(!loggedUser) {
+                throw new ForbiddenError("Unauthorized action");
+            }
+
+            if(!loggedUser.admin && id !== loggedUser.id) {
+                throw new ForbiddenError("Unauthorized action");
+            }
 
             return await user.update(firstname, lastname, birthdate, email, address, id).then(result => {
                 return `User was updated with following data: firstname: ${firstname}, lastname:  ${lastname} `+
