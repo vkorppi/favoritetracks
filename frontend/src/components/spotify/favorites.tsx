@@ -1,5 +1,5 @@
 import React, { MouseEvent } from 'react';
-import { BasicComponent, Track, ListType, ModalType } from '../../type'
+import { BasicComponent, Track, ModalType } from '../../type'
 import { useQuery, useMutation } from '@apollo/client';
 import queries from '../../graphql/queries';
 import { Form, ListGroup, Col, Button } from 'react-bootstrap';
@@ -28,10 +28,6 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
     const modalState = (state: ModalType) => state
     const ModalData = useSelector(modalState)
-
-    const listState = (state: ListType) => state
-    const dataList = useSelector(listState)
-
 
     const { data, refetch } = useQuery(queries.getList, {
         fetchPolicy: "no-cache", errorPolicy: 'none'

@@ -12,6 +12,7 @@ import SelectedFavorites from './selectedFavorites';
 
 const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
+  const token = localStorage.getItem('Token')
 
   const [getTracks, { data, error }] = useLazyQuery(queries.search, {
     fetchPolicy: "no-cache", errorPolicy: 'none',
@@ -27,7 +28,7 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
   if (listObject && listObject.data) {
 
     uris = listObject.data.getList.map((track: trackNoExternalUrl) => (track.uri));
-    
+
   }
 
 
@@ -106,7 +107,9 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
             <Col>
               <br />
               <Button type="submit" variant="outline-primary" >Search </Button>
-              <Button type="button" className="buttonSpace" variant="outline-info" onClick={() => save()}  >Save </Button>
+              {token ?
+                <Button type="button" className="buttonSpace" variant="outline-info" onClick={() => save()}  >Save </Button>
+                : ''}
             </Col>
           </Form.Row>
           <br />
@@ -117,9 +120,9 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
             <Form.Row key={track.uri} >
               <Col>
                 <InputGroup.Prepend>
-
-                  <InputGroup.Checkbox onChange={changeFavorite} disabled={uris.includes(track.uri)} defaultChecked={dataList.list[track.uri] !== undefined} value={track.uri} />
-
+                  {token ?
+                    <InputGroup.Checkbox onChange={changeFavorite} disabled={uris.includes(track.uri)} defaultChecked={dataList.list[track.uri] !== undefined} value={track.uri} />
+                    : ''}
                   <ListGroup.Item> <a href={track.external_urls.spotify}>{track.name}</a> </ListGroup.Item>
                 </InputGroup.Prepend>
 
