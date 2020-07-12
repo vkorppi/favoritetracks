@@ -4,13 +4,17 @@ describe('Test related to user management', function() {
 
     beforeEach(function() {
 
-        cy.visit('http://localhost:3000')
+		cy.visit('http://localhost:3000')
+		cy.contains('Login').click()
+		cy.get('#username').type('usernameTest')
+        cy.get('#password').type('passwordTest')
+		cy.get('#login').click()
+
       })
 
-      it('Can create user', function() {
-		  
+      it('Admin can create user', function() {
+		  		
 		cy.contains('Registaration').click()
-
         cy.get('#firstname').type('test_firstname')
         cy.get('#lastname').type('test_lastname')
         cy.get('#birthdate').type('11.11.2001')
@@ -20,12 +24,11 @@ describe('Test related to user management', function() {
 		cy.get('#password').type('Password')
 
         cy.contains('Register').click()
-
   
         cy.contains('New user created')
     })
 
-    it('Username is unique', function() {
+    it('Username must be unique', function() {
 
  		cy.contains('Registaration').click()
 
@@ -43,6 +46,11 @@ describe('Test related to user management', function() {
         cy.contains('userInput: username was reserverd')
     })
 	
+	it('Inputs are validate when registering user', function() {
+
+	
+	})
+
 	it('Created user can be searched', function() {
 
  		cy.contains('Users').click()

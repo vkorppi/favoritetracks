@@ -67,7 +67,7 @@ const Login: React.FC<BasicComponent> = ({ showmessage }) => {
                             <br />
                             <Form.Row>
                                 <Col>
-                                    <Button type="submit" variant="primary" >Login </Button>
+                                    <Button type="submit" id="login" variant="primary" >Login </Button>
                                 </Col>
                             </Form.Row>
                         </form>
