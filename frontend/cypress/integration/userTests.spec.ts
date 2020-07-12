@@ -188,5 +188,34 @@ describe('Test related to user management. Admin', function () {
 
 describe('Test related to user management. Regular user', function () {
 
+	beforeEach(function () {
+
+		cy.visit('http://localhost:3000')
+		cy.contains('Login').click()
+		cy.get('#username').type('username')
+		cy.get('#password').type('password')
+		cy.get('Login').click()
+
+	})
+
+	afterEach(() => {
+		cy.contains('logout').click()
+	})
+
+	it('User can not see registaration', function () {
+
+		cy.contains('Registaration').should('not.exist');
+	})
+
+	it('User can modify own information', function () {
+
+		
+	})
+
+	it('User can not delete or modify other users', function () {
+
+
+	})
+
 
 })

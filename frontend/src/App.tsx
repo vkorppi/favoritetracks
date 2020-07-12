@@ -61,6 +61,7 @@ const App: React.FC = () => {
             {token ? <Nav.Link href="/favorites">Favorites</Nav.Link> :  ''}  
             {token ? <Nav.Link href="/users">Users</Nav.Link> :  ''}  
             {token && admin  ?  <Nav.Link href="/registaration">Registaration</Nav.Link> :  ''}  
+            {token ? <Nav.Link href="/details">Me</Nav.Link> :  ''} 
             {!token ? <Nav.Link href="/login">Login</Nav.Link> :  ''}  
             {token ? <Nav.Link href="#" onClick={() => logout()}>logout</Nav.Link> :  ''} 
           </Nav>
