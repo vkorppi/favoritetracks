@@ -38,8 +38,11 @@ const Login: React.FC<BasicComponent> = ({ showmessage }) => {
 
     if(result &&  result.data) {
         
+
         const value = result.data.login.value as string;
+        const admin = result.data.login.admin
         localStorage.setItem('Token',value)
+        localStorage.setItem('Admin',admin)
         history.push("/")
     }
 
@@ -58,7 +61,7 @@ const Login: React.FC<BasicComponent> = ({ showmessage }) => {
                             <br />
                             <Form.Row>
                                 <Col>
-                                    <FormControl placeholder="password" id="password" />
+                                    <FormControl type="password" placeholder="password" id="password" />
                                 </Col>
                             </Form.Row>
                             <br />

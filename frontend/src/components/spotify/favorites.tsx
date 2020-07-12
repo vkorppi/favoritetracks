@@ -158,7 +158,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
                         <Form.Row key={track.uri} >
                             <Col>
-                                <ListGroup.Item> <DeleteForeverIcon onClick={remove} id={track.uri} /> {track.name} </ListGroup.Item>
+                                <ListGroup.Item> <DeleteForeverIcon onClick={remove} id={track.uri} className="clickable" /> {track.name} </ListGroup.Item>
                             </Col>
                         </Form.Row>
 

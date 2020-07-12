@@ -2,7 +2,6 @@ import React from 'react';
 import Search from './components/spotify/search';
 import { MessageType, UseId } from './type';
 import { Container, Row, Navbar, Nav, Modal } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
 import { showMessage } from './thunks/message';
 import Message from './components/spotify/message';
 import Registaration from './components/users/registaration';
@@ -11,16 +10,22 @@ import Details from './components/users/userDetails';
 import Login from './components/users/login';
 import { useRouteMatch, Route, Switch, useLocation,Redirect,useHistory } from 'react-router-dom';
 import Favorites from './components/spotify/favorites';
+import { useDispatch, useSelector } from 'react-redux'
 
 
 const App: React.FC = () => {
 
   const dispatch = useDispatch()
+  
   const selector = (state: MessageType) => state
   const rootstate = useSelector(selector)
+
   const location = useLocation();
   const token = localStorage.getItem('Token')
+  const admin =  localStorage.getItem('Admin') === 'true'
   const history = useHistory()
+  
+  console.log(admin)
 
   const showAlert = (message: string, type: string) => {
 
@@ -36,8 +41,7 @@ const App: React.FC = () => {
   const noAlert = /details|registaration/i;
 
   const matchRoute = useRouteMatch("/details/:id")
-
-
+  
   let id = ''
 
   if (matchRoute) {
@@ -58,7 +62,7 @@ const App: React.FC = () => {
             <Nav.Link href="/">Tracks</Nav.Link>
             {token ? <Nav.Link href="/favorites">Favorites</Nav.Link> :  ''}  
             {token ? <Nav.Link href="/users">Users</Nav.Link> :  ''}  
-            {token ?  <Nav.Link href="/registaration">Registaration</Nav.Link> :  ''}  
+            {token && admin  ?  <Nav.Link href="/registaration">Registaration</Nav.Link> :  ''}  
             {!token ? <Nav.Link href="/login">Login</Nav.Link> :  ''}  
             {token ? <Nav.Link href="#" onClick={() => logout()}>logout</Nav.Link> :  ''} 
           </Nav>
@@ -102,7 +106,7 @@ const App: React.FC = () => {
                 :  <Redirect to="/login" />}  
               </Route>
               <Route path="/registaration">
-              {token ?
+              {token    ?
                 <Modal centered show={true}>
                   <Modal.Body>
                     <Message text={rootstate.message.text} msgtype={rootstate.message.msgtype} />

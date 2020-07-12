@@ -52,6 +52,7 @@ export interface UserType {
   username: string;
   id: string;
   playlist: string;
+  admin: boolean;
 }
 
 export interface UseId {
@@ -172,6 +173,9 @@ export type AlertAttributes = {
 
   [key: string]: boolean;
 }
+
+
+
 
 
 export interface PaginationType {

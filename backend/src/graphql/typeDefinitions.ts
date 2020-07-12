@@ -76,6 +76,7 @@ type User {
 
 type encodedToken {
   value : String!
+  admin : Boolean!
 }
 
 type track {

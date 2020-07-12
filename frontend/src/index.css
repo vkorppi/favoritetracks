@@ -10,3 +10,7 @@
 .rowPadding {
   padding:15px
 }
+
+.clickable {
+  cursor: pointer;
+}

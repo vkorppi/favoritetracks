@@ -18,7 +18,7 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
     fetchPolicy: "no-cache", errorPolicy: 'none',
   })
 
-  let uris: string[];
+  let uris: string[]=[''];
 
 
   const listObject = useQuery(queries.getList, {
@@ -92,6 +92,8 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
     total = fetchedData.search.total
     total = Math.floor(total / 10)
   }
+
+  
 
   return (
     <div >

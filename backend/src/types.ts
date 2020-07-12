@@ -196,6 +196,7 @@ export interface UserSchemaType extends Document {
 
 export interface TokenType {
   value: string;
+  admin: boolean;
 }
 
 export interface UserType {

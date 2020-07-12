@@ -127,6 +127,13 @@ const search = async (value: string): Promise<UserSchemaType[]> => {
 
 };
 
+const isAdmin = async (id: string): Promise<boolean> => {
+
+    const user = await User.findOne({ _id: id }) as UserSchemaType ;
+
+    return user.admin ;
+};
+
 
 const login = async (username: string, password: string): Promise<TokenType> => {
 
@@ -138,8 +145,12 @@ const login = async (username: string, password: string): Promise<TokenType> => 
         parser(password, "userInput: password was invalid")
     );
 
-    return { value: sign({ username: username, id: id }, secret) };
+    const hasAdminrole = await isAdmin(id);
+
+    return { value: sign({ username: username, id: id }, secret), admin: hasAdminrole  };
 };
+
+
 
 const check = async (username: string, password: string): Promise<string> => {
 
@@ -191,5 +202,6 @@ export default {
     login,
     getUser,
     addList,
-    addPLaylist
+    addPLaylist,
+    isAdmin
 };

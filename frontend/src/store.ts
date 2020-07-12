@@ -10,6 +10,7 @@ import listReducer from './reducers/list'
 import alertsReducer from './reducers/alerts'
 
 
+
 const reducer = combineReducers({
     pagination: paginationReducer,
     message: messageReducer,

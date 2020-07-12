@@ -87,7 +87,8 @@ const updatePassword = gql`
  mutation Login($username: String!,$password: String!){
   login(username:$username,password:$password)
 	{
-		value
+    value,
+    admin
 	}  
   }
  `;
@@ -138,7 +139,8 @@ query delegateRefreshedToken($refreshedToken: String!){
         lastname,
         username,
         id,
-        playlist
+        playlist,
+        admin
     }
   }`;
 
