@@ -17,6 +17,7 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
     const data2 = useSelector(modalState)
     const dispatch = useDispatch()
 
+    const admin =  localStorage.getItem('Admin') === 'true'
 
     const { error, data } = useQuery(queries.getUser, {
         fetchPolicy: "no-cache", errorPolicy: 'none',
@@ -93,8 +94,8 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
                                     <br/>
                                     <br/>
                                     <br/>
-                                        <Button type="button" variant="primary" id="remove" onClick={() => removeUser()}  >Delete </Button>
-                                        <Button type="button" id="modify" className="buttonSpace" variant="primary" onClick={() => modifyUser()}  >Modify </Button>
+                                        { admin ? <Button type="button" variant="primary" id="remove" onClick={() => removeUser()}  >Delete </Button> : ''}
+                                        { admin ? <Button type="button" id="modify" className="buttonSpace" variant="primary" onClick={() => modifyUser()}  >Modify </Button> : ''} 
                                         <Button className="buttonSpace"  type="button" variant="primary" onClick={() => close()}  >Close </Button>
                                     </Col>
                                 </Form.Row>

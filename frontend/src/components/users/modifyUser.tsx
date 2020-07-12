@@ -153,7 +153,9 @@ const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show 
                                         defaultInput={user.address}/>
                                         </Col>
                                     </Form.Row>
+                                    
                                     <br />
+                                    
                                     <Form.Row>
                                         <Col>
                                             <Button type="submit" id="save" variant="primary"    >Save </Button>
@@ -161,6 +163,7 @@ const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show 
                                         </Col>
 
                                     </Form.Row>
+                                  
                                 </form>
                             </Form.Group>
 

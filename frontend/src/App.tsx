@@ -24,8 +24,6 @@ const App: React.FC = () => {
   const token = localStorage.getItem('Token')
   const admin =  localStorage.getItem('Admin') === 'true'
   const history = useHistory()
-  
-  console.log(admin)
 
   const showAlert = (message: string, type: string) => {
 

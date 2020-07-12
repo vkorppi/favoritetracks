@@ -25,7 +25,7 @@ const Login: React.FC<BasicComponent> = ({ showmessage }) => {
         const username = form[0] as HTMLInputElement;
         const password = form[1] as HTMLInputElement;
 
-        const loginResult = login({ variables: { username: username.value, password: password.value} });
+        login({ variables: { username: username.value, password: password.value} });
    
         username.value = ''
         password.value = ''
