@@ -119,7 +119,7 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
                                     <br/>
                                         { admin  ? <Button type="button" variant="primary" id="remove" onClick={() => removeUser()}  >Delete </Button> : ''}
                                         { admin || isloggeduser ? <Button type="button" id="modify" className="buttonSpace" variant="primary" onClick={() => modifyUser()}  >Modify </Button> : ''} 
-                                        <Button className="buttonSpace"  type="button" variant="primary" onClick={() => close()}  >Close </Button>
+                                        <Button className="buttonSpace"  type="button" id="detailsClose" variant="primary" onClick={() => close()}  >Close </Button>
                                     </Col>
                                 </Form.Row>
                             </form>

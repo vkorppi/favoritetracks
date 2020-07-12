@@ -138,6 +138,9 @@ query delegateRefreshedToken($refreshedToken: String!){
         firstname,
         lastname,
         username,
+		birthdate,
+        email,
+		address,
         id,
         playlist,
         admin
