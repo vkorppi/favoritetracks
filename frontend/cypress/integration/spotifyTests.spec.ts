@@ -2,11 +2,16 @@
 
 describe('Test related to search', function() {
 
-  beforeEach(function() {
 
-    cy.visit('http://localhost:3000')
-   
-  })
+	beforeEach(function () {
+
+		cy.visit('http://localhost:3000')
+		cy.contains('Login').click()
+		cy.get('#username').type('usernameTest')
+		cy.get('#password').type('passwordTest')
+		cy.get('Login').click()
+
+	})
   
   it('Shows arrow to next result and shows searchresult', function() {
 
