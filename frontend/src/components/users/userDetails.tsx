@@ -21,6 +21,12 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
 
     const { error, data } = useQuery(queries.getUser, {
         fetchPolicy: "no-cache", errorPolicy: 'none',
+        skip: (!id),
+        variables: { id: id }
+    })
+
+    const { error, data } = useQuery(queries.loggedInUser, {
+        fetchPolicy: "no-cache", errorPolicy: 'none',
         variables: { id: id }
     })
 
