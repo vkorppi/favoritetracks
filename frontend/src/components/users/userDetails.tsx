@@ -19,16 +19,33 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
 
     const admin =  localStorage.getItem('Admin') === 'true'
 
-    const { error, data } = useQuery(queries.getUser, {
+    const fetchedUser = useQuery(queries.getUser, {
         fetchPolicy: "no-cache", errorPolicy: 'none',
         skip: (!id),
         variables: { id: id }
     })
 
-    const { error, data } = useQuery(queries.loggedInUser, {
+    const loggedUser = useQuery(queries.loggedInUser, {
         fetchPolicy: "no-cache", errorPolicy: 'none',
-        variables: { id: id }
+        skip: (id !== '')
     })
+
+
+    let user
+    let error
+    let isloggeduser=false
+
+    if(fetchedUser && fetchedUser.data) {
+        error = fetchedUser.error
+        user = fetchedUser.data.getUser
+    }
+
+    if(loggedUser && loggedUser.data) {
+        error = loggedUser.error
+        user = loggedUser.data.getUserLoggedin
+        isloggeduser=true
+    }
+
 
     const [deleteUser] = useMutation(queries.deleteUser, {
         errorPolicy: 'none',
@@ -59,7 +76,7 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
     return (
         <div >
 
-            {data ?
+            {user ?
 
                 <Card>
                     <Card.Header></Card.Header>
@@ -68,31 +85,31 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
                             <form >
                                 <Form.Row>
                                     <Col>
-                                        <Form.Label className="rowPadding">{`${data.getUser.firstname} ${data.getUser.lastname}`}</Form.Label>
+                                        <Form.Label className="rowPadding">{`${user.firstname} ${user.lastname}`}</Form.Label>
                                     </Col>
                                 </Form.Row>
 
                                 <Form.Row>
                                     <Col>
-                                        <Form.Label className="rowPadding">{`${data.getUser.birthdate}`}</Form.Label>
+                                        <Form.Label className="rowPadding">{`${user.birthdate}`}</Form.Label>
                                     </Col>
                                 </Form.Row>
 
                                 <Form.Row>
                                     <Col>
-                                        <Form.Label className="rowPadding">{`${data.getUser.email}`}</Form.Label>
+                                        <Form.Label className="rowPadding">{`${user.email}`}</Form.Label>
                                     </Col>
                                 </Form.Row>
 
                                 <Form.Row>
                                     <Col>
-                                        <Form.Label className="rowPadding">{`${data.getUser.address}`}</Form.Label>
+                                        <Form.Label className="rowPadding">{`${user.address}`}</Form.Label>
                                     </Col>
                                 </Form.Row>
 
                                 <Form.Row>
                                     <Col>
-                                        <Form.Label className="rowPadding">{data.getUser.username}</Form.Label>
+                                        <Form.Label className="rowPadding">{user.username}</Form.Label>
                                     </Col>
                                 </Form.Row>
                                 <Form.Row>
@@ -100,13 +117,13 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
                                     <br/>
                                     <br/>
                                     <br/>
-                                        { admin ? <Button type="button" variant="primary" id="remove" onClick={() => removeUser()}  >Delete </Button> : ''}
-                                        { admin ? <Button type="button" id="modify" className="buttonSpace" variant="primary" onClick={() => modifyUser()}  >Modify </Button> : ''} 
+                                        { admin  ? <Button type="button" variant="primary" id="remove" onClick={() => removeUser()}  >Delete </Button> : ''}
+                                        { admin || isloggeduser ? <Button type="button" id="modify" className="buttonSpace" variant="primary" onClick={() => modifyUser()}  >Modify </Button> : ''} 
                                         <Button className="buttonSpace"  type="button" variant="primary" onClick={() => close()}  >Close </Button>
                                     </Col>
                                 </Form.Row>
                             </form>
-                            {data2 ? <ModifyUser showmessage={showmessage} user={data.getUser} show={data2.modal.show} /> : ''}
+                            {data2 ? <ModifyUser showmessage={showmessage} user={user} show={data2.modal.show} /> : ''}
                         </Form.Group>
                     </Card.Body>
                 </Card>
