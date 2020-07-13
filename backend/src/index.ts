@@ -96,6 +96,31 @@ const app = express();
 
 app.use(express.static('TestPage'));
 
+
+app.get('/login', function(_req, res) {
+  res.sendFile(path.join('build', 'index.html'), { root: __dirname });
+});
+
+app.get('/favorites', function(_req, res) {
+  res.sendFile(path.join('build', 'index.html'), { root: __dirname });
+});
+
+app.get('/details/*', function(_req, res) {
+  res.sendFile(path.join('build', 'index.html'), { root: __dirname });
+});
+
+app.get('/details', function(_req, res) {
+  res.sendFile(path.join('build', 'index.html'), { root: __dirname });
+});
+
+app.get('/users', function(_req, res) {
+  res.sendFile(path.join('build', 'index.html'), { root: __dirname });
+});
+
+app.get('/registaration', function(_req, res) {
+  res.sendFile(path.join('build', 'index.html'), { root: __dirname });
+});
+
 server.applyMiddleware({ app });
 
 const port = typeparsers.parseNumber(process.env.PORT, 'Enviroment variable: variable was not a number');
