@@ -39,7 +39,7 @@ Kappalelistalla näet listan tallentamistasi kappaleista, jos olet tallentanut k
 ![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/kappalelista.jpg)
 <br/>
 <br/>
-Ennen, kuin yrität lisätä kappaleita Spotify-tilillesi sinulla pitää olla avoin istunto Spotify:n web versiossa. Jos, että ole vielä kirjautuneena Spotify:n niin mene Spotify:n sivulle (https://open.spotify.com/) kirjaudu ja palaa sitten takaisin toteuttamaan kappaleiden siirto. Kappaleiden siirto aloitetaan painamalla transfer-painiketta, jonka jälkeen eteesi ilmestyy ikkuna, johon sinun tulee syöttää playlistisi tunnus. Tunnuksena 
+Ennen, kuin yrität lisätä kappaleita Spotify-tilillesi sinulla pitää olla avoin istunto Spotify:n web versiossa. Jos, että ole vielä kirjautuneena Spotify:n niin mene Spotify:n sivulle (https://open.spotify.com/) kirjaudu ja palaa sitten takaisin toteuttamaan kappaleiden siirto. Kappaleiden siirto aloitetaan painamalla transfer-painiketta, jonka jälkeen eteesi ilmestyy ikkuna, johon sinun tulee syöttää playlistisi tunnus. Tunnuksen saa, jos mene Spotify:n web version sivustolle ja siellä omalle playlist-sivullesi. Playlistin tunnuksen saa sivun osoiteriviltä, jossa se tulee heti osan "playlist/" jälkeen esim. https://open.spotify.com/playlist/....tunnuksesi. 
 
 ## Käyttäjienhallinta
 
