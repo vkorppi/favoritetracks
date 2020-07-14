@@ -56,5 +56,11 @@ Omiin tietoihiin pääsee käsiksi kohdasta Me ylänavigaatiossa. Kohdan painemi
 ![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/k%C3%A4ytt%C3%A4j%C3%A4N%C3%A4kym%C3%A4.jpg)
 <br/>
 <br/>
-Kohdasta Users ylänavigaatiossa pääset sivulle, jossa voit hakea muita käyttäjiä toisen käyttäjän käyttäjätunnuksella, etunimellä tai sukunimellä-
+Kohdasta Users ylänavigaatiossa pääset sivulle, jossa voit hakea muita käyttäjiä toisen käyttäjän käyttäjätunnuksella, etunimellä tai sukunimellä. Voit myös tarkastella muitten käyttäjien tietoja painamalla
+<br/>
+<br/>
+<br/>
+![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/k%C3%A4ytt%C3%A4j%C3%A4N%C3%A4kym%C3%A4.jpg)
+<br/>
+<br/>
 
