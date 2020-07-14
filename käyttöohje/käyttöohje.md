@@ -15,9 +15,11 @@ Kappaleiden haku sivulle pääsee painamalla ylänavigaatiossa olevaa Tracks-tek
 Kun olet kirjautunut sovellukseen niin kappaleiden haku näyttää erilaiselta kuin mitä se oli ennen kirjautumista. Näkyvin muutos on se, että search-painikkeen viereen on ilmestynyt save-painike. Save-painikkeen painaminen avaa tyhjän valikon eteesi. Valikko on tyhjä, koska et ole vielä valinnut yhtäkään kappaletta hakutuloksista. Jotta save-painikkeesta olisi hyötyä niin ensin pitää hakea hakusanalla kappaleita.
 <br/>
 <br/>
+<br/>
+<br/>
 ![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/Tyhj%C3%A4ValikkoPienennetty.jpg)
 
-
+Tehdään haku hakusanalla dylan ja katsotaan, minkälaisia hakutuloksia saadaan. Hakutuloksista voidaan huomata, että jokaisen rivin kohdalle on ilmestynyt checkbox, näillä checkbox:lla merkitään, mitkä kappaleet halutaan lisätä omiin suosikkeihin. Valitaan vaikka kolme ensimmäistä hakutulosta ja painetaan save-painiketta, tällä kertaa valikossa näkyvät valitut kappaleet. Valitut kappaleet tallentuvat suosikkeihisi, kun painat save-painiketta, suosikkeja pääsee katsomaan favorites-kohdasta ylävanigaatiossa.
 
 
 ## Kappalelista
