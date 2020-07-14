@@ -60,7 +60,7 @@ Kohdasta Users ylänavigaatiossa pääset sivulle, jossa voit hakea muita käytt
 <br/>
 <br/>
 <br/>
-![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/k%C3%A4ytt%C3%A4j%C3%A4N%C3%A4kym%C3%A4.jpg)
+![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/K%C3%A4ytt%C3%A4j%C3%A4Haku.jpg)
 <br/>
 <br/>
 
