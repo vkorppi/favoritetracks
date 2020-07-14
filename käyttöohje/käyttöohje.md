@@ -50,6 +50,11 @@ Ennen, kuin yrität lisätä kappaleita Spotify-tilillesi sinulla pitää olla a
 ## Käyttäjienhallinta
 
 Omiin tietoihiin pääsee käsiksi kohdasta Me ylänavigaatiossa. Kohdan paineminen avaa ikkunan, jossa näkyvät tietosi. Samassa ikkunassa näkyy painike-modify, jolla pääset muokkaamaan omia tietojasi. Päivitettävät tiedot tarkistatetaan, että ne täyttävät tietyt kriteerit esim. nimet pitää kirjoittaa isolla ja sähköpostiosoitteen pitää noudattaa tiettyä formaattia.
-
+<br/>
+<br/>
+<br/>
+![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/k%C3%A4ytt%C3%A4j%C3%A4N%C3%A4kym%C3%A4.jpg)
+<br/>
+<br/>
 Kohdasta Users ylänavigaatiossa pääset sivulle, jossa voit hakea muita käyttäjiä toisen käyttäjän käyttäjätunnuksella, etunimellä tai sukunimellä-
 
