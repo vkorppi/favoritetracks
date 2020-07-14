@@ -74,6 +74,6 @@ Pääkäyttäjänä näet myös Registaration kohdan ylänavigaatiossa, josta p�
 tietoja kaikki muut kentät ovat pakollisia
 <br/>
 <br/>
-https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/AdminNavi.jpg
+![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/AdminNavi.jpg)
 <br/>
 ![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/K%C3%A4ytt%C3%A4j%C3%A4nLis%C3%A4%C3%A4minen.jpg)
