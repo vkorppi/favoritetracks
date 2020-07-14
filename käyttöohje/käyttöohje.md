@@ -14,7 +14,7 @@ Kappaleiden haku sivulle pääsee painamalla ylänavigaatiossa olevaa Tracks-tek
 
 Kun olet kirjautunut sovellukseen niin kappaleiden haku näyttää erilaiselta kuin mitä se oli ennen kirjautumista. Näkyvin muutos on se, että search-painikkeen viereen on ilmestynyt save-painike. Save-painikkeen painaminen avaa tyhjän valikon eteesi. Valikko on tyhjä, koska et ole vielä valinnut yhtäkään kappaletta hakutuloksista. Jotta save-painikkeesta olisi hyötyä niin ensin pitää hakea hakusanalla kappaleita.
 
-![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/KappaleidenValinta.jpg)
+![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/SavePainikettaPainettu.jpg)
 
 
 
