@@ -63,4 +63,10 @@ Kohdasta Users ylänavigaatiossa pääset sivulle, jossa voit hakea muita käytt
 ![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/K%C3%A4ytt%C3%A4j%C3%A4HakuPienennetty.jpg)
 <br/>
 <br/>
-
+Jos olet pääkäyttäjä näet käyttäjän tiedoissa modify ja delete painikkeet, joilla voit muokata käyttäjän tietoja tai poistaa käyttäjän.
+<br/>
+<br/>
+<br/>
+![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/adminN%C3%A4kym%C3%A4.jpg)
+<br/>
+<br/>
