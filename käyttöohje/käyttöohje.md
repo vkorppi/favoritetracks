@@ -8,7 +8,7 @@ Ohjelmassa on kolmenlaisia käyttäjiä: tuntemattomat käyttäjät, kirjautunee
 
 ## Kappaleiden haku
 
-Kappaleiden haku sivulle pääsee painamalla ylänavigaatiossa olevaa Tracks-tekstiä. Ohjelman juuri polku vie myös tälle vastaavalle sivulle : https://favoritetracks.herokuapp.com. Kaikki kappaleet mitkä näkyvät hakutuloksessa ovat linkkejä ja jos halua kuunnella, jonkin kappaleen niin paina hiiren oikealla kappaleen päällä ja valitse avaa välilehteen.
+Kappaleiden haku sivulle pääsee painamalla ylänavigaatiossa olevaa Tracks-tekstiä. Ohjelman juuri polku vie myös tälle sivulle : https://favoritetracks.herokuapp.com. Kaikki kappaleet mitkä näkyvät hakutuloksessa ovat linkkejä ja jos halua kuunnella, jonkin kappaleen niin paina hiiren oikealla kappaleen päällä ja valitse avaa välilehteen.
 
 ![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/V%C3%A4lilehteenPienempi.jpg)
 
