@@ -70,3 +70,9 @@ Jos olet pääkäyttäjä näet käyttäjän tiedoissa modify ja delete painikke
 ![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/adminN%C3%A4kym%C3%A4.jpg)
 <br/>
 <br/>
+Pääkäyttäjänä näet myös Registaration kohdan ylänavigaatiossa, josta pääset lisäämään uuden käytäjän. Uuden käyttäjän luonnissa osoite, sähköposti ja syntymäaika ovat vapaaehtoisia
+tietoja kaikki muut kentät ovat pakollisia
+<br/>
+<br/>
+<br/>
+![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/K%C3%A4ytt%C3%A4j%C3%A4nLis%C3%A4%C3%A4minen.jpg)
