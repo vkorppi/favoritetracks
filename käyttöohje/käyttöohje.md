@@ -4,7 +4,7 @@ Ohjelmalla voi hakea Spotify:sta kappaleita hakusanalla ja lisätä niitä omall
 
 ## Käyttäjätyypit
 
-Ohjelmassa on kolmenlaisia käyttäjiä: tuntemattomat käyttäjät, kirjautuneet käyttäjät ja pääkäyttäjä, joka kuulu myös kirjautuneisiin käyttäjiin. Tuntemattomat käyttäjät ovat käyttäjiä, joilla ei ole käyttäjätiliä ja tästä syystä he eivät ole auktorisoituja kappelistaan eivätkä käyttäjienhallintaan liittyviin toiminallisuuksiin. Kirjautuneet käyttäjät ovat auktorisoituja lisäämään kappaleita omalle kappalelistallensa ja siirtämään listansa omalle spotify playlistillensä. Heillä on myös oikeus tarkastella ja päivittää omia tietoja sekä hakea ja tarkastella muiden käyttäjien tietoja. He eivät voi, kuitenkaan poistaa toisten käyttäjien tilejä tai muokata toisten käyttäjien tietoja.
+Ohjelmassa on kolmenlaisia käyttäjiä: tuntemattomat käyttäjät, kirjautuneet käyttäjät ja pääkäyttäjä, joka kuulu myös kirjautuneisiin käyttäjiin. Tuntemattomat käyttäjät ovat käyttäjiä, joilla ei ole käyttäjätiliä ja tästä syystä he eivät ole auktorisoituja kappelistaan eivätkä käyttäjienhallintaan liittyviin toiminallisuuksiin. Kirjautuneet käyttäjät ovat auktorisoituja lisäämään kappaleita omalle kappalelistallensa ja siirtämään listansa omalle spotify playlistillensä. Heillä on myös oikeus tarkastella ja päivittää omia tietoja sekä hakea ja tarkastella muiden käyttäjien tietoja. He eivät voi, kuitenkaan poistaa toisten käyttäjien tilejä tai muokata toisten käyttäjien tietoja. Pääkäyttäjä voi tehdä kaikki ne asiat mitä tavallinen kirjautunut käyttäjä ei voi tehdä, pääkäyttäjä voi poistaa käyttäjiä ja muokata käyttäjien tietoja.
 
 ## Kappaleiden haku
 
@@ -22,7 +22,7 @@ Kun olet kirjautunut sovellukseen niin kappaleiden haku näyttää erilaiselta k
 ![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/Tyhj%C3%A4ValikkoPienennetty.jpg)
 <br/>
 <br/>
-Tehdään haku hakusanalla dylan ja katsotaan, minkälaisia hakutuloksia saadaan. Hakutuloksista voidaan huomata, että jokaisen rivin kohdalle on ilmestynyt checkbox, näillä checkbox:lla merkitään, mitkä kappaleet halutaan lisätä omiin suosikkeihin. Valitaan vaikka kolme ensimmäistä hakutulosta ja painetaan save-painiketta, tällä kertaa valikossa näkyvät valitut kappaleet. Valitut kappaleet tallentuvat kappalelistaasi, kun painat save-painiketta. Tässä vaiheessa voit vielä peruuttaa tekemiäsi valintoja ottamalla ruksin pois kappaleen kohdalla, jolloin kappaletta ei tallenneta kappalelistaan. Kappalelistaa pääsee tarkastelemaan ylänavigaation favorites-kohdasta.
+Tehdään haku hakusanalla dylan ja katsotaan, minkälaisia hakutuloksia saadaan. Hakutuloksista voidaan huomata, että jokaisen rivin kohdalle on ilmestynyt checkbox, näillä checkbox:lla merkitään, mitkä kappaleet halutaan lisätä omiin suosikkeihin. Valitaan vaikka kolme ensimmäistä hakutulosta ja painetaan save-painiketta, tällä kertaa valikossa näkyvät valitut kappaleet. Valitut kappaleet tallentuvat kappalelistaasi, kun painat save-painiketta. Tässä vaiheessa voit vielä peruuttaa tekemiäsi valintoja ottamalla ruksin pois kappaleen kohdalla, jolloin kappaletta ei tallenneta kappalelistaan. Kappalelistaa pääsee tarkastelemaan ylänavigaation favorites-tekstistä.
 <br/>
 <br/>
 <br/>
@@ -49,14 +49,14 @@ Ennen, kuin yrität lisätä kappaleita Spotify-tilillesi sinulla pitää olla a
 
 ## Käyttäjienhallinta
 
-Omiin tietoihin pääsee käsiksi kohdasta Me ylänavigaatiossa. Kohdan painaminen avaa ikkunan, jossa näkyvät tietosi. Samassa ikkunassa näkyy painike-modify, jolla pääset muokkaamaan omia tietojasi. Päivitettävät tiedot tarkistetaan, että ne täyttävät tietyt kriteerit esim. nimet pitää kirjoittaa isolla ja sähköpostiosoitteen pitää noudattaa tiettyä formaattia.
+Omiin tietoihin pääsee käsiksi tekstistä Me ylänavigaatiossa. Me:n painaminen avaa ikkunan, jossa näkyvät tietosi. Samassa ikkunassa näkyy painike-modify, jolla pääset muokkaamaan omia tietojasi. Päivitettävät tiedot tarkistetaan, että ne täyttävät tietyt kriteerit esim. nimet pitää kirjoittaa isolla ja sähköpostiosoitteen pitää noudattaa tiettyä formaattia.
 <br/>
 <br/>
 <br/>
 ![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/k%C3%A4ytt%C3%A4j%C3%A4N%C3%A4kym%C3%A4.jpg)
 <br/>
 <br/>
-Kohdasta Users ylänavigaatiossa pääset sivulle, jossa voit hakea muita käyttäjiä toisen käyttäjän käyttäjätunnuksella, etunimellä tai sukunimellä. Voit myös tarkastella haettujen käyttäjien tietoja painamalla hakutuloksessa olevan käyttäjän nimeä.
+Tekstistä Users ylänavigaatiossa pääset sivulle, jossa voit hakea muita käyttäjiä toisen käyttäjän käyttäjätunnuksella, etunimellä tai sukunimellä. Voit myös tarkastella haettujen käyttäjien tietoja painamalla hakutuloksessa olevan käyttäjän nimeä.
 <br/>
 <br/>
 <br/>
@@ -70,7 +70,7 @@ Jos olet pääkäyttäjä näet käyttäjän tiedoissa modify ja delete painikke
 ![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/adminN%C3%A4kym%C3%A4.jpg)
 <br/>
 <br/>
-Pääkäyttäjänä näet myös Registaration kohdan ylänavigaatiossa, josta pääset lisäämään uuden käytäjän. Uuden käyttäjän luonnissa osoite, sähköposti ja syntymäaika ovat vapaaehtoisia tietoja. 
+Pääkäyttäjänä näet myös Registaration tekstin ylänavigaatiossa, josta pääset lisäämään uuden käytäjän. Uuden käyttäjän luonnissa osoite, sähköposti ja syntymäaika ovat vapaaehtoisia tietoja. 
 <br/>
 <br/>
 <br/>
