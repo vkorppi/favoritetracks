@@ -8,9 +8,16 @@ Ohjelmassa on kolmenlaisia käyttäjiä: tuntemattomat käyttäjät, kirjautunee
 
 ## Kappaleiden haku
 
-Kappaleiden haku sivulle pääsee painamalla ylänavigaatiossa olevaa Tracks-tekstiä. Ohjelman juuri polku vie myös tälle sivulle : https://favoritetracks.herokuapp.com. Kaikki kappaleet mitkä näkyvät hakutuloksessa ovat linkkejä ja jos haluat kuunnella, jonkin kappaleen niin paina hiiren oikealla kappaleen päällä ja valitse avaa välilehteen.
+Kappaleiden haku sivulle pääsee painamalla ylänavigaatiossa olevaa Tracks-tekstiä. Ohjelman juuri polku vie myös tälle sivulle : https://favoritetracks.herokuapp.com. Kaikki kappaleet mitkä näkyvät hakutuloksessa ovat linkkejä ja jos haluat kuunnella, jonkin kappaleen niin paina hiiren oikealla kappaleen päällä ja valitse avaa välilehteen. 
 
 ![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/V%C3%A4lilehteenPienempi.jpg)
+
+Kun olet kirjautunut sovellukseen niin kappaleiden haku näyttää erilaiselta kuin mitä se oli ennen kirjautumista. Näkyvin muutos on se, että search-painikkeen viereen on ilmestynyt save-painike. Save-painikkeen painaminen avaa tyhjän valikon eteesi. Valikko on tyhjä, koska et ole vielä valinnut yhtäkään kappaletta hakutuloksista. Jotta save-painikkeesta olisi hyötyä niin ensin pitää hakea hakusanalla kappaleita.
+
+![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/KappaleidenValinta.jpg)
+
+
+
 
 ## Kappalelista
 
