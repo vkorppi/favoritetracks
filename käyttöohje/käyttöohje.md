@@ -22,7 +22,7 @@ Kun olet kirjautunut sovellukseen niin kappaleiden haku näyttää erilaiselta k
 ![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/Tyhj%C3%A4ValikkoPienennetty.jpg)
 <br/>
 <br/>
-Tehdään haku hakusanalla dylan ja katsotaan, minkälaisia hakutuloksia saadaan. Hakutuloksista voidaan huomata, että jokaisen rivin kohdalle on ilmestynyt checkbox, näillä checkbox:lla merkitään, mitkä kappaleet halutaan lisätä omiin suosikkeihin. Valitaan vaikka kolme ensimmäistä hakutulosta ja painetaan save-painiketta, tällä kertaa valikossa näkyvät valitut kappaleet. Valitut kappaleet tallentuvat suosikkeihisi, kun painat save-painiketta, suosikkeja pääsee katsomaan favorites-kohdasta ylänavigaatiossa.
+Tehdään haku hakusanalla dylan ja katsotaan, minkälaisia hakutuloksia saadaan. Hakutuloksista voidaan huomata, että jokaisen rivin kohdalle on ilmestynyt checkbox, näillä checkbox:lla merkitään, mitkä kappaleet halutaan lisätä omiin suosikkeihin. Valitaan vaikka kolme ensimmäistä hakutulosta ja painetaan save-painiketta, tällä kertaa valikossa näkyvät valitut kappaleet. Valitut kappaleet tallentuvat kappalelistaasi, kun painat save-painiketta. Tässä vaiheessa voit vielä peruuttaa tekemiäsi valintoja ottamalla ruksin pois kappaleen kohdalla, jolloin kappaletta ei tallenneta kappalelistaan. Kappelistaa pääsee tarkastelemaan ylänavigaation favorites-kohdasta.
 <br/>
 <br/>
 <br/>
