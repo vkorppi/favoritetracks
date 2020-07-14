@@ -26,6 +26,8 @@ Tehdään haku hakusanalla dylan ja katsotaan, minkälaisia hakutuloksia saadaan
 <br/>
 <br/>
 <br/>
+![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/SavePainikettaPainettuPienennetty.jpg)
+
 
 
 ## Kappalelista
