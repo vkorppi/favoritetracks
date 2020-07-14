@@ -32,6 +32,14 @@ Tehdään haku hakusanalla dylan ja katsotaan, minkälaisia hakutuloksia saadaan
 
 ## Kappalelista
 
+Kappalelistalla näet listan tallentamistasi kappaleista, jos olet tallentanut kappaleita ja transfer-painikkeen. Jokaisen kappaleen vieressä on roskapöntön kuva, jota painamalla voit poistaa kyseisen kappaleen listaltasi. Kappaleiden alapuolelta löydät transfer-painikke, jolla voit siirtää kappalelistan omalle spotify-tilillesi. 
+<br/>
+<br/>
+<br/>
+![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/kappalelista.jpg)
+
+
+
 ## Käyttäjienhallinta
 
 
