@@ -1,6 +1,6 @@
 ## Esittely
 
-Ohjelmalla voi hakea Spotify:sta kappaleita hakusanlla ja lisätä niitä omalle kappalelistalle, jonka voi siirtää oman Spotify-tilin playlistille. Muita ohjelman toiminallisuuksia ovat käyttäjienhallinta ja käyttäjien auktorisointi.
+Ohjelmalla voi hakea Spotify:sta kappaleita hakusanalla ja lisätä niitä omalle kappalelistalle, jonka voi siirtää oman Spotify-tilin playlistille. Muita ohjelman toiminallisuuksia ovat käyttäjienhallinta ja käyttäjien auktorisointi.
 
 ## Käyttäjätyypit
 
