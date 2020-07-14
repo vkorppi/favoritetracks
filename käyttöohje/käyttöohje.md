@@ -43,7 +43,7 @@ Ennen, kuin yrität lisätä kappaleita Spotify-tilillesi sinulla pitää olla a
 <br/>
 <br/>
 <br/>
-![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/transfer.jpg)
+![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/transferPienennetty.jpg)
 <br/>
 <br/>
 
