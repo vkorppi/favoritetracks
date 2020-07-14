@@ -4,7 +4,7 @@ Ohjelmalla voi hakea Spotify:sta kappaleita hakusanalla ja lisätä niitä omall
 
 ## Käyttäjätyypit
 
-Ohjelmassa on kolmenlaisia käyttäjiä: tuntemattomat käyttäjät, kirjautuneet käyttäjät ja pääkäyttäjä, joka kuulu myös kirjautuneisiin käyttäjiin. Tuntemattomat käyttäjät ovat käyttäjiä, joilla ei ole käyttäjätiliä ja tästä syystä he eivät ole auktorisoituja kappelistaan eivätkä käyttäjienhallintaan liittyviin toiminallisuuksiin. Kirjautuneet käyttäjät ovat auktorisoituja lisäämään kappaleita omalle kappalelistallensa ja siirtämään listansa omalla spotify playlist:sä. Heillä on myös oikeus tarkastella ja päivittää omia tietoja sekä hakea ja tarkastella muiden käyttäjien tietoja. He eivät voi, kuitenkaan poistaa toisten käyttäjien tilejä tai muokata toisten käyttäjien tietoja.
+Ohjelmassa on kolmenlaisia käyttäjiä: tuntemattomat käyttäjät, kirjautuneet käyttäjät ja pääkäyttäjä, joka kuulu myös kirjautuneisiin käyttäjiin. Tuntemattomat käyttäjät ovat käyttäjiä, joilla ei ole käyttäjätiliä ja tästä syystä he eivät ole auktorisoituja kappelistaan eivätkä käyttäjienhallintaan liittyviin toiminallisuuksiin. Kirjautuneet käyttäjät ovat auktorisoituja lisäämään kappaleita omalle kappalelistallensa ja siirtämään listansa omalle spotify playlistillensä. Heillä on myös oikeus tarkastella ja päivittää omia tietoja sekä hakea ja tarkastella muiden käyttäjien tietoja. He eivät voi, kuitenkaan poistaa toisten käyttäjien tilejä tai muokata toisten käyttäjien tietoja.
 
 ## Kappaleiden haku
 
