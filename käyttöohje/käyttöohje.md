@@ -51,6 +51,11 @@ Ennen, kuin yrität lisätä kappaleita Spotify-tilillesi sinulla pitää olla a
 ![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/transferPienennetty.jpg)
 <br/>
 <br/>
+Kun olet painanut ok-painiketta saattaa eteesi sivun, jossa pyydetään antamaan sovellukselle lupa lisätä kappaleita soittolistallesi, jotta sovellus voi viedä siirron loppuun niin sinun pitää antaa sovellukselle oikeus lisätä kappaleita painamalla hyväksy-painiketta. Hyväksyntä annetaan vain kerran ja sen jälkeen sovellus voi lisätä kappaleita ilman lupaasi joka kerta, kun teet kappalelistan siirron playlistillesi.
+<br/>
+<br/>
+<br/>
+![](https://github.com/vkorppi/favoritetracks/blob/master/k%C3%A4ytt%C3%B6ohje/kuvat/Luvitus.jpg)
 
 ## Käyttäjienhallinta
 
