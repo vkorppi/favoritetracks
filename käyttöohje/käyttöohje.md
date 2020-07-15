@@ -54,7 +54,7 @@ Ennen, kuin yrität lisätä kappaleita Spotify-tilillesi sinulla pitää olla a
 
 ## Käyttäjienhallinta
 
-Omiin tietoihin pääsee käsiksi tekstistä Me ylänavigaatiossa. Me:n painaminen avaa ikkunan, jossa näkyvät tietosi. Samassa ikkunassa näkyy painike-modify, jolla pääset muokkaamaan omia tietojasi. Päivitettävät tiedot tarkistetaan, että ne täyttävät tietyt kriteerit esim. nimet pitää kirjoittaa isolla ja sähköpostiosoitteen pitää noudattaa tiettyä formaattia.
+Omiin tietoihin pääsee käsiksi tekstistä Me ylänavigaatiossa. Me:n painaminen avaa ikkunan, jossa näkyvät tietosi. Samassa ikkunassa näkyy painike-modify, jolla pääset muokkaamaan omia tietojasi. Päivitettävät tiedot tarkistetaan, että ne täyttävät tietyt kriteerit esim. nimet pitää kirjoittaa isolla ja sähköpostiosoitteen pitää noudattaa formaattia: xxx.xxx@xxx.xxx, esim. etunimi.sukunimi@domain.com.
 <br/>
 <br/>
 <br/>
