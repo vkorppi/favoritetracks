@@ -6,6 +6,11 @@ Ohjelmalla voi hakea Spotify:sta kappaleita hakusanalla ja lisätä niitä omall
 
 Ohjelmassa on kolmenlaisia käyttäjiä: tuntemattomat käyttäjät, kirjautuneet käyttäjät ja pääkäyttäjä, joka kuulu myös kirjautuneisiin käyttäjiin. Tuntemattomat käyttäjät ovat käyttäjiä, joilla ei ole käyttäjätiliä ja tästä syystä he eivät ole auktorisoituja kappelistaan eivätkä käyttäjienhallintaan liittyviin toiminallisuuksiin. Kirjautuneet käyttäjät ovat auktorisoituja lisäämään kappaleita omalle kappalelistallensa ja siirtämään listansa omalle spotify playlistillensä. Heillä on myös oikeus tarkastella ja päivittää omia tietoja sekä hakea ja tarkastella muiden käyttäjien tietoja. He eivät voi, kuitenkaan poistaa toisten käyttäjien tilejä tai muokata toisten käyttäjien tietoja. Pääkäyttäjä voi tehdä kaikki ne asiat mitä tavallinen kirjautunut käyttäjä ei voi tehdä, pääkäyttäjä voi poistaa käyttäjiä ja muokata käyttäjien tietoja.
 
+### Admin käyttäjän tunnukset
+
+Käyttäjätunnus: adminUser
+Salasana: Ödfk03f<
+
 ## Kappaleiden haku
 
 Kappaleiden haku sivulle pääsee painamalla ylänavigaatiossa olevaa Tracks-tekstiä. Ohjelman juuri polku vie myös tälle sivulle : https://favoritetracks.herokuapp.com. Kaikki kappaleet mitkä näkyvät hakutuloksessa ovat linkkejä ja jos haluat kuunnella, jonkin kappaleen niin paina hiiren oikealla kappaleen päällä ja valitse avaa välilehteen. 
