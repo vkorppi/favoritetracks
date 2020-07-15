@@ -8,7 +8,7 @@ Ohjelmassa on kolmenlaisia käyttäjiä: tuntemattomat käyttäjät, kirjautunee
 
 ### Admin käyttäjän tunnukset
 
-Käyttäjätunnus: adminUser
+Käyttäjätunnus: adminUser <br>
 Salasana: Ödfk03f<
 
 ## Kappaleiden haku
