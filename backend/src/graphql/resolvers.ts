@@ -12,7 +12,7 @@ export const resolvers = {
 
 
 
-        search: async (_root: any, args: { track: string; page: number; }): Promise<searchResult | void> => {
+        search: async (_root: unknown, args: { track: string; page: number; }): Promise<searchResult | void> => {
 
             const track: string = args.track;
             const page: number = args.page;
@@ -46,7 +46,7 @@ export const resolvers = {
 
 
 
-        searchUser: async (_root: any, args: { value: string; }): Promise<UserSchemaType[] | void> => {
+        searchUser: async (_root: unknown, args: { value: string; }): Promise<UserSchemaType[] | void> => {
 
             const value: string = args.value;
 
@@ -70,7 +70,7 @@ export const resolvers = {
 
         },
 
-        getUser: async (_root: any, args: { id: string; }): Promise<void | UserSchemaType | null> => {
+        getUser: async (_root: unknown, args: { id: string; }): Promise<void | UserSchemaType | null> => {
 
             const id: string = args.id;
 
@@ -93,12 +93,15 @@ export const resolvers = {
 
         },
         
-        getList: async (_root: any, args: any, userdata: UserSchemaType): Promise<void | spotifyTrackNoUrls[] | null> => {
+        getList: async (_root: unknown, args: unknown , userdata: UserSchemaType): Promise<void | spotifyTrackNoUrls[] | null> => {
+
+          
+            if(args) null;
 
             if(!userdata || !userdata.id) {
                 return null;
             }
-        
+			
             return await spotify.GetList(userdata.id).then(result => { 
     
                 return result.items.map(value => (
@@ -124,7 +127,7 @@ export const resolvers = {
 
         },
 
-        delegateToken: async (_root: any, args: { code: string,playlist: string }, userdata: UserSchemaType ): Promise<void | spotifyToken> => {
+        delegateToken: async (_root: unknown, args: { code: string,playlist: string }, userdata: UserSchemaType ): Promise<void | spotifyToken> => {
 
             const code = args.code ;
             const playlist = args.playlist;
@@ -151,18 +154,20 @@ export const resolvers = {
         },
 
         
-    getUserLoggedin: async (_root: any, args: { code: string,playlist: string }, userdata: UserSchemaType ): Promise<UserSchemaType | null> => {
+    getUserLoggedin: async (_root: unknown, args: { code: string,playlist: string }, userdata: UserSchemaType ): Promise<UserSchemaType | null> => {
+
+        if(args) null;
 
         return await user.getUser(userdata.id);
     },
 
-    delegateRefreshedToken: async (_root: any, args: { refreshedToken: string;}): Promise<void | refreshtoken> => {
+    delegateRefreshedToken: async (_root: unknown, args: { refreshedToken: string;}): Promise<void | refreshtoken> => {
 
         const refreshedToken = args.refreshedToken ;
                 
         return await spotify.delegateRefreshedToken(refreshedToken).then(result => { 
 		
-			console.log(result)
+			console.log(result);
            
             return result;
 
@@ -185,7 +190,7 @@ export const resolvers = {
     },
     Mutation: {
 
-        create: async (_root: any, args: {
+        create: async (_root: unknown, args: {
             username: string, password: string, firstname: string,
             lastname: string, birthdate: string, email: string, address: string
         }, userdata: UserSchemaType): Promise<string | void> => {
@@ -210,7 +215,7 @@ export const resolvers = {
             const birthdate: string = args.birthdate;
 
 
-            return await user.create(username, password, firstname, lastname, birthdate, email, address).then(result => {
+            return await user.create(username, password, firstname, lastname, birthdate, email, address).then(() => {
                 return `User was created with following data: username: ${username}, firstname: ${firstname}, lastname:  ${lastname} `+
                 `birthdate: ${birthdate} email: ${email} address: ${address}`;
 
@@ -234,7 +239,7 @@ export const resolvers = {
 
         },
 
-        updateUser: async (_root: any, args: { firstname: string, lastname: string, birthdate: string, email: string, address: string, id: string }
+        updateUser: async (_root: unknown, args: { firstname: string, lastname: string, birthdate: string, email: string, address: string, id: string }
             , userdata: UserSchemaType): Promise<string | void> => {
 
             const firstname: string = args.firstname;
@@ -254,7 +259,7 @@ export const resolvers = {
                 throw new ForbiddenError("Unauthorized action");
             }
 
-            return await user.update(firstname, lastname, birthdate, email, address, id).then(result => {
+            return await user.update(firstname, lastname, birthdate, email, address, id).then(() => {
                 return `User was updated with following data: firstname: ${firstname}, lastname:  ${lastname} `+
                 `birthdate: ${birthdate} email: ${email} address: ${address}`;
 
@@ -279,12 +284,12 @@ export const resolvers = {
 
         },
 
-        updatePassword: async (_root: any, args: { password: string, id: string }): Promise<string | void> => {
+        updatePassword: async (_root: unknown, args: { password: string, id: string }): Promise<string | void> => {
 
             const password: string = args.password;
             const id: string = args.id;
 
-            return await user.updatePassword(password, id).then(result => {
+            return await user.updatePassword(password, id).then(() => {
 
                 return `User's password was updated. User's id was ${id}`;
 
@@ -306,7 +311,7 @@ export const resolvers = {
             });
         },
 
-        remove: async (_root: any, args: { id: string }, userdata: UserSchemaType): Promise<string | void> => {
+        remove: async (_root: unknown, args: { id: string }, userdata: UserSchemaType): Promise<string | void> => {
             
 
             const loggedUser =await user.getUser(userdata.id) as UserSchemaType;
@@ -321,7 +326,7 @@ export const resolvers = {
 
             const id: string = args.id;
 
-            return await user.remove(id).then(result => {
+            return await user.remove(id).then(() => {
 
                 return `User with id: ${id} was removed`;
 
@@ -341,7 +346,7 @@ export const resolvers = {
             });
         },
 
-        login: async (_root: any, args: { username: string, password: string }): Promise<TokenType | void> => {
+        login: async (_root: unknown, args: { username: string, password: string }): Promise<TokenType | void> => {
 
             const username: string = args.username;
             const password: string = args.password;
@@ -367,7 +372,7 @@ export const resolvers = {
         },
 
 
-        addTrackToList: async (_root: any, args: { tracks: string[] }, userdata: UserSchemaType): Promise<string> => {
+        addTrackToList: async (_root: unknown, args: { tracks: string[] }, userdata: UserSchemaType): Promise<string> => {
 
             const tracks: string[] = args.tracks;
 
@@ -389,7 +394,7 @@ export const resolvers = {
 
         },
 
-        removeItem: async (_root: any, args: { tracks: string[] }, userdata: UserSchemaType): Promise<string> => {
+        removeItem: async (_root: unknown, args: { tracks: string[] }, userdata: UserSchemaType): Promise<string> => {
 
             const tracks: string[] = args.tracks;
 

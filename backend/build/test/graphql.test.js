@@ -205,6 +205,7 @@ describe('Testing usermanagement', () => {
 				id
 			  }
 		  }`;
+        // Voi palauttaa tyhjän talukon
         const fetcheduser = (yield apolloclient.query({
             query: userQuery
         })).data;
@@ -430,6 +431,15 @@ describe('Testing  mutations and queries that require authorization header', () 
     }));
     afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
         yield user_1.default.deleteMany({});
+        // admin testuser
+        const testuser = {
+            username: 'admin',
+            password: userFunctions_1.hashPassword('admin'),
+            firstname: 'admin',
+            lastname: 'admin'
+        };
+        const userTest = new user_1.default(testuser);
+        console.log(yield userTest.save());
         void mongoose_1.default.connection.close();
         console.log('Database connection closed');
     }));

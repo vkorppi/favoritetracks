@@ -22,9 +22,7 @@ const express_1 = __importDefault(require("express"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const envFunctions_1 = require("./utils/envFunctions");
 const user_1 = __importDefault(require("./services/user"));
-var cors = require('cors');
 dotenv_1.default.config();
-var path = require('path');
 const connectToDatabase = () => __awaiter(void 0, void 0, void 0, function* () {
     let dbUrl;
     if (process.env.ENVIR === 'test') {
@@ -42,6 +40,7 @@ const connectToDatabase = () => __awaiter(void 0, void 0, void 0, function* () {
         useCreateIndex: true
     };
     yield mongoose_1.default.connect(parsedUrl, configuration);
+    console.log(dbUrl);
 });
 const server = new apollo_server_express_1.ApolloServer({
     typeDefs: typeDefinitions_1.typeDefs,
@@ -76,27 +75,33 @@ const server = new apollo_server_express_1.ApolloServer({
     }
 });
 const app = express_1.default();
-app.use(cors());
-app.use(express_1.default.static('build'));
-app.get('/login', function (_req, res) {
-    res.sendFile(path.join('build', 'index.html'), { root: __dirname });
+app.use(express_1.default.static('TestPage'));
+/*s
+app.get('/login', function(_req, res) {
+  res.sendFile(path.join('build', 'index.html'), { root: __dirname });
 });
-app.get('/favorites', function (_req, res) {
-    res.sendFile(path.join('build', 'index.html'), { root: __dirname });
+
+app.get('/favorites', function(_req, res) {
+  res.sendFile(path.join('build', 'index.html'), { root: __dirname });
 });
-app.get('/details/*', function (_req, res) {
-    res.sendFile(path.join('build', 'index.html'), { root: __dirname });
+
+app.get('/details/*', function(_req, res) {
+  res.sendFile(path.join('build', 'index.html'), { root: __dirname });
 });
-app.get('/details', function (_req, res) {
-    res.sendFile(path.join('build', 'index.html'), { root: __dirname });
+
+app.get('/details', function(_req, res) {
+  res.sendFile(path.join('build', 'index.html'), { root: __dirname });
 });
-app.get('/users', function (_req, res) {
-    res.sendFile(path.join('build', 'index.html'), { root: __dirname });
+
+app.get('/users', function(_req, res) {
+  res.sendFile(path.join('build', 'index.html'), { root: __dirname });
 });
-app.get('/registaration', function (_req, res) {
-    res.sendFile(path.join('build', 'index.html'), { root: __dirname });
+
+app.get('/registaration', function(_req, res) {
+  res.sendFile(path.join('build', 'index.html'), { root: __dirname });
 });
+*/
 server.applyMiddleware({ app });
 const port = typeparsers_1.default.parseNumber(process.env.PORT, 'Enviroment variable: variable was not a number');
 void connectToDatabase();
-app.listen({ port: port }, () => console.log(`Server ready at https://favoritetracks.herokuapp.com/${server.graphqlPath}`));
+app.listen({ port: port }, () => console.log(`Server ready at http://localhost:${port}${server.graphqlPath}`));

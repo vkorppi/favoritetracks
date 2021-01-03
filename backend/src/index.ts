@@ -4,7 +4,6 @@ import { resolvers } from '../src/graphql/resolvers';
 import { typeDefs } from '../src/graphql/typeDefinitions';
 import typeparsers from '../src/utils/typeparsers';
 import mongoose from 'mongoose';
-import { MongoError } from 'mongodb';
 import dotenv from 'dotenv';
 import express from 'express';
 import jsonwebtoken from 'jsonwebtoken';
@@ -36,6 +35,8 @@ const connectToDatabase = async (): Promise<void> => {
   };
 
   await mongoose.connect(parsedUrl, configuration);
+
+  console.log(dbUrl);
 
 };
 
@@ -96,7 +97,7 @@ const app = express();
 
 app.use(express.static('TestPage'));
 
-
+/*s
 app.get('/login', function(_req, res) {
   res.sendFile(path.join('build', 'index.html'), { root: __dirname });
 });
@@ -120,6 +121,7 @@ app.get('/users', function(_req, res) {
 app.get('/registaration', function(_req, res) {
   res.sendFile(path.join('build', 'index.html'), { root: __dirname });
 });
+*/
 
 server.applyMiddleware({ app });
 

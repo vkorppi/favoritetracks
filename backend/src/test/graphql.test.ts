@@ -11,7 +11,6 @@ import dotenv from 'dotenv';
 import { hashPassword } from '../utils/userFunctions';
 import { getSessionEnvs } from '../utils/envFunctions';
 import { sign } from 'jsonwebtoken';
-import { UniqueTypeNamesRule } from 'graphql';
 
 
 dotenv.config();
@@ -85,7 +84,6 @@ describe('Testing usermanagement', () => {
 
 	});
 
-
 	beforeEach(async () => {
 
 		await User.deleteMany({});
@@ -101,6 +99,7 @@ describe('Testing usermanagement', () => {
 		await userTest.save();
 
 	});
+
 
 	/*
 	test('User was created', async () => {
@@ -263,11 +262,13 @@ describe('Testing usermanagement', () => {
 			  }
 		  }`;
 
+	// Voi palauttaa tyhjän talukon
+
 		const fetcheduser = (await apolloclient.query({
 			query: userQuery
 		})).data as userSearchType;
 
-
+	
 		expect(fetcheduser.searchUser).toBeTruthy();
 
 
@@ -449,7 +450,7 @@ describe('Testing  mutations and queries that require authorization header', () 
 				
 		  }`;
 
-		  const success = await clientWithHeaders.mutate({
+	const success = await clientWithHeaders.mutate({
 			variables: {
 				tracks:
 					[
@@ -643,7 +644,21 @@ describe('Testing  mutations and queries that require authorization header', () 
 
 
 	afterAll(async () => {
+		
 		await User.deleteMany({});
+
+		// admin testuser
+		const testuser: UserSchemaType = {
+			username: 'admin',
+			password: hashPassword('admin'),
+			firstname: 'admin',
+			lastname: 'admin'
+		} as UserSchemaType;
+
+		const userTest = new User(testuser);
+		console.log(await userTest.save());
+
+
 		void mongoose.connection.close();
 		console.log('Database connection closed');
 	});

@@ -67,7 +67,9 @@ exports.resolvers = {
                 }
             });
         }),
-        getList: (_root, _args, userdata) => __awaiter(void 0, void 0, void 0, function* () {
+        getList: (_root, args, userdata) => __awaiter(void 0, void 0, void 0, function* () {
+            if (args)
+                null;
             if (!userdata || !userdata.id) {
                 return null;
             }
@@ -103,7 +105,9 @@ exports.resolvers = {
                 }
             });
         }),
-        getUserLoggedin: (_root, _args, userdata) => __awaiter(void 0, void 0, void 0, function* () {
+        getUserLoggedin: (_root, args, userdata) => __awaiter(void 0, void 0, void 0, function* () {
+            if (args)
+                null;
             return yield user_1.default.getUser(userdata.id);
         }),
         delegateRefreshedToken: (_root, args) => __awaiter(void 0, void 0, void 0, function* () {
@@ -138,7 +142,7 @@ exports.resolvers = {
             const email = args.email;
             const address = args.address;
             const birthdate = args.birthdate;
-            return yield user_1.default.create(username, password, firstname, lastname, birthdate, email, address).then(_result => {
+            return yield user_1.default.create(username, password, firstname, lastname, birthdate, email, address).then(() => {
                 return `User was created with following data: username: ${username}, firstname: ${firstname}, lastname:  ${lastname} ` +
                     `birthdate: ${birthdate} email: ${email} address: ${address}`;
             }).catch((error) => {
@@ -168,7 +172,7 @@ exports.resolvers = {
             if (!loggedUser.admin && id !== loggedUser.id) {
                 throw new apollo_server_express_1.ForbiddenError("Unauthorized action");
             }
-            return yield user_1.default.update(firstname, lastname, birthdate, email, address, id).then(_result => {
+            return yield user_1.default.update(firstname, lastname, birthdate, email, address, id).then(() => {
                 return `User was updated with following data: firstname: ${firstname}, lastname:  ${lastname} ` +
                     `birthdate: ${birthdate} email: ${email} address: ${address}`;
             }).catch((error) => {
@@ -187,7 +191,7 @@ exports.resolvers = {
         updatePassword: (_root, args) => __awaiter(void 0, void 0, void 0, function* () {
             const password = args.password;
             const id = args.id;
-            return yield user_1.default.updatePassword(password, id).then(_result => {
+            return yield user_1.default.updatePassword(password, id).then(() => {
                 return `User's password was updated. User's id was ${id}`;
             }).catch((error) => {
                 console.error(error.stack);
@@ -211,7 +215,7 @@ exports.resolvers = {
                 throw new apollo_server_express_1.ForbiddenError("Unauthorized action");
             }
             const id = args.id;
-            return yield user_1.default.remove(id).then(_result => {
+            return yield user_1.default.remove(id).then(() => {
                 return `User with id: ${id} was removed`;
             }).catch((error) => {
                 console.error(error.stack);
