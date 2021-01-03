@@ -31,4 +31,4 @@
 | 10.7.2020      |  3 tuntia 34  minuuttia  | Lisättiin spotify istunnonhallinta frontend:n, tehtiin myös backend:n toimintoa tukevia muutoksia. Näitten lisäksi korjattiin bugi.
 | 11.7.2020      |  3 tuntia	29 minuuttia  |  Paranneltiin kappalelistaa ja korjattiin bugeja. Näitten lisäksi aloitettiin pääsynhallinnan frontend osuus ja toteutettiin vastaava backend osuus.
 | 12.7.2020      | 4 tuntia 11 minuuttia   |  Tehtiin pääsynhallinnan frontend osuus loppuun ja tehtiin osuutta tukevia muutoksia backendiin. Näitten lisäksi päivitettiin end to end testit.
-|     |    Yhteensä  | 180
+|   Yhteensä  |   176   | 
