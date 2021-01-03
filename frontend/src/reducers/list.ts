@@ -25,18 +25,32 @@ const reducer = (state = defaultState , action: ActionList) => {
     switch (action.type) {
         case 'ADD':
 
+            /*
             state[action.data.uri]=action.data.name
             
             return state
+            */
+           return { ...state, [action.data.uri]: action.data.name }
             
         case 'REMOVE':
-
+            
+            /*
             delete state[action.data.uri]
             return  state
+            */
+
+           // eslint-disable-next-line no-case-declarations
+           const newstate = { ...state, [action.data.uri]: action.data.name }
+           delete newstate[action.data.uri]
+
+           return newstate
 
         case 'CLEAR':
+            /*
             Object.keys(state).forEach(key => { delete state[key] })
             return  state
+            */
+           return {}
 
         default:
             return state

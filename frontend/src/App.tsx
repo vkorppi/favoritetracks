@@ -11,6 +11,7 @@ import Login from './components/users/login';
 import { useRouteMatch, Route, Switch, useLocation,Redirect,useHistory } from 'react-router-dom';
 import Favorites from './components/spotify/favorites';
 import { useDispatch, useSelector } from 'react-redux'
+import { LinkContainer } from "react-router-bootstrap";
 
 
 const App: React.FC = () => {
@@ -57,12 +58,12 @@ const App: React.FC = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link href="/">Tracks</Nav.Link>
-            {token ? <Nav.Link href="/favorites">Favorites</Nav.Link> :  ''}  
-            {token ? <Nav.Link href="/users">Users</Nav.Link> :  ''}  
-            {token && admin  ?  <Nav.Link href="/registaration">Registaration</Nav.Link> :  ''}  
-            {token ? <Nav.Link href="/details">Me</Nav.Link> :  ''} 
-            {!token ? <Nav.Link href="/login">Login</Nav.Link> :  ''}  
+            <LinkContainer to="/"><Nav.Link>Tracks</Nav.Link></LinkContainer>
+            {token ? <LinkContainer to="/favorites"><Nav.Link>Favorites</Nav.Link></LinkContainer> :  ''}  
+            {token ? <LinkContainer to="/users"><Nav.Link>Users</Nav.Link></LinkContainer> :  ''}  
+            {token && admin  ? <LinkContainer to="/registaration"><Nav.Link>Registaration</Nav.Link></LinkContainer> :  ''}  
+            {token ? <LinkContainer to="/details"><Nav.Link>Me</Nav.Link></LinkContainer> :  ''} 
+            {!token ? <LinkContainer to="/login"><Nav.Link>Login</Nav.Link></LinkContainer>:  ''}  
             {token ? <Nav.Link href="#" onClick={() => logout()}>logout</Nav.Link> :  ''} 
           </Nav>
 

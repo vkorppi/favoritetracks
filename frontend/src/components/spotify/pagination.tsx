@@ -16,7 +16,7 @@ const Resultpagination: React.FC<SearchAttributes> = ({total,search}) => {
     const pages =[]
 
 
-    const newPage = (event: MouseEvent) => {
+    const newPage = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
 
         const pageButton =event.target as HTMLElement
         const pageValue=pageButton.innerText

@@ -7,8 +7,8 @@ describe('Test related to search', function() {
 
 		cy.visit('http://localhost:3000')
 		cy.contains('Login').click()
-		cy.get('#username').type('usernameTest')
-		cy.get('#password').type('passwordTest')
+		cy.get('#username').type('admin')
+		cy.get('#password').type('admin')
 		cy.get('Login').click()
 
 	})

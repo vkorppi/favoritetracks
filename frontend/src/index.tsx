@@ -8,7 +8,7 @@ import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from "react-router-dom"
 import { setContext } from 'apollo-link-context'
 
-
+let graphqlPath ='';
 
 const authentication = setContext((_, { headers }) => {
 
@@ -20,8 +20,15 @@ const authentication = setContext((_, { headers }) => {
 }
 )
 
+if (process.env.REACT_APP_ENVIR === 'test') {
+  graphqlPath=process.env.REACT_APP_GRAPHQL_DEV as string;
+}
+else {
+  graphqlPath=process.env.REACT_APP_GRAPHQL_PROD as string;
+}
 
-const httpLink  = new HttpLink({ uri: 'http://localhost:4000/graphql' }) 
+
+const httpLink  = new HttpLink({ uri: graphqlPath }) 
 
 const apollo = new ApolloClient({
 

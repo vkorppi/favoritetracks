@@ -23,6 +23,12 @@ const Transfer: React.FC<ComponentAttributeTrack> = ({ show, tracks, TransferToP
 
     const dispatch = useDispatch()
 
+    let redirectUrl = process.env.REACT_APP_GRAPHQL_PROD as string
+
+    if(process.env.REACT_APP_ENVIR === 'test') {
+        redirectUrl=process.env.REACT_APP_GRAPHQL_DEV as string;
+    }
+
     const close = () => {
 
         dispatch(setShow(false))
@@ -57,7 +63,8 @@ const Transfer: React.FC<ComponentAttributeTrack> = ({ show, tracks, TransferToP
             localStorage.setItem('playlist', playlistid.value);
 
             if (!localStorage.getItem('spotifyToken')) {
-                window.location.href = process.env.REACT_APP_URL as string
+                // window.location.href = process.env.REACT_APP_URL as string
+                window.location.href = redirectUrl
             }
             else {
 
