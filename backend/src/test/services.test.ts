@@ -8,8 +8,8 @@ import typeparsers from '../utils/typeparsers';
 import User from '../mongo/user';
 import bcrypt from 'bcryptjs';
 import { verify } from 'jsonwebtoken';
-import { decodedTokenType, UserSchemaType } from '../types';
-
+import {  UserSchemaType } from '../types/userTypes';
+import {  decodedTokenType } from '../types/sessionTypes';
 
 import dotenv from 'dotenv';
 import { hashPassword } from '../utils/userFunctions';

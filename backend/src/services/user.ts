@@ -2,7 +2,8 @@
 
 import typeparsers from '../utils/typeparsers';
 import User from '../mongo/user';
-import { UserSchemaType, TokenType, UserType } from '../types';
+import { TokenType } from '../types/sessionTypes';
+import { UserSchemaType, UserType } from '../types/userTypes';
 import { hashPassword } from '../utils/userFunctions';
 import { sign } from 'jsonwebtoken';
 import { UserInputError } from 'apollo-server-express';

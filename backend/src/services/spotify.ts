@@ -6,10 +6,11 @@ import querystring from 'querystring';
 
 import enviro from 'dotenv';
 import { getSearchEnvs, getSessionEnvs, getPlayListEnvs, getTracktEnvs } from '../utils/envFunctions';
-import { refreshtoken, spotifyResult, searchResult, favorites, favoritesSearchResult, spotifyToken } from '../types';
+import {  favorites, favoritesSearchResult  } from '../types/favoritesTypes';
+import {  spotifyResult, searchResult  } from '../types/searchType';
 import { getMessage } from '../utils/errorFunctions';
 import user from '../services/user';
-
+import {refreshtoken,spotifyToken} from '../types/sessionTypes';
 
 
 enviro.config();

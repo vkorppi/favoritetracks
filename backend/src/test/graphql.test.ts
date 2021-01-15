@@ -2,7 +2,8 @@
 import ApolloClient from 'apollo-boost';
 import { gql } from 'apollo-server-express';
 import 'cross-fetch/polyfill';
-import { query, UserSchemaType, UserType } from '../types';
+import { query } from '../types/searchType';
+import { UserSchemaType, UserType } from '../types/userTypes';
 import mongoose from 'mongoose';
 import typeparsers from '../utils/typeparsers';
 import User from '../mongo/user';

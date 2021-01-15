@@ -14,14 +14,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const apollo_server_express_1 = require("apollo-server-express");
 const resolvers_1 = require("../src/graphql/resolvers");
-const typeDefinitions_1 = require("../src/graphql/typeDefinitions");
+const session_1 = __importDefault(require("../src/graphql/typeDefinitions/session"));
+const track_1 = __importDefault(require("../src/graphql/typeDefinitions/track"));
+const user_1 = __importDefault(require("../src/graphql/typeDefinitions/user"));
 const typeparsers_1 = __importDefault(require("../src/utils/typeparsers"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importDefault(require("express"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const envFunctions_1 = require("./utils/envFunctions");
-const user_1 = __importDefault(require("./services/user"));
+const user_2 = __importDefault(require("./services/user"));
 dotenv_1.default.config();
 const connectToDatabase = () => __awaiter(void 0, void 0, void 0, function* () {
     let dbUrl;
@@ -43,7 +45,14 @@ const connectToDatabase = () => __awaiter(void 0, void 0, void 0, function* () {
     console.log(dbUrl);
 });
 const server = new apollo_server_express_1.ApolloServer({
-    typeDefs: typeDefinitions_1.typeDefs,
+    typeDefs: [
+        session_1.default.sessionMutation,
+        session_1.default.sessionQuery,
+        track_1.default.trackMutation,
+        track_1.default.trackQuery,
+        user_1.default.userMutation,
+        user_1.default.userQuery
+    ],
     resolvers: resolvers_1.resolvers,
     context: ({ req }) => __awaiter(void 0, void 0, void 0, function* () {
         if (req) {
@@ -54,7 +63,7 @@ const server = new apollo_server_express_1.ApolloServer({
             if (hasAuthHeader) {
                 encodedToken = auth === null || auth === void 0 ? void 0 : auth.replace('bearer ', '');
                 const decodedToken = jsonwebtoken_1.default.verify(encodedToken, secret);
-                const userdata = user_1.default.getUser(decodedToken.id);
+                const userdata = user_2.default.getUser(decodedToken.id);
                 return userdata.then(response => {
                     return response;
                 });

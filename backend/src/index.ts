@@ -1,7 +1,9 @@
 
 import { ApolloServer } from 'apollo-server-express';
 import { resolvers } from '../src/graphql/resolvers';
-import { typeDefs } from '../src/graphql/typeDefinitions';
+import sessiondef from '../src/graphql/typeDefinitions/session';
+import trackdef from '../src/graphql/typeDefinitions/track';
+import userdef from '../src/graphql/typeDefinitions/user';
 import typeparsers from '../src/utils/typeparsers';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
@@ -9,7 +11,7 @@ import express from 'express';
 import jsonwebtoken from 'jsonwebtoken';
 import { getSessionEnvs } from './utils/envFunctions';
 import user from './services/user';
-import { decodedTokenType } from './types';
+import { decodedTokenType } from './types/sessionTypes';
 
 dotenv.config();
 
@@ -42,7 +44,14 @@ const connectToDatabase = async (): Promise<void> => {
 
 
 const server = new ApolloServer({
-  typeDefs,
+  typeDefs: [
+    sessiondef.sessionMutation,
+    sessiondef.sessionQuery,
+    trackdef.trackMutation,
+    trackdef.trackQuery,
+    userdef.userMutation,
+    userdef.userQuery
+  ],
   resolvers
   ,
   context: async ({ req }) => {

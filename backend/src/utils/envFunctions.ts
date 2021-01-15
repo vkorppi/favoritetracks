@@ -1,6 +1,6 @@
 
 import typeparsers from '../utils/typeparsers';
-import { searchEnv, sessionEnv, playListEnv,tracksEnv } from '../types';
+import { searchEnv, sessionEnv, playListEnv,tracksEnv } from '../types/enviromentTypes';
 import { getMessage } from '../utils/errorFunctions';
 
 const parser = typeparsers.parseString;
