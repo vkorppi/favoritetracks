@@ -1,10 +1,10 @@
 import React, { ChangeEvent } from 'react';
-import { ComponentAttributeList } from '../../type'
+import { ComponentAttributeList } from '../../types/component'
 import { Button, ListGroup, Col, Form, Modal, Card, InputGroup } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { addItem, removeItem, clearItems } from '../../reducers/list'
 import { setShow } from '../../reducers/modal';
-import queries from '../../graphql/queries';
+import trackm from '../../graphql/track';
 import { useMutation } from '@apollo/client';
 
 
@@ -12,7 +12,7 @@ import { useMutation } from '@apollo/client';
 const SelectedFavorites: React.FC<ComponentAttributeList> = ({ show, list, showmessage }) => {
 
 
-  const [addTrack] = useMutation(queries.addTrack, {
+  const [addTrack] = useMutation(trackm.addTrack, {
     errorPolicy: 'none', onError: (error) => {
       showmessage(error.message, 'danger')
     }

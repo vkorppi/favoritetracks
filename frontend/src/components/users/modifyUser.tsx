@@ -1,10 +1,11 @@
 
 import React, { FormEvent } from 'react';
 import { Modal, Form, Button, Col, Card } from 'react-bootstrap';
-import { ComponentAttributeUser, MessageType, AlertType } from '../../type';
+import { ComponentAttributeUser } from '../../types/component';
+import { MessageType, AlertType } from '../../types/alerts';
 import { setShow } from '../../reducers/modal';
 import { useDispatch, useSelector } from 'react-redux';
-import queries from '../../graphql/queries';
+import userm from '../../graphql/user';
 import { useHistory } from "react-router-dom"
 import { useMutation } from '@apollo/client';
 import Message from '../spotify/message';
@@ -24,7 +25,7 @@ const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show 
 
     const history = useHistory()
 
-    const [updateUser] = useMutation(queries.updateUser, {
+    const [updateUser] = useMutation(userm.updateUser, {
         errorPolicy: 'none',
         onError: (error) => {
             showmessage(error.message, 'danger')

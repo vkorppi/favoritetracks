@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageAttributes } from "../../type";
+import { MessageAttributes } from "../../types/alerts";
 import {  Alert } from 'react-bootstrap'
 
 

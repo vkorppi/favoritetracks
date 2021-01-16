@@ -1,5 +1,5 @@
 import { isInputEmail, isInputaAddress, InputNotEmpty, isInputName, isInputDate } from "./userInputValidators"
-import { AlertAttributes } from "../type"
+import { AlertAttributes } from "../types/alerts"
 
 export const validateAlert = (object: AlertAttributes,values: string[]): AlertAttributes => {
 

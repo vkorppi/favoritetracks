@@ -1,6 +1,6 @@
 import { Action } from 'redux'
 import { ThunkAction } from 'redux-thunk'
-import { MessageType } from '../type'
+import { MessageType } from '../types/alerts'
 import { setMessage,clearMessage } from '../reducers/message'
 
 let timeid=0

@@ -1,14 +1,15 @@
 import React, { FormEvent } from 'react';
-import { BasicComponent,UserType } from '../../type'
+import { BasicComponent } from '../../types/component'
+import { UserType } from '../../types/user'
 import { Button, ListGroup, InputGroup, FormControl } from 'react-bootstrap'
 import { useLazyQuery } from '@apollo/client';
-import queries from '../../graphql/queries';
+import userq from '../../graphql/user';
 
 
 const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
 
-  const [searchUser, {data,error}] = useLazyQuery(queries.searchUsers, {
+  const [searchUser, {data,error}] = useLazyQuery(userq.searchUsers, {
 
     fetchPolicy: "no-cache", errorPolicy: 'none',
 

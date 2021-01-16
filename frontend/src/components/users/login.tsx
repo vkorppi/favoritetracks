@@ -1,14 +1,14 @@
 
 import React, { FormEvent } from 'react';
 import { Button, Card, Form, Col, FormControl } from 'react-bootstrap';
-import { BasicComponent } from "../../type";
+import { BasicComponent } from "../../types/component";
 import { useMutation } from '@apollo/client';
-import queries from '../../graphql/queries';
+import sessionm from '../../graphql/session';
 import {useHistory} from "react-router-dom"
 
 const Login: React.FC<BasicComponent> = ({ showmessage }) => {
 
-    const [login, result] = useMutation(queries.login, {
+    const [login, result] = useMutation(sessionm.login, {
         errorPolicy: 'none', onError: (error) => {
             showmessage(error.message,'danger')
         }

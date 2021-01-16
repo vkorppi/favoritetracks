@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { Modal, Form, Button, Col, Card } from 'react-bootstrap';
-import { ComponentAttributeTrack, AlertType, MessageType } from '../../type';
+import { ComponentAttributeTrack } from '../../types/component';
+import {  AlertType, MessageType } from '../../types/alerts';
 import InputForm from '../forms/input';
 import { useDispatch, useSelector } from 'react-redux';
 import { validateAlert } from '../../utils/alertMessageControllers';

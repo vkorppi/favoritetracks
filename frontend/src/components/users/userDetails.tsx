@@ -1,8 +1,9 @@
 
 import React from 'react';
 import { Button, Form, Col, Card } from 'react-bootstrap';
-import { ComponentAttribueId, ModalType } from "../../type";
-import queries from '../../graphql/queries';
+import { ComponentAttribueId } from "../../types/component";
+import {  ModalType } from "../../types/modal";
+import userq from '../../graphql/user';
 import { useQuery, useMutation } from '@apollo/client';
 import { useHistory } from "react-router-dom"
 import ModifyUser from './modifyUser';
@@ -19,13 +20,13 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
 
     const admin =  localStorage.getItem('Admin') === 'true'
 
-    const fetchedUser = useQuery(queries.getUser, {
+    const fetchedUser = useQuery(userq.getUser, {
         fetchPolicy: "no-cache", errorPolicy: 'none',
         skip: (!id),
         variables: { id: id }
     })
 
-    const loggedUser = useQuery(queries.loggedInUser, {
+    const loggedUser = useQuery(userq.loggedInUser, {
         fetchPolicy: "no-cache", errorPolicy: 'none',
         skip: (id !== '')
     })
@@ -47,7 +48,7 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
     }
 
 
-    const [deleteUser] = useMutation(queries.deleteUser, {
+    const [deleteUser] = useMutation(userq.deleteUser, {
         errorPolicy: 'none',
     })
     

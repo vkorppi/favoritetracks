@@ -1,6 +1,7 @@
 import React from 'react';
 import Search from './components/spotify/search';
-import { MessageType, UseId } from './type';
+import { MessageType } from './types/alerts';
+import { UseId } from './types/user';
 import { Container, Row, Navbar, Nav, Modal } from 'react-bootstrap'
 import { showMessage } from './thunks/message';
 import Message from './components/spotify/message';

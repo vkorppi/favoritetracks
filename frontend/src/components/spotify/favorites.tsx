@@ -1,7 +1,11 @@
 import React, { MouseEvent } from 'react';
-import { BasicComponent, Track, ModalType } from '../../type'
+import {  Track } from '../../type'
+import { BasicComponent } from '../../types/component'
+import {  ModalType } from '../../types/modal'
 import { useQuery, useMutation } from '@apollo/client';
-import queries from '../../graphql/queries';
+import sessionq from '../../graphql/session';
+import userq from '../../graphql/user';
+import track from '../../graphql/track';
 import { Form, ListGroup, Col, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
@@ -29,22 +33,22 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
     const modalState = (state: ModalType) => state
     const ModalData = useSelector(modalState)
 
-    const { data, refetch } = useQuery(queries.getList, {
+    const { data, refetch } = useQuery(track.getList, {
         fetchPolicy: "no-cache", errorPolicy: 'none'
     })
 
-    const [removeTrack] = useMutation(queries.removeTrack, {
+    const [removeTrack] = useMutation(track.removeTrack, {
         errorPolicy: 'none',
         onError: (error) => {
             showmessage(error.message, 'danger')
         }
     })
 
-    const [getLoggedInUser, userData] = useLazyQuery(queries.loggedInUser, {
+    const [getLoggedInUser, userData] = useLazyQuery(userq.loggedInUser, {
         fetchPolicy: "no-cache", errorPolicy: 'none',
     })
 
-    const [deletegateNewToken, newtoken] = useLazyQuery(queries.delegateRefreshedToken, {
+    const [deletegateNewToken, newtoken] = useLazyQuery(sessionq.delegateRefreshedToken, {
         fetchPolicy: "no-cache", errorPolicy: 'none',
     })
 
@@ -81,7 +85,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
         history.push('/favorites')
     }
 
-    const queryObject = useQuery(queries.delegateToken, {
+    const queryObject = useQuery(sessionq.delegateToken, {
 
         fetchPolicy: "no-cache", errorPolicy: 'none',
         skip: (!param.get("code")),

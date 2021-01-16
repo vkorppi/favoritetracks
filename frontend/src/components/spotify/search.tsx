@@ -1,12 +1,14 @@
 import React, { FormEvent, ChangeEvent } from 'react';
-import { BasicComponent, QueryResult, Track, ListType, ModalType, trackNoExternalUrl } from '../../type'
+import {  QueryResult, Track, ListType, trackNoExternalUrl } from '../../type'
+import { BasicComponent } from '../../types/component'
+import {  ModalType } from '../../types/modal'
 import { Button, ListGroup, Col, Form, FormControl, InputGroup } from 'react-bootstrap'
 import Resultpagination from './pagination';
 import { useDispatch, useSelector } from 'react-redux'
 import { setPagination } from '../../reducers/pagination'
 import { addItem, removeItem } from '../../reducers/list'
 import { useLazyQuery, useQuery } from '@apollo/client';
-import queries from '../../graphql/queries';
+import trackq from '../../graphql/track';
 import { setShow } from '../../reducers/modal';
 import SelectedFavorites from './selectedFavorites';
 
@@ -14,14 +16,14 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
   const token = localStorage.getItem('Token')
 
-  const [getTracks, { data, error }] = useLazyQuery(queries.search, {
+  const [getTracks, { data, error }] = useLazyQuery(trackq.search, {
     fetchPolicy: "no-cache", errorPolicy: 'none',
   })
 
   let uris: string[]=[''];
 
 
-  const listObject = useQuery(queries.getList, {
+  const listObject = useQuery(trackq.getList, {
     fetchPolicy: "no-cache", errorPolicy: 'none'
   })
 

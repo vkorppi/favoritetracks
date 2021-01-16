@@ -1,6 +1,6 @@
 
 
-import { ActionMessage } from '../type'
+import { ActionMessage } from '../types/alerts'
 
 
 export const setMessage = (text: string,msgtype: string) => {

@@ -1,8 +1,8 @@
 
 import React, { FormEvent } from 'react';
 import {  Form, Button, Col, FormControl } from 'react-bootstrap';
-import { ComponentAttributeUser } from '../../type';
-import queries from '../../graphql/queries';
+import { ComponentAttributeUser } from '../../types/component';
+import userm from '../../graphql/user';
 import { useHistory } from "react-router-dom"
 import { useMutation } from '@apollo/client';
 
@@ -12,7 +12,7 @@ const UpdatePassword: React.FC<ComponentAttributeUser> = ({ showmessage, user })
 
 
 
-    const [updatePassword] = useMutation(queries.updatePassword, {
+    const [updatePassword] = useMutation(userm.updatePassword, {
         errorPolicy: 'none',
     })
 

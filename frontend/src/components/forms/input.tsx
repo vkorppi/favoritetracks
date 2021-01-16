@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { FormControl, Alert } from 'react-bootstrap';
-import { ComponentInput } from '../../type';
+import { ComponentInput } from '../../types/component';
 
 
 const InputForm: React.FC<ComponentInput> = ({ hasError, errorMessage, inputMessage, id, type, defaultInput }) => {

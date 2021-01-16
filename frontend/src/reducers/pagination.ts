@@ -1,6 +1,6 @@
 
 
-import { ActionPagination } from '../type'
+import { ActionPagination } from '../types/pagination'
 
 
 export const setPagination = (start: number, last: number, searchvalue: string, currentPage: number) => {

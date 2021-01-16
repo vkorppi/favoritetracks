@@ -1,9 +1,10 @@
 
 import React, { FormEvent } from 'react';
 import { Button, Card, Form, Col } from 'react-bootstrap';
-import { BasicComponent, AlertType } from "../../type";
+import { BasicComponent } from "../../types/component";
+import {  AlertType } from "../../types/alerts";
 import { useMutation } from '@apollo/client';
-import queries from '../../graphql/queries';
+import userm from '../../graphql/user';
 import { useHistory } from "react-router-dom"
 import { useSelector, useDispatch } from 'react-redux';
 import { setAlerts } from "../../reducers/alerts";
@@ -17,7 +18,7 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
     const alertObject = alertState.alert
     const dispatch = useDispatch()
 
-    const [createNewUser] = useMutation(queries.createUser, {
+    const [createNewUser] = useMutation(userm.createUser, {
         errorPolicy: 'none', onError: (error) => {
             showmessage(error.message, 'danger')
         }

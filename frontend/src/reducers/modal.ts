@@ -1,6 +1,6 @@
 
 
-import { ActionModal } from '../type'
+import { ActionModal } from '../types/modal'
 
 
 export const setShow = (show: boolean) => {

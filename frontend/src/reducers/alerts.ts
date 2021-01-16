@@ -1,6 +1,6 @@
 
 
-import { AlertAction,AlertAttributes } from '../type'
+import { AlertAction,AlertAttributes } from '../types/alerts'
 
 
 export const setAlerts = (alert: AlertAttributes) => {
