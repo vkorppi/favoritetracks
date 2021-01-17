@@ -1,6 +1,7 @@
 
 
 import { ActionList,ListAttributes } from '../type'
+import produce from "immer"
 
 const defaultState: ListAttributes={}
 
@@ -30,7 +31,11 @@ const reducer = (state = defaultState , action: ActionList) => {
             
             return state
             */
-           return { ...state, [action.data.uri]: action.data.name }
+           // return { ...state, [action.data.uri]: action.data.name }
+
+           return produce(state, draft => {
+            draft[action.data.uri]=action.data.name;
+        })
             
         case 'REMOVE':
             
@@ -40,10 +45,14 @@ const reducer = (state = defaultState , action: ActionList) => {
             */
 
            // eslint-disable-next-line no-case-declarations
-           const newstate = { ...state, [action.data.uri]: action.data.name }
-           delete newstate[action.data.uri]
+           //const newstate = { ...state, [action.data.uri]: action.data.name }
+           //delete newstate[action.data.uri]
 
-           return newstate
+           //return newstate
+
+           return produce(state, draft => {
+                delete draft[action.data.uri];
+            })
 
         case 'CLEAR':
             /*

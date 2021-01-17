@@ -1,7 +1,7 @@
 
 
 import { ActionPagination } from '../types/pagination'
-
+import produce from "immer"
 
 export const setPagination = (start: number, last: number, searchvalue: string, currentPage: number) => {
 
@@ -23,12 +23,33 @@ const reducer = (state = { start: 1, last: 10, searchvalue: '', currentPage: 1 }
 
     switch (action.type) {
         case 'SET':
+
+            return produce(state, draft => {
+    
+                draft.start=action.data.start;
+                draft.last=action.data.last;
+                draft.searchvalue= action.data.searchvalue;
+                draft.currentPage=action.data.currentPage
+            })
+        /*
             return {
                 start: action.data.start,
                 last: action.data.last,
                 searchvalue: action.data.searchvalue,
                 currentPage: action.data.currentPage
             }
+        */
+
+       case 'UPDATE':
+            return produce(state, draft => {
+
+            draft.start=action.data.start;
+            draft.last=action.data.last;
+            draft.searchvalue= state.searchvalue;
+            draft.currentPage=action.data.currentPage
+        })
+
+        /*
         case 'UPDATE':
             return {
                 start: action.data.start,
@@ -36,6 +57,18 @@ const reducer = (state = { start: 1, last: 10, searchvalue: '', currentPage: 1 }
                 searchvalue: state.searchvalue,
                 currentPage: action.data.currentPage
             }
+            */
+
+           case 'SETPAGE':
+                return produce(state, draft => {
+
+                    draft.start=state.start;
+                    draft.last=state.last;
+                    draft.searchvalue= state.searchvalue;
+                    draft.currentPage=action.data.currentPage
+                })
+
+            /*
         case 'SETPAGE':
             return {
                 start: state.start,
@@ -43,6 +76,7 @@ const reducer = (state = { start: 1, last: 10, searchvalue: '', currentPage: 1 }
                 searchvalue: state.searchvalue,
                 currentPage: action.data.currentPage
             }
+            */
 
         default:
             return state

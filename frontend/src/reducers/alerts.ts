@@ -1,7 +1,7 @@
 
 
 import { AlertAction,AlertAttributes } from '../types/alerts'
-
+import produce from "immer"
 
 export const setAlerts = (alert: AlertAttributes) => {
 
@@ -19,6 +19,7 @@ const reducer = (state = {
 
     switch (action.type) {
         case 'SET':
+            /*
             return {
                 firstname: action.data.firstname,
                 lastname: action.data.lastname,
@@ -29,6 +30,18 @@ const reducer = (state = {
                 password: action.data.password,
                 other:action.data.other
             }
+            */
+           return produce(state, draft => {
+            draft.firstname=action.data.firstname;
+            draft.lastname=action.data.lastname;
+            draft.birthdate=action.data.birthdate;
+            draft.email=action.data.email;
+            draft.address=action.data.address;
+            draft.username=action.data.username;
+            draft.password=action.data.password;
+            draft.other=action.data.other;
+        })
+
         default:
             return state
     }
