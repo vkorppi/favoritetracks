@@ -50,7 +50,8 @@ describe('Testing  mutations and queries that require authorization header', () 
 
 		await mongoose.connect(parser(env.DBTEST, error), configuration);
 
-		await User.deleteMany({});
+		//await User.deleteMany({});
+		await User.deleteMany( {  "username" : { $ne : "adminUser" } } );
 
 		const testuser: UserSchemaType = {
 			username: 'usernameTest',
@@ -353,14 +354,21 @@ describe('Testing  mutations and queries that require authorization header', () 
 
 	afterAll(async () => {
 		
-		await User.deleteMany({});
+		//await User.deleteMany({});
+		await User.deleteMany( {  "username" : { $ne : "adminUser" } } );
 
 		// admin testuser
 		const testuser: UserSchemaType = {
 			username: 'admin',
 			password: hashPassword('admin'),
 			firstname: 'admin',
-			lastname: 'admin'
+			lastname: 'admin',
+			birthdate: '11.11.1999',
+			email: 'test.test@mail.com',
+			address: 'road 12',
+			admin: true,
+			favorites: '',
+			playlist: ''
 		} as UserSchemaType;
 
 		const userTest = new User(testuser);

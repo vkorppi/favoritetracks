@@ -35,7 +35,8 @@ describe('Testing usermanagement services', () => {
   
     beforeEach(async () => {
   
-      await User.deleteMany({});
+      //await User.deleteMany({});
+	  await User.deleteMany( {  "username" : { $ne : "adminUser" } } );
   
       const testuser: UserSchemaType = {
         username: 'usernameTest',
@@ -170,7 +171,8 @@ describe('Testing usermanagement services', () => {
   
   
     afterAll(async () => {
-      await User.deleteMany({});
+     // await User.deleteMany({});
+	 await User.deleteMany( {  "username" : { $ne : "adminUser" } } );
       void mongoose.connection.close();
       console.log('Database connection closed');
     });
