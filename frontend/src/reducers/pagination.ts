@@ -1,87 +1,30 @@
 
 
-import { ActionPagination } from '../types/pagination'
-import produce from "immer"
+import {PaginationAttributes,PaginationAttributesNosearchvalue,PaginationAttributesOnlycurrentPage} from '../types/pagination'
+import { createAction, createReducer } from '@reduxjs/toolkit'
 
-export const setPagination = (start: number, last: number, searchvalue: string, currentPage: number) => {
+export const setPagination = createAction<PaginationAttributes>('SET');
+export const updatePagination = createAction<PaginationAttributesNosearchvalue>('UPDATE');
+export const setPage = createAction<PaginationAttributesOnlycurrentPage>('SETPAGE');
 
-    return { type: 'SET', data: { start: start, last: last, searchvalue: searchvalue, currentPage: currentPage  } }
-}
+const initialState = { start: 1, last: 10, searchvalue: '', currentPage: 1 }
 
-export const updatePagination = (start: number, last: number, currentPage: number) => {
-
-    return { type: 'UPDATE', data: { start: start, last: last, currentPage: currentPage } }
-}
-
-export const setPage = (currentPage: number) => {
-
-    return { type: 'SETPAGE', data: { currentPage: currentPage } }
-}
-
-
-const reducer = (state = { start: 1, last: 10, searchvalue: '', currentPage: 1 }, action: ActionPagination) => {
-
-    switch (action.type) {
-        case 'SET':
-
-            return produce(state, draft => {
-    
-                draft.start=action.data.start;
-                draft.last=action.data.last;
-                draft.searchvalue= action.data.searchvalue;
-                draft.currentPage=action.data.currentPage
-            })
-        /*
-            return {
-                start: action.data.start,
-                last: action.data.last,
-                searchvalue: action.data.searchvalue,
-                currentPage: action.data.currentPage
-            }
-        */
-
-       case 'UPDATE':
-            return produce(state, draft => {
-
-            draft.start=action.data.start;
-            draft.last=action.data.last;
-            draft.searchvalue= state.searchvalue;
-            draft.currentPage=action.data.currentPage
-        })
-
-        /*
-        case 'UPDATE':
-            return {
-                start: action.data.start,
-                last: action.data.last,
-                searchvalue: state.searchvalue,
-                currentPage: action.data.currentPage
-            }
-            */
-
-           case 'SETPAGE':
-                return produce(state, draft => {
-
-                    draft.start=state.start;
-                    draft.last=state.last;
-                    draft.searchvalue= state.searchvalue;
-                    draft.currentPage=action.data.currentPage
-                })
-
-            /*
-        case 'SETPAGE':
-            return {
-                start: state.start,
-                last: state.last,
-                searchvalue: state.searchvalue,
-                currentPage: action.data.currentPage
-            }
-            */
-
-        default:
-            return state
-    }
-
-}
+const reducer = createReducer(initialState, (builder) => {
+    builder
+      .addCase(setPagination, (state, action) => {
+        state.start=action.payload.start;
+        state.last=action.payload.last;
+        state.searchvalue= action.payload.searchvalue;
+        state.currentPage=action.payload.currentPage
+      })
+      .addCase(updatePagination, (state, action) => {
+        state.start=action.payload.start;
+        state.last=action.payload.last;
+        state.currentPage=action.payload.currentPage
+      })
+      .addCase(setPage, (state, action) => {
+        state.currentPage=action.payload.currentPage
+      })
+  })
 
 export default reducer

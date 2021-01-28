@@ -10,6 +10,5 @@ export interface ModalType {
   
   export type ActionModal =
     {
-      type: "SET_SHOW";
       data: Modalttributes;
     }

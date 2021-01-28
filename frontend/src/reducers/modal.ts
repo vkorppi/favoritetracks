@@ -1,35 +1,17 @@
 
 
 import { ActionModal } from '../types/modal'
-import produce from "immer"
+import { createAction, createReducer } from '@reduxjs/toolkit'
 
-export const setShow = (show: boolean) => {
+const initialState= { show:false }
 
-   
-    return { type: 'SET_SHOW', data: { show: show } }
-}
+export const setShow = createAction<ActionModal>('SET_SHOW');
 
-
-
-const reducer = (state = { show:false }, action: ActionModal) => {
-
-    switch (action.type) {
-        case 'SET_SHOW':
-
-            return produce(state, draft => {
-                draft.show=action.data.show;
-            })
-
-            /*
-            return {
-                show: action.data.show
-            }
-            */
-
-        default:
-            return state
-    }
-
-}
+const reducer = createReducer(initialState, (builder) => {
+    builder
+      .addCase(setShow, (state, action) => {
+        state.show=action.payload.data.show;
+      })
+  })
 
 export default reducer

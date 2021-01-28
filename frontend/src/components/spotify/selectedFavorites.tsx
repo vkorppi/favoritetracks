@@ -23,7 +23,7 @@ const SelectedFavorites: React.FC<ComponentAttributeList> = ({ show, list, showm
 
   const close = () => {
 
-    dispatch(setShow(false))
+    dispatch(setShow({ data: { show: false } }))
 
   }
 
@@ -59,12 +59,12 @@ const SelectedFavorites: React.FC<ComponentAttributeList> = ({ show, list, showm
     if (input.checked === true) {
 
 
-      dispatch(addItem(key, value))
+      dispatch(addItem({uri:key,name:value}))
     }
     else {
 
 
-      dispatch(removeItem(key))
+      dispatch(removeItem({uri:key}))
     }
   }
 

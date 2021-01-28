@@ -11,16 +11,5 @@ export interface PaginationType {
     currentPage: number;
   }
   
-  export type ActionPagination =
-    {
-      type: "UPDATE";
-      data: PaginationAttributes;
-    } |
-    {
-      type: "SET";
-      data: PaginationAttributes;
-    } |
-    {
-      type: "SETPAGE";
-      data: PaginationAttributes;
-    };
+  export type PaginationAttributesNosearchvalue = Omit<PaginationAttributes, 'searchvalue' >;
+  export type PaginationAttributesOnlycurrentPage = Omit<PaginationAttributes, 'start'|'last'|'searchvalue' >;

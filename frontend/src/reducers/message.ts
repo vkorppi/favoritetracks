@@ -1,55 +1,23 @@
 
 
 import { ActionMessage } from '../types/alerts'
-import produce from "immer"
+import { createAction, createReducer } from '@reduxjs/toolkit'
 
-export const setMessage = (text: string,msgtype: string) => {
+export const setMessage = createAction<ActionMessage>('SET_MESSAGE');
+export const clearMessage = createAction<ActionMessage>('CLEAR_MESSAGE');
 
-   
-    return { type: 'SET_MESSAGE', data: { text: text,msgtype: msgtype } }
-}
+const initialState = { text: '',msgtype:'' }
 
-export const clearMessage = () => {
-
-
-    return { type: 'CLEAR_MESSAGE', data: { text: '',msgtype: '' } }
-}
-
-
-const reducer = (state = { text: '',msgtype:'' }, action: ActionMessage) => {
-
-    switch (action.type) {
-        case 'SET_MESSAGE':
-
-            return produce(state, draft => {
-                draft.text=action.data.text;
-                draft.msgtype=action.data.msgtype;
-            })
-
-            /*
-            return {
-                text: action.data.text,
-                msgtype: action.data.msgtype
-            }
-            */
-        case 'CLEAR_MESSAGE':
-
-            return produce(state, draft => {
-                draft.text=action.data.text;
-                draft.msgtype=action.data.msgtype;
-            })
-
-            /*
-            return {
-                text: action.data.text,
-                msgtype: action.data.msgtype
-            }
-            */
-
-        default:
-            return state
-    }
-
-}
+const reducer = createReducer(initialState, (builder) => {
+    builder
+      .addCase(setMessage, (state, action) => {
+        state.text=action.payload.data.text;
+        state.msgtype=action.payload.data.msgtype;
+      })
+      .addCase(clearMessage, (state, action) => {
+        state.text=action.payload.data.text;
+        state.msgtype=action.payload.data.msgtype;
+      })
+  })
 
 export default reducer

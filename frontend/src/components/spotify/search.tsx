@@ -59,7 +59,8 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
     getTracks({ variables: { name: inputvalue, page: 1 } })
 
-    dispatch(setPagination(1, 10, inputvalue, 1))
+    
+    dispatch(setPagination({start:1,last:10,searchvalue:inputvalue,currentPage:1}))
 
 
     if (error) {
@@ -69,7 +70,7 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
   }
 
   const save = () => {
-    dispatch(setShow(true))
+    dispatch(setShow({ data: { show: true } }))
 
   }
 
@@ -82,11 +83,11 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
     if (input.checked === true) {
 
-      dispatch(addItem(key, value))
+      dispatch(addItem({uri:key,name:value}))
     }
     else {
-
-      dispatch(removeItem(key))
+      
+      dispatch(removeItem({uri:key}))
     }
   }
 

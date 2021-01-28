@@ -10,11 +10,10 @@ export const showMessage = (
   ): ThunkAction<void, MessageType, unknown, Action<string>> =>  dispatch => {
 
   if(timeid === 0) {
-    dispatch(setMessage(message,messageType)) 
-    
+    dispatch(setMessage({data:{text:message,msgtype:messageType}})) 
     
       timeid=window.setTimeout(() => {
-          dispatch(clearMessage())
+          dispatch(clearMessage({data:{text:'',msgtype:''}}))
           timeid=0
         }, time)
       

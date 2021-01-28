@@ -1,70 +1,32 @@
 
 
-import { ActionList,ListAttributes } from '../type'
-import produce from "immer"
+import { ListAttributes } from '../type'
+import { createAction, createReducer } from '@reduxjs/toolkit'
 
-const defaultState: ListAttributes={}
+export interface TrackUriName {
+    uri: string;
+    name: string;
+  }
 
-export const addItem = (uri: string, name: string) => {
-   
-    return { type: 'ADD', data: { uri: uri, name: name} }
-}
+const initialState: ListAttributes={}
 
-export const removeItem = (uri: string) => {
+export type TrackOnlyName = Omit<TrackUriName, 'name' >;
+export const addItem = createAction<TrackUriName>('ADD');
+export const removeItem = createAction<TrackOnlyName>('REMOVE');
+export const clearItems = createAction('CLEAR');
 
-    return { type: 'REMOVE', data: { uri: uri } }
-}
+const reducer = createReducer(initialState, (builder) => {
+    builder
+      .addCase(addItem, (state, action) => {
+        state[action.payload.uri]=action.payload.name;
+      })
+      .addCase(removeItem, (state, action) => {
+        delete state[action.payload.uri]
 
-export const clearItems = () => {
-
-    return { type: 'CLEAR', data: {} }
-}
-
-
-const reducer = (state = defaultState , action: ActionList) => {
-
-    switch (action.type) {
-        case 'ADD':
-
-            /*
-            state[action.data.uri]=action.data.name
-            
-            return state
-            */
-           // return { ...state, [action.data.uri]: action.data.name }
-
-           return produce(state, draft => {
-            draft[action.data.uri]=action.data.name;
-        })
-            
-        case 'REMOVE':
-            
-            /*
-            delete state[action.data.uri]
-            return  state
-            */
-
-           // eslint-disable-next-line no-case-declarations
-           //const newstate = { ...state, [action.data.uri]: action.data.name }
-           //delete newstate[action.data.uri]
-
-           //return newstate
-
-           return produce(state, draft => {
-                delete draft[action.data.uri];
-            })
-
-        case 'CLEAR':
-            /*
-            Object.keys(state).forEach(key => { delete state[key] })
-            return  state
-            */
-           return {}
-
-        default:
-            return state
-    }
-
-}
+      })
+      .addCase(clearItems, (state, action) => {
+        state={}
+      })
+  })
 
 export default reducer

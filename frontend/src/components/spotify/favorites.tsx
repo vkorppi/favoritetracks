@@ -115,7 +115,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
         const refreshToken = localStorage.getItem('spotifyRefreshToken')
         const expiration = localStorage.getItem('Expiration')
 
-        dispatch(setShow(true))
+        dispatch(setShow( { data: { show: true } }))
         getLoggedInUser()
 
         if (refreshToken && expiration) {

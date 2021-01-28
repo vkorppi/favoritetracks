@@ -28,10 +28,10 @@ export interface MessageType {
   
   export type ActionMessage =
     {
-      type: "SET_MESSAGE";
+     
       data: MessageAttributes;
     } |
     {
-      type: "CLEAR_MESSAGE";
+    
       data: MessageAttributes;
     };

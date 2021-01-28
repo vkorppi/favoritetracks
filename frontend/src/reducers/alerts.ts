@@ -1,51 +1,30 @@
 
 
-import { AlertAction,AlertAttributes } from '../types/alerts'
-import produce from "immer"
+import { AlertAttributes } from '../types/alerts'
+import { createAction, createReducer } from '@reduxjs/toolkit'
 
-export const setAlerts = (alert: AlertAttributes) => {
+export const setAlerts = createAction<AlertAttributes>('SET');
 
-    return { type: 'SET', data: alert }
-}
-
-
-const reducer = (state = {
+const initialState = {
      
-        firstname: false, lastname: false, birthdate: false, email: false,
-        address: false, username: false, password: false,other:false
-       
-},
-    action: AlertAction) => {
-
-    switch (action.type) {
-        case 'SET':
-            /*
-            return {
-                firstname: action.data.firstname,
-                lastname: action.data.lastname,
-                birthdate: action.data.birthdate,
-                email: action.data.email,
-                address: action.data.address,
-                username: action.data.username,
-                password: action.data.password,
-                other:action.data.other
-            }
-            */
-           return produce(state, draft => {
-            draft.firstname=action.data.firstname;
-            draft.lastname=action.data.lastname;
-            draft.birthdate=action.data.birthdate;
-            draft.email=action.data.email;
-            draft.address=action.data.address;
-            draft.username=action.data.username;
-            draft.password=action.data.password;
-            draft.other=action.data.other;
-        })
-
-        default:
-            return state
-    }
-
+    firstname: false, lastname: false, birthdate: false, email: false,
+    address: false, username: false, password: false,other:false
+   
 }
+
+const reducer = createReducer(initialState, (builder) => {
+    builder
+      .addCase(setAlerts, (state, action) => {
+        state.firstname=action.payload.firstname;
+        state.lastname=action.payload.lastname;
+        state.birthdate=action.payload.birthdate;
+        state.email=action.payload.email;
+        state.address=action.payload.address;
+        state.username=action.payload.username;
+        state.password=action.payload.password;
+        state.other=action.payload.other;
+      })
+
+  })
 
 export default reducer

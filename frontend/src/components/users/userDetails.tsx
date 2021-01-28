@@ -65,7 +65,7 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
     }
 
     const modifyUser = () => {
-        dispatch(setShow(true))
+        dispatch(setShow({ data: { show: true } }))
     }
 
     const close = () => {

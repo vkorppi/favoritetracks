@@ -68,7 +68,7 @@ const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show 
             });
 
             if (success) {
-                dispatch(setShow(false))
+                dispatch(setShow({ data: { show: false } }))
                 showmessage(`User was updated: ${firstname.value} ${lastname.value}`, 'primary')
                 history.push('/users')
             }
@@ -78,7 +78,7 @@ const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show 
 
     const close = () => {
 
-        dispatch(setShow(false))
+        dispatch(setShow({ data: { show: false } }))
     }
 
 

@@ -32,7 +32,7 @@ const Transfer: React.FC<ComponentAttributeTrack> = ({ show, tracks, TransferToP
 
     const close = () => {
 
-        dispatch(setShow(false))
+        dispatch(setShow({ data: { show: false } }))
     }
 
 
