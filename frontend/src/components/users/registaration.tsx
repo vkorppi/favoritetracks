@@ -1,22 +1,14 @@
 
-import React, { FormEvent } from 'react';
-import { Button, Card, Form, Col } from 'react-bootstrap';
+import React from 'react';
+import { Button, Card, Col, Row, FormControl, Alert } from 'react-bootstrap';
 import { BasicComponent } from "../../types/component";
-import {  AlertType } from "../../types/alerts";
 import { useMutation } from '@apollo/client';
 import userm from '../../graphql/user';
 import { useHistory } from "react-router-dom"
-import { useSelector, useDispatch } from 'react-redux';
-import { setAlerts } from "../../reducers/alerts";
-import InputForm from '../forms/input';
-import { validateAlert, validationFailed } from '../../utils/alertMessageControllers';
+import { Formik, Form } from 'formik';
+import {validationSchema } from '../formik/validationSchema';
 
 const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
-
-    const selector = (state: AlertType) => state
-    const alertState = useSelector(selector)
-    const alertObject = alertState.alert
-    const dispatch = useDispatch()
 
     const [createNewUser] = useMutation(userm.createUser, {
         errorPolicy: 'none', onError: (error) => {
@@ -26,65 +18,6 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
 
     const history = useHistory()
 
-    const createUser = async (event: FormEvent) => {
-
-        event.preventDefault()
-        const form = event.target as HTMLFormElement;
-
-        const firstname = form[0] as HTMLInputElement;
-        const lastname = form[1] as HTMLInputElement;
-        const birthdate = form[2] as HTMLInputElement;
-        const email = form[3] as HTMLInputElement;
-        const address = form[4] as HTMLInputElement;
-        const username = form[5] as HTMLInputElement;
-        const password = form[6] as HTMLInputElement;
-
-        validateAlert(
-            alertObject,
-            [
-                firstname.value,
-                lastname.value,
-                birthdate.value,
-                email.value,
-                address.value,
-                username.value,
-                password.value,
-                'empty'
-            ])
-
-      
-
-        dispatch(setAlerts(alertObject))
-
-        if (!validationFailed(alertObject)) {
-
-            const success = await createNewUser({
-                variables:
-                {
-                    username: username.value,
-                    password: password.value,
-                    firstname: firstname.value,
-                    lastname: lastname.value,
-                    birthdate: birthdate.value,
-                    email: email.value,
-                    address: address.value
-                }
-            });
-
-            username.value = ''
-            password.value = ''
-            firstname.value = ''
-            lastname.value = ''
-            birthdate.value = ''
-            email.value = ''
-            address.value = ''
-
-            if (success) {
-                showmessage('New user created', 'primary')
-                history.push('/users')
-            }
-        }
-    }
 
     const close = () => {
 
@@ -93,6 +26,7 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
 
     }
 
+ 
 
     return (
         <div >
@@ -100,110 +34,127 @@ const Registaration: React.FC<BasicComponent> = ({ showmessage }) => {
             <Card>
                 <Card.Header>Sign up</Card.Header>
                 <Card.Body>
-                    <Form.Group>
-                        <form onSubmit={createUser}>
-                            <Form.Row>
-                                <Col>
-                                    <InputForm 
-                                        hasError={alertObject.firstname}
-                                        errorMessage={'Firstname must start with uppercasleter followed by lowercase letters'}
-                                        inputMessage={'firstname'}
-                                        id={'firstname'}
-                                        type={'text'}
-                                        defaultInput={''}
-                                    />
-                                </Col>
-                            </Form.Row>
-                            <br />
-                            <Form.Row>
-                                <Col>
-                                    <InputForm
-                                        hasError={alertObject.lastname}
-                                        errorMessage={'Lastname must start with uppercasleter followed by lowercase letters'}
-                                        inputMessage={'lastname'}
-                                        id={'lastname'}
-                                        type={'text'}
-                                        defaultInput={''}
-                                    />
-                                </Col>
-                            </Form.Row>
-                            <br />
-                            <Form.Row>
-                                <Col>
-                                <InputForm
-                                        hasError={alertObject.birthdate}
-                                        errorMessage={'Birthdate must be in dd.mm.yyyy format'}
-                                        inputMessage={'dd.mm.yyyy'}
-                                        id={'birthdate'}
-                                        type={'text'}
-                                        defaultInput={''}
-                                    />
-                                </Col>
-                            </Form.Row>
-                            <br />
-                            <Form.Row>
-                                <Col>
-                                <InputForm
-                                        hasError={alertObject.email}
-                                        errorMessage={'Email was not in correct format'}
-                                        inputMessage={'email'}
-                                        id={'email'}
-                                        type={'text'}
-                                        defaultInput={''}
-                                    />
-                                </Col>
-                            </Form.Row>
-                            <br />
-                            <Form.Row>
-                                <Col>
-                                <InputForm
-                                        hasError={alertObject.address}
-                                        errorMessage={
-                                            'Address must start with uppecase letter followed by lowercase letters. ' 
-                                            +'Lowercase letters needs to be followed by space and numbers'
-                                        }
-                                        inputMessage={'address'}
-                                        id={'address'}
-                                        type={'text'}
-                                        defaultInput={''}
-                                    />
-                                </Col>
-                            </Form.Row>
-                            <br />
-                            <Form.Row>
-                                <Col>
-                                <InputForm
-                                        hasError={alertObject.username}
-                                        errorMessage={'Username can´t be empty'}
-                                        inputMessage={'username'}
-                                        id={'username'}
-                                        type={'text'}
-                                        defaultInput={''}
-                                    />
-                                </Col>
-                            </Form.Row>
-                            <br />
-                            <Form.Row>
-                                <Col>
-                                <InputForm
-                                        hasError={alertObject.password}
-                                        errorMessage={'Password can´t be empty'}
-                                        inputMessage={'password'}
-                                        id={'password'}
-                                        type={'password'}
-                                        defaultInput={''}
-                                    />
-                                </Col>
-                            </Form.Row>
-                            <br />
-                            <Form.Row>
-                                <Col>
-                                    <Button type="submit" variant="primary" >Register </Button>
-                                    <Button className="buttonSpace" type="button" variant="primary" onClick={() => close()}  >Close </Button>
-                                </Col>
-                            </Form.Row>
-                        </form>
-                    </Form.Group>
+                    <Formik
+                        initialValues={{
+                            firstName: '',
+                            lastName: '',
+                            birthdate: '',
+                            email: '',
+                            address: '',
+                            username: '',
+                            password: ''
+                        }}
+                        validationSchema={validationSchema}
+                        onSubmit={async (values) => {
+
+                            const success = await createNewUser({
+                                variables:
+                                {
+                                    username: values.username,
+                                    password: values.password,
+                                    firstname: values.firstName,
+                                    lastname: values.lastName,
+                                    birthdate: values.birthdate,
+                                    email: values.email,
+                                    address: values.address
+                                }
+                            });
+
+                            if (success) {
+                                showmessage('New user created', 'primary')
+                                history.push('/users')
+                            }
+
+                        }}>
+                        {({ values,
+                            errors,
+                            touched,
+                            handleChange,
+                            handleBlur
+                        }) => (
+                            <Form >
+                                <Row>
+                                    <Col>
+                                        {touched.firstName && errors.firstName ? <Alert variant={'danger'}>{errors.firstName}</Alert> : ''}
+                                        <FormControl defaultValue={values.firstName} placeholder='firstname' id='firstName' type='text'
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+
+                                        />
+                                    </Col>
+                                </Row>
+                                <br />
+                                <Row>
+                                    <Col>
+                                        {touched.lastName && errors.lastName ? <Alert variant={'danger'}>{errors.lastName}</Alert> : ''}
+                                        <FormControl defaultValue={values.lastName} placeholder='lastname' id='lastName' type='text'
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        />
+                                    </Col>
+                                </Row>
+                                <br />
+                                <Row>
+                                    <Col>
+                                        {touched.birthdate && errors.birthdate ? <Alert variant={'danger'}>{errors.birthdate}</Alert> : ''}
+                                        <FormControl defaultValue={values.birthdate} placeholder='dd.mm.yyyy' id='birthdate' type='text'
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        />
+                                    </Col>
+                                </Row>
+                                <br />
+                                <Row>
+                                    <Col>
+                                        {touched.email && errors.email ? <Alert variant={'danger'}>{errors.email}</Alert> : ''}
+                                        <FormControl defaultValue={values.email} placeholder='email' id='email' type='text'
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+
+                                        />
+                                    </Col>
+                                </Row>
+                                <br />
+                                <Row>
+                                    <Col>
+                                        {touched.address && errors.address ? <Alert variant={'danger'}>{errors.address}</Alert> : ''}
+                                        <FormControl defaultValue={values.address} placeholder='address' id='address' type='text'
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+
+                                        />
+                                    </Col>
+                                </Row>
+                                <br />
+                                <Row>
+                                    <Col>
+                                        {touched.username && errors.username ? <Alert variant={'danger'}>{errors.username}</Alert> : ''}
+                                        <FormControl defaultValue={values.username} placeholder='username' id='username' type='text'
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        />
+                                    </Col>
+                                </Row>
+                                <br />
+                                <Row>
+                                    <Col>
+                                        {touched.password && errors.password ? <Alert variant={'danger'}>{errors.password}</Alert> : ''}
+                                        <FormControl defaultValue={values.password} placeholder='password' id='password' type='text'
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        />
+                                    </Col>
+                                </Row>
+                                <br />
+                                <Row>
+                                    <Col>
+                                        <Button type="submit" variant="primary" >Register </Button>
+                                        <Button className="buttonSpace" type="button" variant="primary" onClick={() => close()}  >Close </Button>
+                                    </Col>
+                                </Row>
+                            </Form>
+                        )}
+                    </Formik>
                 </Card.Body>
             </Card>
 

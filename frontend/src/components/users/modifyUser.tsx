@@ -1,27 +1,22 @@
 
-import React, { FormEvent } from 'react';
-import { Modal, Form, Button, Col, Card } from 'react-bootstrap';
+import React from 'react';
+import { Modal, Row, Button, Col, Card, FormControl, Alert } from 'react-bootstrap';
 import { ComponentAttributeUser } from '../../types/component';
-import { MessageType, AlertType } from '../../types/alerts';
+import { MessageType } from '../../types/alerts';
 import { setShow } from '../../reducers/modal';
 import { useDispatch, useSelector } from 'react-redux';
 import userm from '../../graphql/user';
 import { useHistory } from "react-router-dom"
 import { useMutation } from '@apollo/client';
 import Message from '../spotify/message';
-import { setAlerts } from "../../reducers/alerts";
-import InputForm from '../forms/input';
-import { validateAlert, validationFailed } from '../../utils/alertMessageControllers';
+import { Formik, Form } from 'formik';
+import { validationSchema } from '../formik/validationSchema';
 
 const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show }) => {
 
     const dispatch = useDispatch()
     const selector = (state: MessageType) => state
     const rootstate = useSelector(selector)
-
-    const selectorAlert = (state: AlertType) => state
-    const alertState = useSelector(selectorAlert)
-    const alertObject = alertState.alert
 
     const history = useHistory()
 
@@ -31,50 +26,6 @@ const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show 
             showmessage(error.message, 'danger')
         }
     })
-
-    const save = async (event: FormEvent) => {
-
-        event.preventDefault()
-        const form = event.target as HTMLFormElement;
-
-        const firstname = form[0] as HTMLInputElement;
-        const lastname = form[1] as HTMLInputElement;
-        const birthdate = form[2] as HTMLInputElement;
-        const email = form[3] as HTMLInputElement;
-        const address = form[4] as HTMLInputElement;
-
-        validateAlert(
-            alertObject,
-            [
-                firstname.value,
-                lastname.value,
-                birthdate.value,
-                email.value,
-                address.value,
-                'empty',
-                'empty',
-                'empty'
-            ])
-
-        dispatch(setAlerts(alertObject))
-
-        if (!validationFailed(alertObject)) {
-
-            const success = await updateUser({
-                variables: {
-                    firstname: firstname.value, lastname: lastname.value,
-                    birthdate: birthdate.value, email: email.value, address: address.value, id: user.id
-                }
-            });
-
-            if (success) {
-                dispatch(setShow({ data: { show: false } }))
-                showmessage(`User was updated: ${firstname.value} ${lastname.value}`, 'primary')
-                history.push('/users')
-            }
-        }
-    }
-
 
     const close = () => {
 
@@ -89,86 +40,103 @@ const ModifyUser: React.FC<ComponentAttributeUser> = ({ showmessage, user, show 
                 <Card>
                     <Card.Header></Card.Header>
                     <Card.Body>
-                        <div >
-                            <Form.Group>
-                                <form onSubmit={save}>
-                                    <Form.Row>
+                        <Formik
+                            initialValues={{
+                                firstName: user.firstname,
+                                lastName: user.lastname,
+                                birthdate: user.birthdate,
+                                email: user.email,
+                                address: user.address
+                            }}
+                            validationSchema={validationSchema.omit(['username', 'password'])}
+                            onSubmit={async (values) => {
+
+
+                                const success = await updateUser({
+                                    variables: {
+                                        firstname: values.firstName, lastname: values.lastName,
+                                        birthdate: values.birthdate, email: values.email, address: values.address, id: user.id
+                                    }
+                                });
+
+                                if (success) {
+                                    dispatch(setShow({ data: { show: false } }))
+                                    showmessage(`User was updated: ${values.firstName} ${values.lastName}`, 'primary')
+                                    history.push('/users')
+                                }
+                            }}>
+                            {({ values,
+                                errors,
+                                touched,
+                                handleChange,
+                                handleBlur
+                            }) => (
+                                <Form >
+                                    <Row>
                                         <Col>
-                                        <InputForm
-                                        hasError={alertObject.firstname}
-                                        errorMessage={'Firstname must start with uppercasleter followed by lowercase letters'}
-                                        inputMessage={'firstname'}
-                                        id={'firstname'}
-                                        type={'text'}
-                                        defaultInput={user.firstname}/>
+                                            {touched.firstName && errors.firstName ? <Alert variant={'danger'}>{errors.firstName}</Alert> : ''}
+                                            <FormControl defaultValue={values.firstName} placeholder='firstname' id='firstName' type='text'
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+
+                                            />
                                         </Col>
-                                    </Form.Row>
+                                    </Row>
                                     <br />
-                                    <Form.Row>
+                                    <Row>
                                         <Col>
-                                        <InputForm
-                                        hasError={alertObject.lastname}
-                                        errorMessage={'Lastname must start with uppercasleter followed by lowercase letters'}
-                                        inputMessage={'lastname'}
-                                        id={'lastname'}
-                                        type={'text'}
-                                        defaultInput={user.lastname}/>
+                                            {touched.lastName && errors.lastName ? <Alert variant={'danger'}>{errors.lastName}</Alert> : ''}
+                                            <FormControl defaultValue={values.lastName} placeholder='lastname' id='lastName' type='text'
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                            />
                                         </Col>
-                                    </Form.Row>
+                                    </Row>
                                     <br />
-                                    <Form.Row>
+                                    <Row>
                                         <Col>
-                                        <InputForm
-                                        hasError={alertObject.birthdate}
-                                        errorMessage={'Birthdate must be in dd.mm.yyyy format'}
-                                        inputMessage={'dd.mm.yyyy'}
-                                        id={'birthdate'}
-                                        type={'text'}
-                                        defaultInput={user.birthdate}/>
+                                            {touched.birthdate && errors.birthdate ? <Alert variant={'danger'}>{errors.birthdate}</Alert> : ''}
+                                            <FormControl defaultValue={values.birthdate} placeholder='dd.mm.yyyy' id='birthdate' type='text'
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                            />
                                         </Col>
-                                    </Form.Row>
+                                    </Row>
                                     <br />
-                                    <Form.Row>
+                                    <Row>
                                         <Col>
-                                        <InputForm
-                                        hasError={alertObject.email}
-                                        errorMessage={'Email was not in correct format'}
-                                        inputMessage={'email'}
-                                        id={'email'}
-                                        type={'text'}
-                                        defaultInput={user.email}/>
+                                            {touched.email && errors.email ? <Alert variant={'danger'}>{errors.email}</Alert> : ''}
+                                            <FormControl defaultValue={values.email} placeholder='email' id='email' type='text'
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+
+                                            />
                                         </Col>
-                                    </Form.Row>
+                                    </Row>
                                     <br />
-                                    <Form.Row>
+                                    <Row>
                                         <Col>
-                                        <InputForm
-                                        hasError={alertObject.address}
-                                        errorMessage={
-                                            'Address must start with uppecase letter followed by lowercase letters. ' 
-                                            +'Lowercase letters needs to be followed by space and numbers'
-                                        }
-                                        inputMessage={'address'}
-                                        id={'address'}
-                                        type={'text'}
-                                        defaultInput={user.address}/>
+                                            {touched.address && errors.address ? <Alert variant={'danger'}>{errors.address}</Alert> : ''}
+                                            <FormControl defaultValue={values.address} placeholder='address' id='address' type='text'
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+
+                                            />
                                         </Col>
-                                    </Form.Row>
-                                    
+                                    </Row>
+
                                     <br />
-                                    
-                                    <Form.Row>
+
+                                    <Row>
                                         <Col>
                                             <Button type="submit" id="save" variant="primary"    >Save </Button>
                                             <Button className="buttonSpace" id="modifyClose" type="button" variant="primary" onClick={() => close()}  >Close </Button>
                                         </Col>
 
-                                    </Form.Row>
-                                  
-                                </form>
-                            </Form.Group>
-
-                        </div>
+                                    </Row>
+                                </Form>
+                            )}
+                        </Formik>
                     </Card.Body>
                 </Card>
             </Modal.Body>
