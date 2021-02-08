@@ -366,9 +366,7 @@ describe('Testing  mutations and queries that require authorization header', () 
 			birthdate: '11.11.1999',
 			email: 'test.test@mail.com',
 			address: 'road 12',
-			admin: true,
-			favorites: '',
-			playlist: ''
+			admin: true
 		} as UserSchemaType;
 
 		const userTest = new User(testuser);
