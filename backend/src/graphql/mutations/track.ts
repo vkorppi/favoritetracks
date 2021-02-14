@@ -1,12 +1,13 @@
 import spotify from '../../services/spotify';
 import { ApolloError, UserInputError,  } from 'apollo-server-express';
 import { UserSchemaType } from '../../types/userTypes';
+import { trackObject } from '../../types/favoritesTypes';
 
 
 
-export const addTrackToList = async (_root: unknown, args: { tracks: string[] }, userdata: UserSchemaType): Promise<string> => {
+export const addTrackToList = async (_root: unknown, args: { tracks: trackObject[] }, userdata: UserSchemaType): Promise<string> => {
 
-    const tracks: string[] = args.tracks;
+    const tracks: trackObject[] = args.tracks;
 
 
     await spotify.AddToList(tracks, userdata.id).catch((error: Error) => {
@@ -22,16 +23,16 @@ export const addTrackToList = async (_root: unknown, args: { tracks: string[] },
 
     });
 
-    return `Tracks: ${tracks.toString()} was added succesfully`;
+    return `Tracks were added succesfully`;
 
 };
 
-export const removeItem = async (_root: unknown, args: { tracks: string[] }, userdata: UserSchemaType): Promise<string> => {
+export const removeItem = async (_root: unknown, args: { track: trackObject }, userdata: UserSchemaType): Promise<string> => {
 
-    const tracks: string[] = args.tracks;
+    const track: trackObject = args.track;
 
     
-    await spotify.removeItem(userdata.id,tracks).catch((error: Error) => {
+    await spotify.removeItem(userdata.id,track).catch((error: Error) => {
 
         console.error(error.stack);
 
@@ -44,7 +45,7 @@ export const removeItem = async (_root: unknown, args: { tracks: string[] }, use
 
     });
 
-    return `Tracks: ${tracks.toString()} was removed succesfully`;
+    return `Track was removed succesfully`;
 
 };
 

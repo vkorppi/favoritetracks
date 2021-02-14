@@ -3,14 +3,16 @@ import fs from 'fs';
 import typeparsers from '../utils/typeparsers';
 import axios from 'axios';
 import querystring from 'querystring';
-
+import Track from '../mongo/track';
+import User from '../mongo/user';
 import enviro from 'dotenv';
 import { getSearchEnvs, getSessionEnvs, getPlayListEnvs, getTracktEnvs } from '../utils/envFunctions';
-import {  favorites, favoritesSearchResult  } from '../types/favoritesTypes';
-import {  spotifyResult, searchResult  } from '../types/searchType';
+import { favorites, favoritesSearchResult, trackObject, TrackSchemaType } from '../types/favoritesTypes';
+import { spotifyResult, searchResult } from '../types/searchType';
 import { getMessage } from '../utils/errorFunctions';
 import user from '../services/user';
-import {refreshtoken,spotifyToken} from '../types/sessionTypes';
+import { refreshtoken, spotifyToken } from '../types/sessionTypes';
+import { UserSchemaType } from '../types/userTypes';
 
 
 enviro.config();
@@ -113,8 +115,8 @@ const search = async (track: string, page: number): Promise<spotifyResult> => {
     const envs = getSearchEnvs();
 
     const pageError = getMessage('number', page.toString(), false);
-    const offset = (parserNum(page, pageError)-1) * 10;
-	
+    const offset = (parserNum(page, pageError) - 1) * 10;
+
     const trackError = getMessage('string', track, true);
     const parsedTrack = parserString(track, trackError);
 
@@ -133,8 +135,35 @@ const search = async (track: string, page: number): Promise<spotifyResult> => {
 
 };
 
+const AddToList = async (tracks: trackObject[], userId: string): Promise<void> => {
+
+    const urls: string[] = [];
+
+    await Track.bulkWrite(
+        tracks.map((track) =>
+        (
+            urls.push(track.url),
+            {
+                updateOne: {
+                    filter: { url: track.url, name: track.name,spotifUri: track.spotifUri},
+                    update: { $push: { users: userId } },
+                    upsert: true
+                }
+            })
+        )
+    );
+
+    const ids: string[] = await Track.find({ url: { $in: urls } }).distinct('_id') as string[];
+
+    await User.updateOne(
+        { _id: userId },
+        { $addToSet: { favorites: { $each: ids } } }
+    );
+
+};
 
 
+/*
 const AddToList = async (tracks: string[], userId: string): Promise<void> => {
 
     if (hasSessionExpired()) {
@@ -146,6 +175,7 @@ const AddToList = async (tracks: string[], userId: string): Promise<void> => {
     const token = getSessionToken();
     let listid = '';
 
+    
     const fetcheduser = await user.getUser(userId);
     listid = fetcheduser?.favorites as string;
 
@@ -174,6 +204,8 @@ const AddToList = async (tracks: string[], userId: string): Promise<void> => {
     await axios.post(url, requestBody, { headers: headers });
 
 };
+
+*/
 
 
 const CreateList = async (name: string, userid: string): Promise<string | void | Error> => {
@@ -209,6 +241,7 @@ const CreateList = async (name: string, userid: string): Promise<string | void |
 };
 
 
+/*
 const GetList = async (userId: string): Promise<favoritesSearchResult> => {
 
     if (hasSessionExpired()) {
@@ -226,7 +259,6 @@ const GetList = async (userId: string): Promise<favoritesSearchResult> => {
 
     const url = trackpart1 + listid + trackpart3;
 
-
     return await (await axios.get(
         url,
         { headers: { 'authorization': 'Bearer ' + token } }
@@ -236,7 +268,36 @@ const GetList = async (userId: string): Promise<favoritesSearchResult> => {
 
 };
 
-const removeItem = async (userId: string,tracks:string[]): Promise<string | void> => {
+*/
+
+const GetList = async (userId: string): Promise<TrackSchemaType[] | null> => {
+
+    const favorites = await User.findOne({ _id: userId }).populate('favorites');
+
+    return (favorites?.favorites as unknown) as TrackSchemaType[];
+};
+
+
+
+const removeItem = async (userId: string, track: trackObject): Promise<string | void> => {
+    
+    await Track.updateOne(
+        { url: track.url },
+        { $pull: {users: userId } }
+    );
+
+
+    const id: string[] = await Track.findOne({ url: track.url }).distinct('_id') as string[];
+
+    await User.updateOne(
+        { _id: userId },
+        { $pullAll: {favorites: id } }
+    );
+
+};
+
+/*
+const removeItem = async (userId: string, tracks: string[]): Promise<string | void> => {
 
     if (hasSessionExpired()) {
         await CreateNewSession();
@@ -262,16 +323,17 @@ const removeItem = async (userId: string,tracks:string[]): Promise<string | void
         , 'authorization': 'Bearer ' + token
     };
 
-    return await axios.delete(url,{ data: requestBody, headers:headers });
+    return await axios.delete(url, { data: requestBody, headers: headers });
 
- };
+};
+*/
 
- const delegateToken = async (spotifyCode: string): Promise<spotifyToken | void> => {
+const delegateToken = async (spotifyCode: string): Promise<spotifyToken | void> => {
 
-    const { sessionUrl, redirect_uri,granttype_code,code } = getSessionEnvs();
+    const { sessionUrl, redirect_uri, granttype_code, code } = getSessionEnvs();
 
-    
-    
+
+
 
     const requestBody = {
         "grant_type": granttype_code,
@@ -287,12 +349,12 @@ const removeItem = async (userId: string,tracks:string[]): Promise<string | void
 
 
     return await axios.post(sessionUrl, querystring.stringify(requestBody),
-    { headers: headers }).then( response => {
+        { headers: headers }).then(response => {
 
 
-        return response.data as spotifyToken;
-        
-    });
+            return response.data as spotifyToken;
+
+        });
 
 
 };
@@ -335,25 +397,25 @@ const test = (track: string, page: number): searchResult => {
 
     let testdata = {
         "tracks": [
-            {name:'test1',uri:'test1uri',external_urls:{spotify:'url1'}},
-            {name:'test2',uri:'test2uri',external_urls:{spotify:'url2'}},
-            {name:'test3',uri:'test3uri',external_urls:{spotify:'url3'}},
-            {name:'test4',uri:'test4uri',external_urls:{spotify:'url4'}},
-            {name:'test5',uri:'test5uri',external_urls:{spotify:'url5'}}       
+            { name: 'test1', uri: 'test1uri', external_urls: { spotify: 'url1' } },
+            { name: 'test2', uri: 'test2uri', external_urls: { spotify: 'url2' } },
+            { name: 'test3', uri: 'test3uri', external_urls: { spotify: 'url3' } },
+            { name: 'test4', uri: 'test4uri', external_urls: { spotify: 'url4' } },
+            { name: 'test5', uri: 'test5uri', external_urls: { spotify: 'url5' } }
         ],
         "total": 90
     };
 
-    
+
     switch (track) {
         case "Test_TotalUnderTen":
             testdata = {
                 "tracks": [
-            {name:'test1',uri:'test1uri',external_urls:{spotify:'url1'}},
-            {name:'test2',uri:'test2uri',external_urls:{spotify:'url2'}},
-            {name:'test3',uri:'test3uri',external_urls:{spotify:'url3'}},
-            {name:'test4',uri:'test4uri',external_urls:{spotify:'url4'}},
-            {name:'test5',uri:'test5uri',external_urls:{spotify:'url5'}}     
+                    { name: 'test1', uri: 'test1uri', external_urls: { spotify: 'url1' } },
+                    { name: 'test2', uri: 'test2uri', external_urls: { spotify: 'url2' } },
+                    { name: 'test3', uri: 'test3uri', external_urls: { spotify: 'url3' } },
+                    { name: 'test4', uri: 'test4uri', external_urls: { spotify: 'url4' } },
+                    { name: 'test5', uri: 'test5uri', external_urls: { spotify: 'url5' } }
                 ],
                 "total": 5
             };
@@ -361,11 +423,11 @@ const test = (track: string, page: number): searchResult => {
         case "Test_Total15":
             testdata = {
                 "tracks": [
-            {name:'test1',uri:'test1uri',external_urls:{spotify:'url1'}},
-            {name:'test2',uri:'test2uri',external_urls:{spotify:'url2'}},
-            {name:'test3',uri:'test3uri',external_urls:{spotify:'url3'}},
-            {name:'test4',uri:'test4uri',external_urls:{spotify:'url4'}},
-            {name:'test5',uri:'test5uri',external_urls:{spotify:'url5'}}     
+                    { name: 'test1', uri: 'test1uri', external_urls: { spotify: 'url1' } },
+                    { name: 'test2', uri: 'test2uri', external_urls: { spotify: 'url2' } },
+                    { name: 'test3', uri: 'test3uri', external_urls: { spotify: 'url3' } },
+                    { name: 'test4', uri: 'test4uri', external_urls: { spotify: 'url4' } },
+                    { name: 'test5', uri: 'test5uri', external_urls: { spotify: 'url5' } }
                 ],
                 "total": 15
             };
@@ -373,17 +435,17 @@ const test = (track: string, page: number): searchResult => {
         case "Test_Total15_11":
             testdata = {
                 "tracks": [
-            {name:'test1',uri:'test1uri',external_urls:{spotify:'url1'}},
-            {name:'test2',uri:'test2uri',external_urls:{spotify:'url2'}},
-            {name:'test3',uri:'test3uri',external_urls:{spotify:'url3'}},
-            {name:'test4',uri:'test4uri',external_urls:{spotify:'url4'}},
-            {name:'test5',uri:'test5uri',external_urls:{spotify:'url5'}}     
+                    { name: 'test1', uri: 'test1uri', external_urls: { spotify: 'url1' } },
+                    { name: 'test2', uri: 'test2uri', external_urls: { spotify: 'url2' } },
+                    { name: 'test3', uri: 'test3uri', external_urls: { spotify: 'url3' } },
+                    { name: 'test4', uri: 'test4uri', external_urls: { spotify: 'url4' } },
+                    { name: 'test5', uri: 'test5uri', external_urls: { spotify: 'url5' } }
                 ],
                 "total": 15
             };
             break;
     }
-    
+
 
     return testdata;
 };

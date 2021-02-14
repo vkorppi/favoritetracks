@@ -2,7 +2,8 @@ import spotify from '../../services/spotify';
 import { ApolloError, UserInputError,  } from 'apollo-server-express';
 import {  searchResult  } from '../../types/searchType';
 import {  UserSchemaType } from '../../types/userTypes';
-import {  spotifyTrackMinimal, spotifyTrackNoUrls } from '../../types/spotifyTypes';
+import {  spotifyTrackMinimal } from '../../types/spotifyTypes';
+import { trackObject } from '../../types/favoritesTypes';
 
 export const search =async (_root: unknown, args: { track: string; page: number; }): Promise<searchResult | void> => {
 
@@ -34,7 +35,7 @@ export const search =async (_root: unknown, args: { track: string; page: number;
         });
 };
 
-export const getList = async (_root: unknown, args: unknown , userdata: UserSchemaType): Promise<void | spotifyTrackNoUrls[] | null> => {
+export const getList = async (_root: unknown, args: unknown , userdata: UserSchemaType): Promise<void | trackObject[] | null> => {
 
           
     if(args) null;
@@ -45,13 +46,7 @@ export const getList = async (_root: unknown, args: unknown , userdata: UserSche
     
     return await spotify.GetList(userdata.id).then(result => { 
 
-        return result.items.map(value => (
-        { 
-            name: value.track.name,
-            uri: value.track.uri,
-            external_urls: value.track.external_urls 
-        }
-        ));
+        return result;
 
     }).catch((error: Error) => {
 

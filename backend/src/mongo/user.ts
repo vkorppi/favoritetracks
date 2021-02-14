@@ -10,7 +10,13 @@ const userSchema: Schema = new Schema({
   birthdate: { type: String },
   email: { type: String },
   address: { type: String },
-  favorites: { type: String },
+ // favorites: { type: String },
+  favorites: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Track"
+    }
+  ],
   playlist: { type: String },
   admin: { type: Boolean }
 });

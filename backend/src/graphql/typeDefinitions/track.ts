@@ -6,12 +6,18 @@ export const trackQuery = gql`
 
 extend type Mutation {
   addTrackToList(
-    tracks: [String!]!
+    tracks: [trackInput!]!
   ): String 
 
   removeItem(
-    tracks: [String!]!
+    track: trackInput!
   ): String 
+}
+
+input trackInput {
+  name: String!
+  url: String!
+  spotifUri: String!
 }
 
 `;
@@ -20,15 +26,21 @@ export const trackMutation = gql`
 
 extend type Query {
   search(track: String,page: Int):  searchResult! 
-  getList: [track!]
+  getList: [trackOutput!]
 }
 
 type searchResult {
-  tracks: [track!]!
+  tracks: [trackExternal!]!
   total : Int!
 }
 
-type track {
+type trackOutput {
+  name: String!
+  url: String!
+  spotifUri: String!
+}
+
+type trackExternal {
   name: String!,
   uri: String!
   external_urls:externalUrl!

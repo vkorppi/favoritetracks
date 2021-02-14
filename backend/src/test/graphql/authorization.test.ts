@@ -6,6 +6,7 @@ import { UserSchemaType, UserType } from '../../types/userTypes';
 import mongoose from 'mongoose';
 import typeparsers from '../../utils/typeparsers';
 import User from '../../mongo/user';
+import Track from '../../mongo/track';
 import fetch from 'cross-fetch';
 import dotenv from 'dotenv';
 import { hashPassword } from '../../utils/userFunctions';
@@ -18,7 +19,7 @@ const apolloclient = new ApolloClient(
 	{
 
 		uri: 'http://localhost:4000/graphql',
-        fetch,
+		fetch,
 		onError: (error) => {
 			console.log(error);
 		}
@@ -51,7 +52,7 @@ describe('Testing  mutations and queries that require authorization header', () 
 		await mongoose.connect(parser(env.DBTEST, error), configuration);
 
 		//await User.deleteMany({});
-		await User.deleteMany( {  "username" : { $ne : "adminUser" } } );
+		await User.deleteMany({ "username": { $ne: "adminUser" } });
 
 		const testuser: UserSchemaType = {
 			username: 'usernameTest',
@@ -88,7 +89,7 @@ describe('Testing  mutations and queries that require authorization header', () 
 
 		const usermutation = gql`
 
-		mutation AddTrackToList($tracks: [String!]!){
+		mutation AddTrackToList($tracks: [trackInput!]!){
 			addTrackToList(tracks: $tracks) 
 				
 		  }`;
@@ -100,15 +101,16 @@ describe('Testing  mutations and queries that require authorization header', () 
 			variables: {
 				tracks:
 					[
-						'spotify:track:59LSFQW38CnzJylvtYJKJu',
-						'spotify:track:6sXK5j92V7XpaIUH2w5GRb'
-					], userId: id
+						{name:'test',url:'http://test.com',spotifUri:'someuri1'},
+						{name:'test2',url:'http://testi2.com',spotifUri:'someuri2'}
+					],
+				userId: id
 			},
 			mutation: usermutation
 		});
 
 		interface dataType2 {
-			addTrackToList: boolean;
+			addTrackToList: string;
 		}
 
 		interface dataType {
@@ -117,9 +119,10 @@ describe('Testing  mutations and queries that require authorization header', () 
 
 		const content = success as dataType;
 
-		expect(content.data.addTrackToList).toBeTruthy();
+		expect(content.data.addTrackToList).toEqual('Tracks were added succesfully');
 	});
 
+	
 	test("Query returns user's favorites", async () => {
 
 		const favoritesQuery = gql`
@@ -127,7 +130,8 @@ describe('Testing  mutations and queries that require authorization header', () 
 		query {
 			getList {
 				name,
-				uri
+				url,
+				spotifUri
 			}
 		}`;
 
@@ -147,31 +151,30 @@ describe('Testing  mutations and queries that require authorization header', () 
 		const items = fetcheduser.data.getList;
 
 		expect(items.length).toBe(2);
-
+	
 	});
 
-	test("Mutation removes tracks", async () => {
+	
+
+	test("Mutation removes track", async () => {
 
 		const RemoveTracksmutation = gql`
 
-		mutation removeItem($tracks: [String!]!){
-			removeItem(tracks: $tracks) 
+		mutation removeItem($track: trackInput!){
+			removeItem(track: $track) 
 				
 		  }`;
 
-	const success = await clientWithHeaders.mutate({
+		const success = await clientWithHeaders.mutate({
 			variables: {
-				tracks:
-					[
-						'spotify:track:59LSFQW38CnzJylvtYJKJu',
-						'spotify:track:6sXK5j92V7XpaIUH2w5GRb'
-					]
+				track:
+					{name:'test',url:'http://test.com',spotifUri:'someuri1'}
 			},
 			mutation: RemoveTracksmutation
 		});
 
 		interface dataType2 {
-			removeItem: boolean;
+			removeItem: string;
 		}
 
 		interface dataType {
@@ -180,10 +183,11 @@ describe('Testing  mutations and queries that require authorization header', () 
 
 		const content = success as dataType;
 
-		expect(content.data.removeItem).toBeTruthy();
+		expect(content.data.removeItem).toEqual('Track was removed succesfully');
 
 	});
 
+		
 	test("Query returns userojbect", async () => {
 
 
@@ -215,8 +219,8 @@ describe('Testing  mutations and queries that require authorization header', () 
 
 		const user = fetcheduser.data.getUserLoggedin;
 
-		expect(user).toBeTruthy();
-	
+		expect(user.username).toBeTruthy();
+
 	});
 
 	test('User was created', async () => {
@@ -237,17 +241,17 @@ describe('Testing  mutations and queries that require authorization header', () 
 			mutation: userMutation
 		})).data as createType;
 
-		expect(success.create).toBeTruthy();
+		expect(success.create).toContain('User was created with following data');
 
 		let message = '';
 
 		try {
 
-		await apolloclient.mutate({
-			mutation: userMutation,
-		});
+			await apolloclient.mutate({
+				mutation: userMutation,
+			});
 		}
-		catch(error) {
+		catch (error) {
 			const test: Error = error as Error;
 			message = test.message;
 		}
@@ -283,22 +287,21 @@ describe('Testing  mutations and queries that require authorization header', () 
 			mutation: userMutation,
 		})).data as updateType;
 
-
-		expect(success.updateUser).toBeTruthy();
+		expect(success.updateUser).toContain('User was updated with following data');
 
 		let message = '';
 
 		try {
 
-		await apolloclient.mutate({
-			variables: {
-				firstname: 'first', lastname: 'last',
-				birthdate: '11.11.2011', email: 'test.test.@test.com', address: 'street 12', id: id
-			},
-			mutation: userMutation,
-		});
+			await apolloclient.mutate({
+				variables: {
+					firstname: 'first', lastname: 'last',
+					birthdate: '11.11.2011', email: 'test.test.@test.com', address: 'street 12', id: id
+				},
+				mutation: userMutation,
+			});
 		}
-		catch(error) {
+		catch (error) {
 			const test: Error = error as Error;
 			message = test.message;
 		}
@@ -329,12 +332,12 @@ describe('Testing  mutations and queries that require authorization header', () 
 
 		try {
 
-		await apolloclient.mutate({
-			variables: { id: id },
-			mutation: userMutation,
-		});
+			await apolloclient.mutate({
+				variables: { id: id },
+				mutation: userMutation,
+			});
 		}
-		catch(error) {
+		catch (error) {
 			const test: Error = error as Error;
 			message = test.message;
 		}
@@ -347,15 +350,15 @@ describe('Testing  mutations and queries that require authorization header', () 
 			mutation: userMutation,
 		})).data as updateType;
 
-		expect(success).toBeTruthy();
+		expect(success.remove).toContain('User with id:');
 
 	});
-
-
+	
 	afterAll(async () => {
-		
+
 		//await User.deleteMany({});
-		await User.deleteMany( {  "username" : { $ne : "adminUser" } } );
+		await Track.deleteMany({});
+		await User.deleteMany({ "username": { $ne: "adminUser" } });
 
 		// admin testuser
 		const testuser: UserSchemaType = {
