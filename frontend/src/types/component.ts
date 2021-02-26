@@ -1,7 +1,7 @@
 
 
 import { UserType } from "./user";
-import { ListType,RefreshedToken,Track } from "../type";
+import { ListType,NewTrack,RefreshedToken,Track } from "../type";
 
 export interface BasicComponent {
     showmessage: (message: string, type: string) => void;
@@ -24,8 +24,8 @@ export interface BasicComponent {
   }
   
   export interface ComponentAttributeTrack extends ComponentAttributeModal {
-    tracks: Track[];
-    TransferToPlaylist: (tracks: Track[]) => Promise<void>;
+    tracks: NewTrack[];
+    TransferToPlaylist: (tracks: NewTrack[]) => Promise<void>;
     user: UserType;
     newtoken: RefreshedToken;
   }

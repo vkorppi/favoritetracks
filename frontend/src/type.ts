@@ -7,11 +7,20 @@ export interface SearchAttributes {
 }
 
 
+// Joudutaan muuttamaan
+export interface NewTrack {
+  name: string;
+  url: string;
+  spotifUri: string;
+}
+
+
 export interface Track {
   name: string;
   uri: string;
   external_urls: ExternalUrlsType;
 }
+// Joudutaan muuttamaan
 
 export type trackNoExternalUrl = Omit<Track, 'external_urls' >;
 
@@ -33,7 +42,7 @@ export interface SearchResult {
 }
 
   export interface ListAttributes {
-    [key: string]: string;
+    [key: string]: NewTrack;
   }
 
 export type ActionList =

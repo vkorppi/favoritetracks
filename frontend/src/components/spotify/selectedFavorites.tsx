@@ -11,6 +11,9 @@ import { useMutation } from '@apollo/client';
 
 const SelectedFavorites: React.FC<ComponentAttributeList> = ({ show, list, showmessage }) => {
 
+  interface Testi {
+    href: string;
+  }
 
   const [addTrack] = useMutation(trackm.addTrack, {
     errorPolicy: 'none', onError: (error) => {
@@ -32,7 +35,7 @@ const SelectedFavorites: React.FC<ComponentAttributeList> = ({ show, list, showm
     await addTrack({
       variables:
       {
-        tracks: Object.keys(list.list)
+        tracks: Object.values(list.list)
       }
     });
 
@@ -44,27 +47,27 @@ const SelectedFavorites: React.FC<ComponentAttributeList> = ({ show, list, showm
     dispatch(clearItems())
 
     close();
-
+     
 
   }
 
   const changeSelected = (event: ChangeEvent<HTMLInputElement>) => {
 
     const input = event.target as HTMLInputElement
-
-    const value = input.parentNode?.nextSibling?.textContent as string;
-    const key = input.value
-
+    const uri = input.value
+    
 
     if (input.checked === true) {
 
+      const name = input.parentNode?.nextSibling?.textContent as string;
+      const href = ((input.parentNode?.nextSibling?.childNodes[1] as unknown) as Testi).href
 
-      dispatch(addItem({uri:key,name:value}))
+      dispatch(addItem({name:name,url:href,spotifUri:uri}))
     }
     else {
 
 
-      dispatch(removeItem({uri:key}))
+      dispatch(removeItem({spotifUri:uri}))
     }
   }
 
@@ -88,7 +91,7 @@ const SelectedFavorites: React.FC<ComponentAttributeList> = ({ show, list, showm
 
                           <InputGroup.Checkbox defaultChecked onChange={changeSelected} value={uri} />
 
-                          <ListGroup.Item>{list.list[uri]}</ListGroup.Item>
+                          <ListGroup.Item>{list.list[uri].name}</ListGroup.Item>
                         </InputGroup.Prepend>
 
                       </Col>

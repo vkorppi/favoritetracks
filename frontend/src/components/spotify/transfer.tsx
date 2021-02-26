@@ -18,11 +18,21 @@ const Transfer: React.FC<ComponentAttributeTrack> = ({ show, tracks, TransferToP
 
     const dispatch = useDispatch()
 
+    const redirect = process.env.REACT_APP_REDIRECT as string
+    const redirectUri = process.env.REACT_APP_REDIRECT_URI as string
+    const clientId = process.env.REACT_APP_REDIRECT_CLIENT_ID as string
+
+   const redirectUrl = redirect + redirectUri + clientId
+
+    /*
+     Needs to be refactored
     let redirectUrl = process.env.REACT_APP_GRAPHQL_PROD as string
 
     if (process.env.REACT_APP_ENVIR === 'test') {
         redirectUrl = process.env.REACT_APP_GRAPHQL_DEV as string;
     }
+     Needs to be refactored
+    */
 
     const close = () => {
 

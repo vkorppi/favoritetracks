@@ -1,5 +1,5 @@
 import React, { MouseEvent } from 'react';
-import {  Track } from '../../type'
+import {  NewTrack, Track } from '../../type'
 import { BasicComponent } from '../../types/component'
 import {  ModalType } from '../../types/modal'
 import { useQuery, useMutation } from '@apollo/client';
@@ -61,7 +61,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
         tokenObject = newtoken.data.delegateRefreshedToken
     }
 
-    const TransferToPlaylist = async (tracks: Track[]) => {
+    const TransferToPlaylist = async (tracks: NewTrack[]) => {
 
 
         const playlistpart2 = localStorage.getItem('playlist')
@@ -69,7 +69,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
 
         const url = trackpart1 + playlistpart2 + trackpart3
-        const uris = tracks.map((track: Track) => (track.uri));
+        const uris = tracks.map((track: NewTrack) => (track.spotifUri));
 
         const requestBody = {
             "uris": uris
@@ -133,22 +133,30 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
     const remove = async (event: MouseEvent) => {
 
         const child: SVGElement = event.target as SVGElement
+
         let removeIcon
+        let linkelement
 
         let trackId = child.getAttribute('id')
 
         if (!trackId) {
             removeIcon = child.parentNode as SVGElement
             trackId = removeIcon.getAttribute('id')
+
+            linkelement = child?.parentNode?.parentNode?.childNodes[3] as HTMLLinkElement
+        }
+        else {
+            linkelement = child.parentNode?.childNodes[3] as HTMLLinkElement
         }
 
         await removeTrack({
             variables: {
-                tracks: trackId
+                track: {name:linkelement.textContent,url:linkelement.href,spotifUri:trackId}
             }
         });
 
         await refetch();
+        
     }
 
 
@@ -158,11 +166,11 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
             <Form.Group>
                 <ListGroup variant="flush">
-                    { (data && data.getList) ? data.getList.map((track: Track) => (
+                    { (data && data.getList) ? data.getList.map((track: NewTrack) => (
 
-                        <Form.Row key={track.uri} >
+                        <Form.Row key={track.spotifUri} >
                             <Col>
-                                <ListGroup.Item> <DeleteForeverIcon onClick={remove} id={track.uri} className="clickable" /> {track.name} </ListGroup.Item>
+                                <ListGroup.Item> <DeleteForeverIcon onClick={remove} id={track.spotifUri} className="clickable" />  <a href={track.url}>{track.name}</a> </ListGroup.Item>
                             </Col>
                         </Form.Row>
 
@@ -178,7 +186,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
                         <Button type="button" className="buttonSpace" variant="outline-info" onClick={() => transferFavorites()}  >Transfer </Button>
                     </Col>
                 </Form.Row>
-                {ModalData && data ? <Transfer showmessage={showmessage} show={ModalData.modal.show} tracks={data.getList} TransferToPlaylist={TransferToPlaylist} user={user} newtoken={tokenObject} /> : ''}
+                {ModalData && data && user ? <Transfer showmessage={showmessage} show={ModalData.modal.show} tracks={data.getList} TransferToPlaylist={TransferToPlaylist} user={user} newtoken={tokenObject} /> : ''}
             </Form.Group>
 
         </div>

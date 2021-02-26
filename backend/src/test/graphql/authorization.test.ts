@@ -360,9 +360,10 @@ describe('Testing  mutations and queries that require authorization header', () 
 		await Track.deleteMany({});
 		await User.deleteMany({ "username": { $ne: "adminUser" } });
 
+		/*
 		// admin testuser
 		const testuser: UserSchemaType = {
-			username: 'admin',
+			username: 'adminUser',
 			password: hashPassword('admin'),
 			firstname: 'admin',
 			lastname: 'admin',
@@ -374,6 +375,7 @@ describe('Testing  mutations and queries that require authorization header', () 
 
 		const userTest = new User(testuser);
 		console.log(await userTest.save());
+		*/
 
 
 		void mongoose.connection.close();

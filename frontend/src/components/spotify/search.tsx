@@ -1,5 +1,5 @@
 import React, { FormEvent, ChangeEvent } from 'react';
-import {  QueryResult, Track, ListType, trackNoExternalUrl } from '../../type'
+import {  QueryResult, Track, ListType, trackNoExternalUrl,NewTrack } from '../../type'
 import { BasicComponent } from '../../types/component'
 import {  ModalType } from '../../types/modal'
 import { Button, ListGroup, Col, Form, FormControl, InputGroup } from 'react-bootstrap'
@@ -13,6 +13,11 @@ import { setShow } from '../../reducers/modal';
 import SelectedFavorites from './selectedFavorites';
 
 const Search: React.FC<BasicComponent> = ({ showmessage }) => {
+
+  interface Testi {
+    href: string;
+  }
+
 
   const token = localStorage.getItem('Token')
 
@@ -29,7 +34,7 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
   if (listObject && listObject.data && listObject.data.getList) {
 
-    uris = listObject.data.getList.map((track: trackNoExternalUrl) => (track.uri));
+    uris = listObject.data.getList.map((track: NewTrack) => (track.spotifUri));
 
   }
 
@@ -77,17 +82,18 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
   const changeFavorite = (event: ChangeEvent<HTMLInputElement>) => {
 
     const input = event.target as HTMLInputElement
-    const value = input.parentNode?.nextSibling?.textContent as string;
-    const key = input.value
+    const name = input.parentNode?.nextSibling?.textContent as string;
+    const uri = input.value
+    const href = ((input.parentNode?.nextSibling?.childNodes[1] as unknown) as Testi).href
 
-
+  
     if (input.checked === true) {
 
-      dispatch(addItem({uri:key,name:value}))
+      dispatch(addItem({name:name,url:href,spotifUri:uri}))
     }
     else {
       
-      dispatch(removeItem({uri:key}))
+      dispatch(removeItem({spotifUri:uri}))
     }
   }
 
