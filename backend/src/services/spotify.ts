@@ -145,7 +145,7 @@ const AddToList = async (tracks: trackObject[], userId: string): Promise<void> =
             urls.push(track.url),
             {
                 updateOne: {
-                    filter: { url: track.url, name: track.name,spotifUri: track.spotifUri},
+                    filter: { url: track.url, name: track.name, spotifUri: track.spotifUri },
                     update: { $push: { users: userId } },
                     upsert: true
                 }
@@ -272,6 +272,7 @@ const GetList = async (userId: string): Promise<favoritesSearchResult> => {
 
 const GetList = async (userId: string): Promise<TrackSchemaType[] | null> => {
 
+
     const favorites = await User.findOne({ _id: userId }).populate('favorites');
 
     return (favorites?.favorites as unknown) as TrackSchemaType[];
@@ -280,10 +281,10 @@ const GetList = async (userId: string): Promise<TrackSchemaType[] | null> => {
 
 
 const removeItem = async (userId: string, track: trackObject): Promise<string | void> => {
-    
+
     await Track.updateOne(
         { url: track.url },
-        { $pull: {users: userId } }
+        { $pull: { users: userId } }
     );
 
 
@@ -291,7 +292,7 @@ const removeItem = async (userId: string, track: trackObject): Promise<string | 
 
     await User.updateOne(
         { _id: userId },
-        { $pullAll: {favorites: id } }
+        { $pullAll: { favorites: id } }
     );
 
 };
@@ -408,7 +409,7 @@ const test = (track: string, page: number): searchResult => {
 
 
     switch (track) {
-        case "Test_TotalUnderTen":
+        case "Test_Totalfive":
             testdata = {
                 "tracks": [
                     { name: 'test1', uri: 'test1uri', external_urls: { spotify: 'url1' } },
@@ -420,7 +421,24 @@ const test = (track: string, page: number): searchResult => {
                 "total": 5
             };
             break;
-        case "Test_Total15":
+        case "Test_TotalOverHundred":
+            testdata = {
+                "tracks": [
+                    { name: 'test1', uri: 'test1uri', external_urls: { spotify: 'url1' } },
+                    { name: 'test2', uri: 'test2uri', external_urls: { spotify: 'url2' } },
+                    { name: 'test3', uri: 'test3uri', external_urls: { spotify: 'url3' } },
+                    { name: 'test4', uri: 'test4uri', external_urls: { spotify: 'url4' } },
+                    { name: 'test5', uri: 'test5uri', external_urls: { spotify: 'url5' } },
+					{ name: 'test6', uri: 'test6uri', external_urls: { spotify: 'url6' } },
+					{ name: 'test7', uri: 'test7uri', external_urls: { spotify: 'url7' } },
+					{ name: 'test8', uri: 'test8uri', external_urls: { spotify: 'url8' } },
+					{ name: 'test9', uri: 'test9uri', external_urls: { spotify: 'url9' } },
+					{ name: 'test10', uri: 'test10uri', external_urls: { spotify: 'url10' } }
+                ],
+                "total": 120
+            };
+            break;
+        case "Test_Total20":
             testdata = {
                 "tracks": [
                     { name: 'test1', uri: 'test1uri', external_urls: { spotify: 'url1' } },
@@ -429,17 +447,16 @@ const test = (track: string, page: number): searchResult => {
                     { name: 'test4', uri: 'test4uri', external_urls: { spotify: 'url4' } },
                     { name: 'test5', uri: 'test5uri', external_urls: { spotify: 'url5' } }
                 ],
-                "total": 15
+                "total": 20
             };
             break;
-        case "Test_Total15_11":
+        case "Test_Transfer":
             testdata = {
                 "tracks": [
-                    { name: 'test1', uri: 'test1uri', external_urls: { spotify: 'url1' } },
-                    { name: 'test2', uri: 'test2uri', external_urls: { spotify: 'url2' } },
-                    { name: 'test3', uri: 'test3uri', external_urls: { spotify: 'url3' } },
-                    { name: 'test4', uri: 'test4uri', external_urls: { spotify: 'url4' } },
-                    { name: 'test5', uri: 'test5uri', external_urls: { spotify: 'url5' } }
+                    { name: process.env.TEST_TRACK1 as string, uri: process.env.TEST_TRACK1_URI as string, external_urls: { spotify: 'url1' } },
+                    { name: process.env.TEST_TRACK2 as string, uri: process.env.TEST_TRACK2_URI as string, external_urls: { spotify: 'url2' } },
+                    { name: process.env.TEST_TRACK3 as string, uri: process.env.TEST_TRACK3_URI as string, external_urls: { spotify: 'url3' } },
+                    { name: process.env.TEST_TRACK4 as string, uri: process.env.TEST_TRACK4_URI as string, external_urls: { spotify: 'url4' } }
                 ],
                 "total": 15
             };

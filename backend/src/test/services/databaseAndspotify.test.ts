@@ -34,7 +34,7 @@ describe('Testing services that use database and spotify', () => {
     await mongoose.connect(parser(env.DBTEST, error), configuration);
 
     //await User.deleteMany({});
-    await User.deleteMany({ "username": { $ne: "adminUser" } });
+    await User.deleteMany({ "username": { $nin: ["adminUser","Username2"] } });
 
     const testuser: UserSchemaType = {
       username: 'user919',
@@ -154,7 +154,7 @@ describe('Testing services that use database and spotify', () => {
   afterAll(async () => {
     //await User.deleteMany({});
     await Track.deleteMany({});
-    await User.deleteMany( {  "username" : { $ne : "adminUser" } } );
+    await User.deleteMany({ "username": { $nin: ["adminUser","Username2"] } });
     void mongoose.connection.close();
     console.log('Database connection closed');
   });

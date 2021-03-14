@@ -23,7 +23,8 @@ const App: React.FC = () => {
   const rootstate = useSelector(selector)
 
   const location = useLocation();
-  const token = localStorage.getItem('Token')
+  //const token = localStorage.getItem('Token')
+  const token = sessionStorage.getItem('Token')
   const admin =  localStorage.getItem('Admin') === 'true'
   const history = useHistory()
 
@@ -34,7 +35,7 @@ const App: React.FC = () => {
 
   const logout = () => {
 
-    localStorage.clear()
+    sessionStorage.clear()
     history.push("/")
   };
 
@@ -51,7 +52,7 @@ const App: React.FC = () => {
 
   }
 
- 
+ console.log(token)
 
   return (
     <div>

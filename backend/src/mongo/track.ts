@@ -2,8 +2,8 @@ import mongoose, { Schema, Document } from 'mongoose';
 import { TrackSchemaType } from '../types/favoritesTypes';
 
 const trackSchema: Schema = new Schema({
-    name: { type: String, required: true, unique: true },
-    url: { type: String, required: true },
+    name: { type: String, required: true },
+    url: { type: String, required: true, unique: true },
     spotifUri: { type: String, required: true },
     users:[
         {

@@ -12,7 +12,8 @@ let graphqlPath ='';
 
 const authentication = setContext((_, { headers }) => {
 
-  const token = localStorage.getItem('Token')
+  //const token = localStorage.getItem('Token')
+	const token = sessionStorage.getItem('Token')
 
   const authorization = token && token !== 'null' ? `bearer ${token}` : null
 

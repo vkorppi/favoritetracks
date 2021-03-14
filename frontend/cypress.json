@@ -1,1 +1,14 @@
-{}
+{
+    "env": {
+        "TEST_TRACK1":"Crusader",
+        "TEST_TRACK1_URI":"3SvTwrxQJyGJkeoPDbuNcu",
+        "TEST_TRACK2":"Ride Like the Wind",
+        "TEST_TRACK2_URI":"5nJZLOjtMJZ1HGzQ0FYRJG",
+        "TEST_TRACK3":"Broken Heroes",
+        "TEST_TRACK3_URI":"7vZNnOLg2UfEOub68t0xwj",
+        "TEST_TRACK4":"Valley of the Kings",
+        "TEST_TRACK4_URI":"53yXZGvIFuHfaAI0hDl6oA",
+        "TEST_PLAYLISTID":"7l58leJSh3vCGalYXdzfcD",
+        "TEST_PLAYLIST_URL":"https://open.spotify.com/playlist/7l58leJSh3vCGalYXdzfcD"
+      }
+}

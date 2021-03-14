@@ -52,7 +52,7 @@ describe('Testing  mutations and queries that require authorization header', () 
 		await mongoose.connect(parser(env.DBTEST, error), configuration);
 
 		//await User.deleteMany({});
-		await User.deleteMany({ "username": { $ne: "adminUser" } });
+		await User.deleteMany({ "username": { $nin: ["adminUser","Username2"] } });
 
 		const testuser: UserSchemaType = {
 			username: 'usernameTest',
@@ -358,7 +358,7 @@ describe('Testing  mutations and queries that require authorization header', () 
 
 		//await User.deleteMany({});
 		await Track.deleteMany({});
-		await User.deleteMany({ "username": { $ne: "adminUser" } });
+		await User.deleteMany({ "username": { $nin: ["adminUser","Username2"] } });
 
 		/*
 		// admin testuser

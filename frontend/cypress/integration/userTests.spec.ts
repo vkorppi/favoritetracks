@@ -1,13 +1,13 @@
 
-/*
+
 describe('Test related to user management. Admin', function () {
 
 	beforeEach(function () {
 
 		cy.visit('http://localhost:3000')
 		cy.contains('Login').click()
-		cy.get('#username').type('usernameTest')
-		cy.get('#password').type('passwordTest')
+		cy.get('#username').type('adminUser')
+		cy.get('#password').type('admin')
 		cy.get('#login').click()
 
 	})
@@ -19,8 +19,8 @@ describe('Test related to user management. Admin', function () {
 	it('Admin can create user', function () {
 
 		cy.contains('Registaration').click()
-		cy.get('#firstname').type('Firstname')
-		cy.get('#lastname').type('Lastname')
+		cy.get('#firstName').type('Firstname')
+		cy.get('#lastName').type('Lastname')
 		cy.get('#birthdate').type('11.11.2001')
 		cy.get('#email').type('test.test@test.com')
 		cy.get('#address').type('Street 2')
@@ -36,8 +36,8 @@ describe('Test related to user management. Admin', function () {
 	it('Username must be unique', function () {
 
 		cy.contains('Registaration').click()
-		cy.get('#firstname').type('Firstname')
-		cy.get('#lastname').type('Lastname')
+		cy.get('#firstName').type('Firstname')
+		cy.get('#lastName').type('Lastname')
 		cy.get('#birthdate').type('11.11.2001')
 		cy.get('#email').type('test.test@test.com')
 		cy.get('#address').type('Street 2')
@@ -57,8 +57,8 @@ describe('Test related to user management. Admin', function () {
 
 		cy.contains('Registaration').click()
 
-		cy.get('#firstname').type('sf')
-		cy.get('#lastname').type('sdf')
+		cy.get('#firstName').type('sf')
+		cy.get('#lastName').type('sdf')
 		cy.get('#birthdate').type('110')
 		cy.get('#email').type('test')
 		cy.get('#address').type('sfdf')
@@ -110,14 +110,14 @@ describe('Test related to user management. Admin', function () {
 
 		cy.get('#modify').click()
 
-		cy.get('#firstname').clear()
-		cy.get('#lastname').clear()
+		cy.get('#firstName').clear()
+		cy.get('#lastName').clear()
 		cy.get('#birthdate').clear()
 		cy.get('#email').clear()
 		cy.get('#address').clear()
 
-		cy.get('#firstname').type('Firstnew')
-		cy.get('#lastname').type('Lastnew')
+		cy.get('#firstName').type('Firstnew')
+		cy.get('#lastName').type('Lastnew')
 		cy.get('#birthdate').type('22.12.2011')
 		cy.get('#email').type('new.new@new.com')
 		cy.get('#address').type('Streetnew 2')
@@ -149,14 +149,14 @@ describe('Test related to user management. Admin', function () {
 
 		cy.get('#modify').click()
 
-		cy.get('#firstname').clear()
-		cy.get('#lastname').clear()
+		cy.get('#firstName').clear()
+		cy.get('#lastName').clear()
 		cy.get('#birthdate').clear()
 		cy.get('#email').clear()
 		cy.get('#address').clear()
 
-		cy.get('#firstname').type('dsf')
-		cy.get('#lastname').type('sdf')
+		cy.get('#firstName').type('dsf')
+		cy.get('#lastName').type('sdf')
 		cy.get('#birthdate').type('222')
 		cy.get('#email').type('new')
 		cy.get('#address').type('street')
@@ -177,24 +177,8 @@ describe('Test related to user management. Admin', function () {
 
 	})
 
-	it('User can be deleted', function () {
-
-		cy.contains('Users').click()
-
-		cy.get('#UsersearchInput').type('Username3')
-		cy.get('#searchUserbutton').click()
-
-		cy.contains('Username3').click()
-
-		cy.get('#remove').click()
-
-		cy.contains('User was deleted')
-
-	})
-
-
 })
-*/
+
 
 describe('Test related to user management. Regular user', function () {
 
@@ -202,7 +186,7 @@ describe('Test related to user management. Regular user', function () {
 
 		cy.visit('http://localhost:3000')
 		cy.contains('Login').click()
-		cy.get('#username').type('Username2')
+		cy.get('#username').type('Username3')
 		cy.get('#password').type('Password')
 		cy.get('#login').click()
 
@@ -223,14 +207,14 @@ describe('Test related to user management. Regular user', function () {
 
 		cy.get('#modify').click()
 
-		cy.get('#firstname').clear()
-		cy.get('#lastname').clear()
+		cy.get('#firstName').clear()
+		cy.get('#lastName').clear()
 		cy.get('#birthdate').clear()
 		cy.get('#email').clear()
 		cy.get('#address').clear()
 
-		cy.get('#firstname').type('Firstnew')
-		cy.get('#lastname').type('Lastnew')
+		cy.get('#firstName').type('Firstnew')
+		cy.get('#lastName').type('Lastnew')
 		cy.get('#birthdate').type('22.12.2011')
 		cy.get('#email').type('new.new@new.com')
 		cy.get('#address').type('Streetnew 2')
@@ -266,4 +250,34 @@ describe('Test related to user management. Regular user', function () {
 	})
 
 
+})
+
+
+describe('Tests user deletion. Admin', function () {
+
+	beforeEach(function () {
+
+		cy.visit('http://localhost:3000')
+		cy.contains('Login').click()
+		cy.get('#username').type('adminUser')
+		cy.get('#password').type('admin')
+		cy.get('#login').click()
+
+	})
+	
+	it('User can be deleted', function () {
+
+		cy.contains('Users').click()
+
+		cy.get('#UsersearchInput').type('Username3')
+		cy.get('#searchUserbutton').click()
+
+		cy.contains('Username3').click()
+
+		cy.get('#remove').click()
+
+		cy.contains('User was deleted')
+
+	})
+	
 })

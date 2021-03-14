@@ -170,7 +170,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
                         <Form.Row key={track.spotifUri} >
                             <Col>
-                                <ListGroup.Item> <DeleteForeverIcon onClick={remove} id={track.spotifUri} className="clickable" />  <a href={track.url}>{track.name}</a> </ListGroup.Item>
+                                <ListGroup.Item> <DeleteForeverIcon onClick={remove} id={track.spotifUri.replace('spotify:track:','')} className="clickable" />  <a href={track.url}>{track.name}</a> </ListGroup.Item>
                             </Col>
                         </Form.Row>
 

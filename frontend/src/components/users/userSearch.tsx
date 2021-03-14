@@ -4,7 +4,7 @@ import { UserType } from '../../types/user'
 import { Button, ListGroup, InputGroup, FormControl } from 'react-bootstrap'
 import { useLazyQuery } from '@apollo/client';
 import userq from '../../graphql/user';
-
+import { Link } from 'react-router-dom';
 
 const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
@@ -63,19 +63,19 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
 
         </form>
         <ListGroup variant="flush">
-          
+        
           {data ? data.searchUser.map((user: UserType) => (
 
             <div key={user.id} className="form-group row">
               <div className="col-xs-2">
-                <ListGroup.Item><a href={`/details/${user.id}`}>{`${user.firstname} ${user.lastname} ${user.username}`}</a></ListGroup.Item>
+                <ListGroup.Item><Link to={`/details/${user.id}`}>{`${user.firstname} ${user.lastname} ${user.username}`}</Link></ListGroup.Item>
+                
+
+				
               </div>
             </div>
 
           )) : ''}
-
-
-
           
         </ListGroup>
       </div>

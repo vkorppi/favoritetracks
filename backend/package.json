@@ -8,7 +8,8 @@
     "start": "node build/index.js",
     "dev": "cross-env ENVIR=test ts-node-dev src/index.ts",
     "test": "jest --testEnvironment=node --verbose --runInBand",
-    "lint": "eslint --ext .ts ."
+    "lint": "eslint --ext .ts .",
+    "initUsers": "ts-node-dev src/scripts/initialUsers.ts"
   },
   "author": "Ville Korppi",
   "license": "ISC",

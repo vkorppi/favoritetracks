@@ -18,7 +18,7 @@ import * as Yup from 'yup';
             + 'Lowercase letters needs to be followed by space and numbers')
         .required("address is required"),
     username: Yup.string()
-        .required("username is required"),
+        .required("Username can´t be empty"),
     password: Yup.string()
-        .required("password is required")
+        .required("Password can´t be empty")
 });

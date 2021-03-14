@@ -37,6 +37,7 @@ export const search =async (_root: unknown, args: { track: string; page: number;
 
 export const getList = async (_root: unknown, args: unknown , userdata: UserSchemaType): Promise<void | trackObject[] | null> => {
 
+    console.log(userdata.id)
           
     if(args) null;
 

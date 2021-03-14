@@ -63,16 +63,20 @@ const Resultpagination: React.FC<SearchAttributes> = ({total,search}) => {
     for (let i = data.pagination.start; i < last+1; i++) {
         pages.push(i)
     }
-
+	
+	console.log('total: '+ total+' data.pagination.last '+data.pagination.last)
+	
+	// Työn alla
+	
     return (
         <Pagination>
 
             {data.pagination.start > 10 ? <Pagination.First onClick={newPage} /> : ''}
 
            {pages.map((page: number) => (
-                <Pagination.Item active={page === data.pagination.currentPage} key={page} onClick={newPage}>{page}</Pagination.Item>
+                <Pagination.Item active={page === data.pagination.currentPage} key={page} id={'page'+page} onClick={newPage}>{page}</Pagination.Item>
            ))}
-          {total  < data.pagination.last ? '' : <Pagination.Last  onClick={newPage}  />}
+          {total  <= data.pagination.last ? '' : <Pagination.Last  onClick={newPage}  />} 
          
         </Pagination>
     )

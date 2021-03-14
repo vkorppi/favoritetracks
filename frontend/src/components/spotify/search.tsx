@@ -19,7 +19,8 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
   }
 
 
-  const token = localStorage.getItem('Token')
+  //const token = localStorage.getItem('Token')
+  const token = sessionStorage.getItem('Token')
 
   const [getTracks, { data, error }] = useLazyQuery(trackq.search, {
     fetchPolicy: "no-cache", errorPolicy: 'none',
@@ -132,7 +133,7 @@ const Search: React.FC<BasicComponent> = ({ showmessage }) => {
               <Col>
                 <InputGroup.Prepend>
                   {token ?
-                    <InputGroup.Checkbox onChange={changeFavorite} disabled={uris.includes(track.uri)} defaultChecked={dataList.list[track.uri] !== undefined} value={track.uri} />
+                    <InputGroup.Checkbox id={track.uri.replace('spotify:track:','')} onChange={changeFavorite} disabled={uris.includes(track.uri)} defaultChecked={dataList.list[track.uri] !== undefined} value={track.uri} />
                     : ''}
                   <ListGroup.Item> <a href={track.external_urls.spotify}>{track.name}</a> </ListGroup.Item>
                 </InputGroup.Prepend>

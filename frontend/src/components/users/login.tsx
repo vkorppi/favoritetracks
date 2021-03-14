@@ -41,7 +41,8 @@ const Login: React.FC<BasicComponent> = ({ showmessage }) => {
 
         const value = result.data.login.value as string;
         const admin = result.data.login.admin
-        localStorage.setItem('Token',value)
+        //localStorage.setItem('Token',value)
+		sessionStorage.setItem('Token',value)
         localStorage.setItem('Admin',admin)
         history.push("/")
     }

@@ -89,7 +89,7 @@ const SelectedFavorites: React.FC<ComponentAttributeList> = ({ show, list, showm
                       <Col>
                         <InputGroup.Prepend>
 
-                          <InputGroup.Checkbox defaultChecked onChange={changeSelected} value={uri} />
+                          <InputGroup.Checkbox id={'preview'+uri.replace('spotify:track:','')} defaultChecked onChange={changeSelected} value={uri} />
 
                           <ListGroup.Item>{list.list[uri].name}</ListGroup.Item>
                         </InputGroup.Prepend>
