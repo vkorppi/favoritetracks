@@ -8,10 +8,17 @@ import typeparsers from '../src/utils/typeparsers';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import express from 'express';
+import cors from 'cors';
+
+/*
 import jsonwebtoken from 'jsonwebtoken';
 import { getSessionEnvs } from './utils/envFunctions';
 import user from './services/user';
 import { decodedTokenType } from './types/sessionTypes';
+
+import { PossibleFragmentSpreadsRule } from 'graphql';
+*/
+import session  from 'express-session';
 
 dotenv.config();
 
@@ -54,7 +61,7 @@ const server = new ApolloServer({
   ],
   resolvers
   ,
-  context: async ({ req }) => {
+ /* context: async ({ req }) => {
     if (req) {
       const { secret } = getSessionEnvs();
       const auth = req.headers.authorization;
@@ -78,8 +85,11 @@ const server = new ApolloServer({
     }
 
     return '';
-  },
+  } ,*/
 
+  context:  ( {req}  ) => {   return {req}; },
+
+/*
   formatError: (err) => {
 
     const userError = /userInput:.*|Unauthorized action/i;
@@ -96,45 +106,34 @@ const server = new ApolloServer({
 
     return err;
   }
+  */
   
 
 });
 
 
-
 const app = express();
 
-app.use(express.static('TestPage'));
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true 
+};
+app.use(cors(corsOptions));
 
-/*s
-app.get('/login', function(_req, res) {
-  res.sendFile(path.join('build', 'index.html'), { root: __dirname });
-});
 
-app.get('/favorites', function(_req, res) {
-  res.sendFile(path.join('build', 'index.html'), { root: __dirname });
-});
+app.use(express.static('build'));
 
-app.get('/details/*', function(_req, res) {
-  res.sendFile(path.join('build', 'index.html'), { root: __dirname });
-});
+// Test
 
-app.get('/details', function(_req, res) {
-  res.sendFile(path.join('build', 'index.html'), { root: __dirname });
-});
+app.use(session({
+  secret: 'dfdsfs',
+  resave: false,
+  saveUninitialized: false
+}));
 
-app.get('/users', function(_req, res) {
-  res.sendFile(path.join('build', 'index.html'), { root: __dirname });
-});
+server.applyMiddleware({ app, cors: false });
 
-app.get('/registaration', function(_req, res) {
-  res.sendFile(path.join('build', 'index.html'), { root: __dirname });
-});
-*/
-
-server.applyMiddleware({ app });
-
-const port = typeparsers.parseNumber(process.env.PORT, 'Enviroment variable: variable was not a number');
+  const port = typeparsers.parseNumber(process.env.PORT, 'Enviroment variable: variable was not a number');
 
 void connectToDatabase();
 

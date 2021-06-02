@@ -1,18 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import fs from 'fs';
+
 import typeparsers from '../utils/typeparsers';
 import axios from 'axios';
-import querystring from 'querystring';
-import Track from '../mongo/track';
+import Track from '../mongo/track'; // nimeä uudelleen
 import User from '../mongo/user';
 import enviro from 'dotenv';
-import { getSearchEnvs, getSessionEnvs, getPlayListEnvs, getTracktEnvs } from '../utils/envFunctions';
-import { favorites, favoritesSearchResult, trackObject, TrackSchemaType } from '../types/favoritesTypes';
+import { getSearchEnvs } from '../utils/envFunctions';
+import {   track, TrackSchemaType } from '../types/favoritesTypes'; // nimeä uudelleen
 import { spotifyResult, searchResult } from '../types/searchType';
 import { getMessage } from '../utils/errorFunctions';
-import user from '../services/user';
-import { refreshtoken, spotifyToken } from '../types/sessionTypes';
-import { UserSchemaType } from '../types/userTypes';
+import {session} from '../services/spotifySession';
+
 
 
 enviro.config();
@@ -20,97 +19,14 @@ const parserNum = typeparsers.parseNumber;
 const parserString = typeparsers.parseString;
 
 
-const getTokenExpirationTime = (token: refreshtoken): string => {
-
-    const parser = typeparsers.parseNumber;
-    const errorMessage = 'Expiration time: Expiration time was not a number';
-
-    const milliseconds: number = parser(token.expires_in, errorMessage) * 1000;
-    const current = new Date();
-    const expirationTime = new Date(current.getTime() + milliseconds);
-    return expirationTime.getTime().toString();
-};
-
-const getSessionToken = (): string => {
-
-    const filecontent = fs.readFileSync('session.txt', 'utf8').toString().split("\n");
-    const token = filecontent[0];
-    const tokenError = getMessage('string', token, false);
-    return parserString(token, tokenError);
-};
-
-
-const hasSessionExpired = (): boolean => {
-
-    try {
-
-        if (!fs.existsSync('session.txt')) {
-            return true;
-        }
-
-        const filecontent = fs.readFileSync('session.txt', 'utf8').toString().split("\n");
-
-        const expiration: number = typeparsers.parseNumber(filecontent[1], getMessage('string', 'Expiration time', false));
-
-        const current = new Date();
-
-        if (current.getTime() < expiration) {
-            return false;
-        }
-
-        return true;
-
-    } catch (err) {
-        console.error(err);
-        return true;
-    }
-
-
-};
-
-const CreateNewSession = async (): Promise<void> => {
-
-
-    if (fs.existsSync('session.txt')) {
-        fs.unlinkSync('session.txt');
-    }
-
-    const env = getSessionEnvs();
-
-    const requestBody = {
-        "grant_type": env.granttype,
-        "refresh_token": env.refreshtoken
-    };
-
-    const headers = {
-        'Content-Type': 'application/x-www-form-urlencoded'
-        , 'authorization': 'Basic ' + env.code
-    };
-
-    await axios.post(env.sessionUrl, querystring.stringify(requestBody),
-        { headers: headers }).then(newtoken => {
-
-            const retrievedToken: refreshtoken = newtoken.data as refreshtoken;
-
-            fs.appendFileSync(
-                'session.txt',
-                retrievedToken.access_token
-                + '\n' +
-                getTokenExpirationTime(retrievedToken)
-            );
-
-        });
-
-};
 
 const search = async (track: string, page: number): Promise<spotifyResult> => {
-
-
-    if (hasSessionExpired()) {
-        await CreateNewSession();
+    
+    if (session.system.hasSessionExpired()) {
+        await session.system.CreateNewSession();
     }
 
-    const token = getSessionToken();
+    const token = session.system.getSessionToken();
 
     const envs = getSearchEnvs();
 
@@ -135,16 +51,19 @@ const search = async (track: string, page: number): Promise<spotifyResult> => {
 
 };
 
-const AddToList = async (tracks: trackObject[], userId: string): Promise<void> => {
+
+const add = async (tracks: track[], userId: string): Promise<void> => {
 
     const urls: string[] = [];
 
     await Track.bulkWrite(
         tracks.map((track) =>
         (
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             urls.push(track.url),
             {
                 updateOne: {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                     filter: { url: track.url, name: track.name, spotifUri: track.spotifUri },
                     update: { $push: { users: userId } },
                     upsert: true
@@ -205,7 +124,7 @@ const AddToList = async (tracks: string[], userId: string): Promise<void> => {
 
 };
 
-*/
+
 
 
 const CreateList = async (name: string, userid: string): Promise<string | void | Error> => {
@@ -239,10 +158,10 @@ const CreateList = async (name: string, userid: string): Promise<string | void |
             return list.id;
         });
 };
-
+*/
 
 /*
-const GetList = async (userId: string): Promise<favoritesSearchResult> => {
+const GetFavorites = async (userId: string): Promise<fetchedFavorites> => {
 
     if (hasSessionExpired()) {
         await CreateNewSession();
@@ -263,14 +182,14 @@ const GetList = async (userId: string): Promise<favoritesSearchResult> => {
         url,
         { headers: { 'authorization': 'Bearer ' + token } }
 
-    )).data as favoritesSearchResult;
+    )).data as fetchedFavorites;
 
 
 };
 
 */
 
-const GetList = async (userId: string): Promise<TrackSchemaType[] | null> => {
+const GetFavorites = async (userId: string): Promise<TrackSchemaType[] | null> => {
 
 
     const favorites = await User.findOne({ _id: userId }).populate('favorites');
@@ -280,7 +199,7 @@ const GetList = async (userId: string): Promise<TrackSchemaType[] | null> => {
 
 
 
-const removeItem = async (userId: string, track: trackObject): Promise<string | void> => {
+const removeTrack = async (userId: string, track: track): Promise<string | void> => {
 
     await Track.updateOne(
         { url: track.url },
@@ -329,6 +248,7 @@ const removeItem = async (userId: string, tracks: string[]): Promise<string | vo
 };
 */
 
+/*
 const delegateToken = async (spotifyCode: string): Promise<spotifyToken | void> => {
 
     const { sessionUrl, redirect_uri, granttype_code, code } = getSessionEnvs();
@@ -360,6 +280,7 @@ const delegateToken = async (spotifyCode: string): Promise<spotifyToken | void> 
 
 };
 
+
 const delegateRefreshedToken = async (refreshToken: string): Promise<refreshtoken> => {
 
 
@@ -383,7 +304,7 @@ const delegateRefreshedToken = async (refreshToken: string): Promise<refreshtoke
         });
 
 };
-
+*/
 
 
 
@@ -469,14 +390,13 @@ const test = (track: string, page: number): searchResult => {
 
 
 export default {
-    hasSessionExpired,
-    CreateNewSession,
     search,
-    AddToList,
-    CreateList,
-    GetList,
+    add,
+   // CreateList,
+    GetFavorites,
     test,
-    removeItem,
-    delegateToken,
-    delegateRefreshedToken
+    removeTrack,
+  //  delegateToken,
+  //  delegateRefreshedToken,
+    session
 };

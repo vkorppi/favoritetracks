@@ -62,5 +62,5 @@ const setAdminUser = async (): Promise<void> => {
 };
 
 
-setTestUser()
+//setTestUser()
 // setAdminUser

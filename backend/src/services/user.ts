@@ -2,10 +2,8 @@
 
 import typeparsers from '../utils/typeparsers';
 import User from '../mongo/user';
-import { TokenType } from '../types/sessionTypes';
 import { UserSchemaType, UserType } from '../types/userTypes';
 import { hashPassword } from '../utils/userFunctions';
-import { sign } from 'jsonwebtoken';
 import { UserInputError } from 'apollo-server-express';
 import bcrypt from 'bcryptjs';
 
@@ -13,13 +11,13 @@ const parser = typeparsers.parseString;
 const emailParser = typeparsers.parseEmailUserInput;
 const dateParser = typeparsers.parseBirthdate;
 import { getMessage } from '../utils/errorFunctions';
-import { getSessionEnvs } from '../utils/envFunctions';
+import {session} from '../services/systemSession';
 
 const firstnameError = getMessage('string', 'firstname', true);
 const lastnameError = getMessage('string', 'lastname', true);
 const birthdateError = getMessage('format', 'birthdate', true);
-const emailError =getMessage('format', 'email', true);
-const addressError =getMessage('string', 'address', true);
+const emailError = getMessage('format', 'email', true);
+const addressError = getMessage('string', 'address', true);
 
 
 export const create = async (username: string, password: string, firstname: string, lastname: string, birthdate: string, email: string, address: string): Promise<UserType> => {
@@ -40,9 +38,9 @@ export const create = async (username: string, password: string, firstname: stri
         password: hashPassword(password),
         firstname: parser(firstname, firstnameError),
         lastname: parser(lastname, lastnameError),
-        birthdate: birthdate ? dateParser(birthdate,birthdateError ) : '',
-        email: email ? emailParser(email,emailError) : '',
-        address: address ? parser(address,addressError ) : '',
+        birthdate: birthdate ? dateParser(birthdate, birthdateError) : '',
+        email: email ? emailParser(email, emailError) : '',
+        address: address ? parser(address, addressError) : '',
         admin: false
 
     } as UserSchemaType;
@@ -51,6 +49,7 @@ export const create = async (username: string, password: string, firstname: stri
     return await user.save();
 };
 
+/*
 const addList = async (favorites: string, id: string): Promise<string> => {
 
     await User.updateOne({ _id: id },
@@ -66,7 +65,7 @@ const addList = async (favorites: string, id: string): Promise<string> => {
     return id;
 
 };
-
+*/
 
 const update = async (firstname: string, lastname: string, birthdate: string, email: string, address: string, id: string): Promise<void> => {
 
@@ -75,11 +74,11 @@ const update = async (firstname: string, lastname: string, birthdate: string, em
         {
             $set:
             {
-                "firstname": parser(firstname,firstnameError),
-                "lastname": parser(lastname,lastnameError),
+                "firstname": parser(firstname, firstnameError),
+                "lastname": parser(lastname, lastnameError),
                 "birthdate": birthdate ? dateParser(birthdate, birthdateError) : '',
-                "email": email ? emailParser(email,emailError) : '',
-                "address": address ? parser(address,addressError) : ''
+                "email": email ? emailParser(email, emailError) : '',
+                "address": address ? parser(address, addressError) : ''
             }
         });
 
@@ -128,27 +127,15 @@ const search = async (value: string): Promise<UserSchemaType[]> => {
 
 };
 
-const isAdmin = async (id: string): Promise<boolean> => {
 
-    const user = await User.findOne({ _id: id }) as UserSchemaType ;
-
-    return user.admin ;
-};
+const login = async (username: string, password: string): Promise<string> => {
 
 
-const login = async (username: string, password: string): Promise<TokenType> => {
-
-
-    const { secret } = getSessionEnvs();
-
-    const id = await check(
+   return await check(
         parser(username, getMessage('string', 'username', true)),
         parser(password, "userInput: password was invalid")
     );
 
-    const hasAdminrole = await isAdmin(id);
-
-    return { value: sign({ username: username, id: id }, secret), admin: hasAdminrole  };
 };
 
 
@@ -192,6 +179,17 @@ const addPLaylist = async (playlist: string, id: string): Promise<string> => {
 
 };
 
+export const isAdmin =  (user: UserSchemaType): boolean => {
+
+    if(!user.admin) {
+        return false;
+    }
+
+    return true;
+
+};
+
+
 
 export default {
     create,
@@ -202,7 +200,7 @@ export default {
     check,
     login,
     getUser,
-    addList,
     addPLaylist,
-    isAdmin
+    isAdmin,
+    session
 };

@@ -2,9 +2,9 @@
 
 import trackq from '../graphql/queries/track';
 import userq from '../graphql/queries/user';
-import sessionq from '../graphql/queries/session';
+//import sessionq from '../graphql/queries/session';
 import userm from '../graphql/mutations/user';
-import sessionm from '../graphql/mutations/session';
+//import sessionm from '../graphql/mutations/session';
 import trackm from '../graphql/mutations/track';
 
 export const resolvers = {
@@ -12,22 +12,25 @@ export const resolvers = {
     Query: {
 
         search:trackq.search,
-        getList:trackq.getList,
+        getFavorites:trackq.getFavorites,
         searchUser:userq.searchUser,
         getUser:userq.getUser,
-        delegateToken:sessionq.delegateToken,
-        getUserLoggedin:sessionq.getUserLoggedin,
-        delegateRefreshedToken: sessionq.delegateRefreshedToken
+        delegateToken:userq.session.delegateToken,
+        getUserLoggedin:userq.session.getUserLoggedin,
+        delegateRefreshedToken: userq.session.delegateRefreshedToken //,
+        //test789: sessionq.test789
     },
     Mutation: {
-
+        
         create: userm.create,
         updateUser: userm.updateUser,
-        updatePassword:userm.updatePassword,
+       // updatePassword:userm.updatePassword,
         remove: userm.remove,
-        login: sessionm.login,
-        addTrackToList: trackm.addTrackToList,
-        removeItem: trackm.removeItem
+        login: userm.session.login,
+        testi123: userm.session.testi123,
+        testi345: userm.session.testi345,
+        add: trackm.add,
+        removeTrack: trackm.removeTrack
     }
 };
 

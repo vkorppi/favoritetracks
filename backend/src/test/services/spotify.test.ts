@@ -7,7 +7,7 @@ describe('Testing spotify services', () => {
 
     test('creates session file with expirationtime and token', async () => {
   
-      await spotify.CreateNewSession();
+      await spotify.session.system.CreateNewSession();
   
       const fileExists = fs.existsSync('session.txt');
       let filecontent = [];
@@ -26,7 +26,7 @@ describe('Testing spotify services', () => {
   
       fs.appendFileSync('session.txt', 'test');
   
-      await spotify.CreateNewSession();
+      await spotify.session.system.CreateNewSession();
   
       filecontent = fs.readFileSync('session.txt', 'utf8').toString();
   
@@ -49,7 +49,7 @@ describe('Testing spotify services', () => {
   
       fs.appendFileSync('session.txt', 'token' + '\n' + dateExpire.getTime().toString());
   
-      expect(spotify.hasSessionExpired()).toBe(false);
+      expect(spotify.session.system.hasSessionExpired()).toBe(false);
   
     });
   
@@ -67,7 +67,7 @@ describe('Testing spotify services', () => {
   
       fs.appendFileSync('session.txt', 'token' + '\n' + dateExpire.getTime().toString());
   
-      expect(spotify.hasSessionExpired()).toBe(true);
+      expect(spotify.session.system.hasSessionExpired()).toBe(true);
   
     });
   

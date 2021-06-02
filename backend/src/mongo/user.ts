@@ -18,7 +18,8 @@ const userSchema: Schema = new Schema({
     }
   ],
   playlist: { type: String },
-  admin: { type: Boolean }
+  admin: { type: Boolean },
+  sessionid: { type: String }
 });
 
 

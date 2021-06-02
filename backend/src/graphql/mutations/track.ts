@@ -1,16 +1,22 @@
 import spotify from '../../services/spotify';
-import { ApolloError, UserInputError,  } from 'apollo-server-express';
-import { UserSchemaType } from '../../types/userTypes';
-import { trackObject } from '../../types/favoritesTypes';
+import user from '../../services/user';
+import { ApolloError, UserInputError, ForbiddenError } from 'apollo-server-express';
+import { track } from '../../types/favoritesTypes';
+import { requestType } from '../../types/sessionTypes';
 
 
 
-export const addTrackToList = async (_root: unknown, args: { tracks: trackObject[] }, userdata: UserSchemaType): Promise<string> => {
+export const add = async (_root: unknown, args: { tracks: track[] }, { req }: requestType): Promise<string> => {
 
-    const tracks: trackObject[] = args.tracks;
+    const tracks: track[] = args.tracks;
+   
+    const loggedUser= await user.session.hasSession(req.session.sessionid);
 
+    if (!loggedUser) {
+        throw new ForbiddenError("Unauthorized action");
+    }
 
-    await spotify.AddToList(tracks, userdata.id).catch((error: Error) => {
+    await spotify.add(tracks, loggedUser.id).catch((error: Error) => {
 
         console.error(error.stack);
 
@@ -27,12 +33,16 @@ export const addTrackToList = async (_root: unknown, args: { tracks: trackObject
 
 };
 
-export const removeItem = async (_root: unknown, args: { track: trackObject }, userdata: UserSchemaType): Promise<string> => {
+export const removeTrack = async (_root: unknown, args: { track: track }, { req }: requestType): Promise<string> => {
 
-    const track: trackObject = args.track;
+    const track: track = args.track;
+    const loggedUser= await user.session.hasSession(req.session.sessionid);
 
-    
-    await spotify.removeItem(userdata.id,track).catch((error: Error) => {
+    if (!loggedUser) {
+        throw new ForbiddenError("Unauthorized action");
+    }
+
+    await spotify.removeTrack(loggedUser.id, track).catch((error: Error) => {
 
         console.error(error.stack);
 
@@ -50,6 +60,6 @@ export const removeItem = async (_root: unknown, args: { track: trackObject }, u
 };
 
 export default {
-    addTrackToList,
-    removeItem
+    add,
+    removeTrack
 };

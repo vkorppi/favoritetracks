@@ -1,22 +1,21 @@
 import { ApolloError, UserInputError, ForbiddenError } from 'apollo-server-express';
-import { UserSchemaType } from '../../types/userTypes';
 import user from '../../services/user';
 import { MongoError } from 'mongodb';
-
+import { requestType } from '../../types/sessionTypes';
+import { session } from './Systemsession';
 
 export const create =  async (_root: unknown, args: {
     username: string, password: string, firstname: string,
     lastname: string, birthdate: string, email: string, address: string
-}, userdata: UserSchemaType): Promise<string | void> => {
+}, { req }: requestType): Promise<string | void> => {
 
-
-    const loggedUser =await user.getUser(userdata.id) as UserSchemaType;
+    const loggedUser= await user.session.hasSession(req.session.sessionid);
 
     if(!loggedUser) {
         throw new ForbiddenError("Unauthorized action");
     }
-
-    if(!loggedUser.admin) {
+   
+    if( !user.isAdmin(loggedUser)) {
         throw new ForbiddenError("Unauthorized action");
     }
 
@@ -52,7 +51,7 @@ export const create =  async (_root: unknown, args: {
 };
 
 export const updateUser = async (_root: unknown, args: { firstname: string, lastname: string, birthdate: string, email: string, address: string, id: string }
-    , userdata: UserSchemaType): Promise<string | void> => {
+    , { req }: requestType): Promise<string | void> => {
 
     const firstname: string = args.firstname;
     const lastname: string = args.lastname;
@@ -61,13 +60,13 @@ export const updateUser = async (_root: unknown, args: { firstname: string, last
     const email: string = args.email;
     const address: string = args.address;
 
-    const loggedUser =await user.getUser(userdata.id) as UserSchemaType;
+    const loggedUser= await user.session.hasSession(req.session.sessionid);
 
     if(!loggedUser) {
         throw new ForbiddenError("Unauthorized action");
     }
 
-    if(!loggedUser.admin && id !== loggedUser.id) {
+    if(!user.isAdmin(loggedUser) && id !== loggedUser.id) {
         throw new ForbiddenError("Unauthorized action");
     }
 
@@ -94,7 +93,8 @@ export const updateUser = async (_root: unknown, args: { firstname: string, last
     });
 };
 
-export const updatePassword = async (_root: unknown, args: { password: string, id: string }): Promise<string | void> => {
+/*
+export const updatePassword = async (_root: unknown, args: { password: string, id: string }, { req }: requestType): Promise<string | void> => {
 
     const password: string = args.password;
     const id: string = args.id;
@@ -120,17 +120,18 @@ export const updatePassword = async (_root: unknown, args: { password: string, i
 
     });
 };
+*/
 
-export const remove = async (_root: unknown, args: { id: string }, userdata: UserSchemaType): Promise<string | void> => {
+export const remove = async (_root: unknown, args: { id: string },{ req }: requestType): Promise<string | void> => {
             
 
-    const loggedUser =await user.getUser(userdata.id) as UserSchemaType;
+    const loggedUser= await user.session.hasSession(req.session.sessionid);
 
     if(!loggedUser) {
         throw new ForbiddenError("Unauthorized action");
     }
-
-    if(!loggedUser.admin) {
+   
+    if( !user.isAdmin(loggedUser)) {
         throw new ForbiddenError("Unauthorized action");
     }
 
@@ -159,8 +160,9 @@ export const remove = async (_root: unknown, args: { id: string }, userdata: Use
 export default {
     create,
     updateUser,
-    updatePassword,
-    remove
+   // updatePassword,
+    remove,
+    session
 };
 
 

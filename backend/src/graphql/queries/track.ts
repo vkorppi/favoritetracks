@@ -1,9 +1,10 @@
 import spotify from '../../services/spotify';
-import { ApolloError, UserInputError,  } from 'apollo-server-express';
+import user from '../../services/user';
+import { ApolloError, UserInputError,  ForbiddenError} from 'apollo-server-express';
 import {  searchResult  } from '../../types/searchType';
-import {  UserSchemaType } from '../../types/userTypes';
 import {  spotifyTrackMinimal } from '../../types/spotifyTypes';
-import { trackObject } from '../../types/favoritesTypes';
+import { track } from '../../types/favoritesTypes';
+import { requestType } from '../../types/sessionTypes';
 
 export const search =async (_root: unknown, args: { track: string; page: number; }): Promise<searchResult | void> => {
 
@@ -35,17 +36,18 @@ export const search =async (_root: unknown, args: { track: string; page: number;
         });
 };
 
-export const getList = async (_root: unknown, args: unknown , userdata: UserSchemaType): Promise<void | trackObject[] | null> => {
+export const getFavorites = async (_root: unknown, args: unknown , { req }: requestType): Promise<void | track[] | null> => {
 
-    console.log(userdata.id)
           
     if(args) null;
 
-    if(!userdata || !userdata.id) {
-        return null;
+    const loggedUser= await user.session.hasSession(req.session.sessionid);
+
+    if(!loggedUser) {
+        throw new ForbiddenError("Unauthorized action");
     }
     
-    return await spotify.GetList(userdata.id).then(result => { 
+    return await spotify.GetFavorites(loggedUser.id).then(result => { 
 
         return result;
 
@@ -65,5 +67,5 @@ export const getList = async (_root: unknown, args: unknown , userdata: UserSche
 
 export default {
     search,
-    getList
+    getFavorites
 };

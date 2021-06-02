@@ -3,15 +3,13 @@
 import {  spotifyTrack  } from '../types/spotifyTypes';
 import { Document } from 'mongoose';
 
-export interface favorites {
-    id: string
+
+  
+  export interface fetchedFavorites {
+    items: [Favorite]
   }
   
-  export interface favoritesSearchResult {
-    items: [favoritesSearchResultItem]
-  }
-  
-  export interface favoritesSearchResultItem {
+  export interface Favorite {
     track: spotifyTrack
   }
   
@@ -22,7 +20,7 @@ export interface favorites {
     users:string[]
   }
 
-  export interface trackObject  {
+  export interface track  {
     name: string;
     url: string;
     spotifUri: string;

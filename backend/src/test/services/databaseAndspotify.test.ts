@@ -62,7 +62,7 @@ describe('Testing services that use database and spotify', () => {
         fetchedUser?.id);
   
         
-      const test = await spotify.GetList(fetchedUser?.id);
+      const test = await spotify.GetFavorites(fetchedUser?.id);
   
   
       test?.map((track) => (
@@ -106,7 +106,7 @@ describe('Testing services that use database and spotify', () => {
 
     const fetchedUser = await User.findOne({ username: 'user919' });
 
-    await spotify.AddToList(
+    await spotify.add(
       [
         { name: 'test', url: 'http://testi.com',spotifUri:'someUri1' },
         { name: 'test2', url: 'http://testi2.com',spotifUri:'someUri2' }
@@ -125,7 +125,7 @@ describe('Testing services that use database and spotify', () => {
 
     const fetchedUser = await User.findOne({ username: 'user919' });
 
-    const list = await spotify.GetList(fetchedUser?.id);
+    const list = await spotify.GetFavorites(fetchedUser?.id);
 
     expect(list?.length).toBe(2);
 
@@ -139,11 +139,11 @@ describe('Testing services that use database and spotify', () => {
 
     const id = fetchedUser?.id as string;
 
-    await spotify.removeItem(id, 
+    await spotify.removeTrack(id, 
       { name: 'test2', url: 'http://testi2.com',spotifUri:'someUri2' }
     );
 
-    const list = await spotify.GetList(id);
+    const list = await spotify.GetFavorites(id);
 
     expect(list?.length).toBe(1);
 

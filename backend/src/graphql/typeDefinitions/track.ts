@@ -5,11 +5,11 @@ import { gql } from 'apollo-server-express';
 export const trackQuery = gql`
 
 extend type Mutation {
-  addTrackToList(
+  add(
     tracks: [trackInput!]!
   ): String 
 
-  removeItem(
+  removeTrack(
     track: trackInput!
   ): String 
 }
@@ -26,7 +26,7 @@ export const trackMutation = gql`
 
 extend type Query {
   search(track: String,page: Int):  searchResult! 
-  getList: [trackOutput!]
+  getFavorites: [trackOutput!]
 }
 
 type searchResult {
