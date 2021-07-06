@@ -2,22 +2,22 @@ import { gql } from '@apollo/client'
 
  const addTrack = gql`
 
- mutation AddTrackToList($tracks: [trackInput!]!){
-  addTrackToList(tracks: $tracks)  
+ mutation Add($tracks: [trackInput!]!){
+  add(tracks: $tracks)  
   }
 
  `;
 
  const removeTrack = gql`
 
- mutation removeItem($track: trackInput!){
-   removeItem(track: $track) 
+ mutation RemoveTrack($track: trackInput!){
+   removeTrack(track: $track) 
      
    }`;
 
-   const getList = gql`
+   const getFavorites = gql`
    query {
-     getList {
+     getFavorites {
          name,
          url,
          spotifUri
@@ -45,6 +45,6 @@ import { gql } from '@apollo/client'
 export default {
     addTrack,
     removeTrack,
-    getList,
+    getFavorites,
     search
 }

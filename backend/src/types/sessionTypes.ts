@@ -35,4 +35,6 @@ interface SessionControllType {
 interface sessionType {
   sessionid: string
   destroy: Session["destroy"];
+  cookie: Session["cookie"];
+  save:Session["save"];
 }

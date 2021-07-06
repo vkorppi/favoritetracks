@@ -18,7 +18,7 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
     const data2 = useSelector(modalState)
     const dispatch = useDispatch()
 
-    const admin =  localStorage.getItem('Admin') === 'true'
+   // const admin =  localStorage.getItem('Admin') === 'true'
 
     const fetchedUser = useQuery(userq.getUser, {
         fetchPolicy: "no-cache", errorPolicy: 'none',
@@ -28,24 +28,39 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
 
     const loggedUser = useQuery(userq.loggedInUser, {
         fetchPolicy: "no-cache", errorPolicy: 'none',
-        skip: (id !== '')
+        //skip: (id !== '')
     })
 
 
     let user
     let error
-    let isloggeduser=false
+    let loggeduser
+    let isloggeduser=true
 
     if(fetchedUser && fetchedUser.data) {
         error = fetchedUser.error
         user = fetchedUser.data.getUser
+        isloggeduser=false
     }
 
     if(loggedUser && loggedUser.data) {
         error = loggedUser.error
+        loggeduser = loggedUser.data.getUserLoggedin        
+        
+    }
+
+    if(!user) {
+        user=loggeduser
+    }
+
+    /*
+    if(loggedUser && loggedUser.data) {
+        error = loggedUser.error
         user = loggedUser.data.getUserLoggedin
+        
         isloggeduser=true
     }
+    */
 
 
     const [deleteUser] = useMutation(userq.deleteUser, {
@@ -118,8 +133,8 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
                                     <br/>
                                     <br/>
                                     <br/>
-                                        { admin  ? <Button type="button" variant="primary" id="remove" onClick={() => removeUser()}  >Delete </Button> : ''}
-                                        { admin || isloggeduser ? <Button type="button" id="modify" className="buttonSpace" variant="primary" onClick={() => modifyUser()}  >Modify </Button> : ''} 
+                                        { loggeduser.admin && (user !== loggeduser)  ? <Button type="button" variant="primary" id="remove" onClick={() => removeUser()}  >Delete </Button> : ''}
+                                        { loggeduser.admin || isloggeduser ? <Button type="button" id="modify" className="buttonSpace" variant="primary" onClick={() => modifyUser()}  >Modify </Button> : ''} 
                                         <Button className="buttonSpace"  type="button" id="detailsClose" variant="primary" onClick={() => close()}  >Close </Button>
                                     </Col>
                                 </Form.Row>

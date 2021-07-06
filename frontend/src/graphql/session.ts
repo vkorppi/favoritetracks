@@ -5,8 +5,18 @@ const login = gql`
 mutation Login($username: String!,$password: String!){
  login(username:$username,password:$password)
    {
-   value,
-   admin
+    authenticated,
+    admin
+   }  
+ }
+`;
+
+const logout = gql`
+
+mutation {
+ logout
+   {
+    status
    }  
  }
 `;
@@ -22,7 +32,7 @@ query delegateToken($code: String!, $playlist: String!){
     }
   }`;
 
-  const delegateRefreshedToken = gql`
+const delegateRefreshedToken = gql`
 
 query delegateRefreshedToken($refreshedToken: String!){
   delegateRefreshedToken(refreshedToken: $refreshedToken) 
@@ -34,8 +44,9 @@ query delegateRefreshedToken($refreshedToken: String!){
     }
   }`;
 
-  export default {
-    login,
-    delegateToken,
-    delegateRefreshedToken 
+export default {
+  login,
+  delegateToken,
+  delegateRefreshedToken,
+  logout
 }

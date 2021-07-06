@@ -1,6 +1,6 @@
 
 
-import { ListAttributes } from '../type'
+import { ListAttributes } from '../types/spotify'
 import { createAction, createReducer } from '@reduxjs/toolkit'
 
 export interface TrackUriName {

@@ -9,7 +9,7 @@ extend type Mutation {
   login(
     username: String!
     password: String!
-  ): loginResponse 
+  ): Authorization 
 }
 
 extend type Mutation {
@@ -42,6 +42,7 @@ type loginResponse {
 type logoutResponse {
   status : String!
 }
+
   
 `;
 

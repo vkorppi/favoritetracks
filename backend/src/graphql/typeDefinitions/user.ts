@@ -43,6 +43,7 @@ extend type Query {
   searchUser(value: String): [User!]!
   getUser(id: String): User!
   getUserLoggedin:User!
+  getAuthorization:Authorization!
 }
 
 type User {
@@ -56,6 +57,12 @@ type User {
   playlist : String
   admin : Boolean
 }
+
+type Authorization {
+  authenticated : Boolean
+  admin : Boolean
+}
+
 
 `;
 

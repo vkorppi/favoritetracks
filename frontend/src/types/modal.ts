@@ -1,14 +1,14 @@
 
 
 export interface ModalType {
-    modal: Modalttributes;
+  modal: Modalttributes;
+}
+
+export interface Modalttributes {
+  show: boolean;
+}
+
+export type ActionModal =
+  {
+    data: Modalttributes;
   }
-  
-  export interface Modalttributes {
-    show: boolean;
-  }
-  
-  export type ActionModal =
-    {
-      data: Modalttributes;
-    }

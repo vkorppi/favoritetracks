@@ -34,7 +34,7 @@ describe('Testing usermanagement services', () => {
   beforeEach(async () => {
 
     //await User.deleteMany({});
-    await User.deleteMany({ "username": { $nin: ["adminUser", "Username2"] } });
+    await User.deleteMany({ "username": { $nin: ["adminUser"] } });
 
     const testuser: UserSchemaType = {
       username: 'usernameTest',
@@ -125,6 +125,7 @@ describe('Testing usermanagement services', () => {
 
   });
 
+
 /*
   test('User gets token when login is succesfull', async () => {
 
@@ -168,10 +169,59 @@ describe('Testing usermanagement services', () => {
 
   });
 
+  test("Authenticated user's rights", async () => {
+
+    const fetchedUser = await User.findOne({ username: 'usernameTest' });
+    const userid = fetchedUser?._id as string;
+
+    await User.updateOne({ _id: userid },
+      {
+          $set:
+          {
+              "sessionid": "somevalue"
+          }
+      });
+
+    const authenticatedUser = await user.getAuthorization("somevalue");
+
+    expect(authenticatedUser.admin).toBe(false);
+    expect(authenticatedUser.authenticated).toBe(true);
+
+  });
+
+  test("Admin's rights", async () => {
+
+    const fetchedUser = await User.findOne({ username: 'usernameTest' });
+    const userid = fetchedUser?._id as string;
+
+    await User.updateOne({ _id: userid },
+      {
+          $set:
+          {
+              "sessionid": "somevalue",
+              "admin":true
+          }
+      });
+
+    const authenticatedUser = await user.getAuthorization("somevalue");
+
+    expect(authenticatedUser.admin).toBe(true);
+    expect(authenticatedUser.authenticated).toBe(true);
+
+  });
+
+  test("Anomyous's rights", async () => {
+
+    const anomyous = await user.getAuthorization("somevalue");
+
+    expect(anomyous.admin).toBe(false);
+    expect(anomyous.authenticated).toBe(false);
+
+  });
+
 
   afterAll(async () => {
-    // await User.deleteMany({});
-    await User.deleteMany({ "username": { $nin: ["adminUser", "Username2"] } });
+    await User.deleteMany({ "username": { $nin: ["adminUser"] } });
     void mongoose.connection.close();
     console.log('Database connection closed');
   });

@@ -74,6 +74,15 @@ const updatePassword = gql`
    }
  }`;
 
+ const getAuthorization = gql`
+
+ query {
+  getAuthorization {
+    authenticated,
+    admin
+   }
+ }`;
+
 
 export default {
     searchUsers,
@@ -82,5 +91,6 @@ export default {
     deleteUser,
     updateUser,
     updatePassword,
-    loggedInUser
+    loggedInUser,
+    getAuthorization
 }

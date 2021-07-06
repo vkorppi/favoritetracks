@@ -6,16 +6,14 @@ import thunk from 'redux-thunk'
 import paginationReducer from './reducers/pagination'
 import messageReducer from './reducers/message'
 import modalReducer from './reducers/modal'
-import listReducer from './reducers/list'
+import favoritesReducer from './reducers/favorites'
 import alertsReducer from './reducers/alerts'
-
-
 
 const reducer = combineReducers({
     pagination: paginationReducer,
     message: messageReducer,
     modal: modalReducer,
-    list: listReducer,
+    favorites: favoritesReducer,
     alert:alertsReducer
   })
 

@@ -1,12 +1,14 @@
 
 import React, { FormEvent } from 'react';
 import { Button, Card, Form, Col, FormControl } from 'react-bootstrap';
-import { BasicComponent } from "../../types/component";
+import { BasicComponent,loginComponent } from "../../types/component";
 import { useMutation } from '@apollo/client';
 import sessionm from '../../graphql/session';
 import {useHistory} from "react-router-dom"
+import { Redirect } from "react-router";
+import { CapsulatedLoginAuth } from '../../types/user';
 
-const Login: React.FC<BasicComponent> = ({ showmessage }) => {
+const Login: React.FC<loginComponent> = ({ showmessage,refetch }) => {
 
     const [login, result] = useMutation(sessionm.login, {
         errorPolicy: 'none', onError: (error) => {
@@ -17,36 +19,25 @@ const Login: React.FC<BasicComponent> = ({ showmessage }) => {
     const history = useHistory()
 
     const submitCredentials = async (event: FormEvent) => {
-
-
+        
         event.preventDefault()
         const form = event.target as HTMLFormElement;
 
         const username = form[0] as HTMLInputElement;
         const password = form[1] as HTMLInputElement;
 
-        login({ variables: { username: username.value, password: password.value} });
+        await login({ variables: { username: username.value, password: password.value} });
+
+        await refetch()
    
         username.value = ''
         password.value = ''
 
-     
-
     }
 
-   
-
-    if(result &&  result.data) {
-        
-
-        const value = result.data.login.value as string;
-        const admin = result.data.login.admin
-        //localStorage.setItem('Token',value)
-		sessionStorage.setItem('Token',value)
-        localStorage.setItem('Admin',admin)
-        history.push("/")
-    }
-
+    const permissions= result.data as CapsulatedLoginAuth
+    
+    if (!permissions)
     return (
         <div >
             <Card>
@@ -77,9 +68,12 @@ const Login: React.FC<BasicComponent> = ({ showmessage }) => {
             </Card>
         </div>
     );
-
-
-
+    else
+    return (
+      <div>
+        <Redirect to="/" />
+      </div>
+    )
 };
 
 export default Login;

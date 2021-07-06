@@ -10,6 +10,11 @@ export interface UserType {
     address: string
   }
 
+  export interface Authorization {
+    authenticated : boolean
+    admin : boolean,
+  }
+
 
  export interface UserSchemaType extends Document {
   username: string;
@@ -22,4 +27,5 @@ export interface UserType {
   favorites:string[],
   playlist:string,
   admin: boolean;
+  sessionid:string;
 }

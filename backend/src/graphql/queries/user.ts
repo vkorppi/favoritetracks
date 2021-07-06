@@ -1,6 +1,6 @@
 
 import { ApolloError, UserInputError, ForbiddenError } from 'apollo-server-express';
-import { UserSchemaType } from '../../types/userTypes';
+import { Authorization, UserSchemaType } from '../../types/userTypes';
 import user from '../../services/user';
 import { requestType } from '../../types/sessionTypes';
 import {session} from './spotifySession';
@@ -16,11 +16,13 @@ export const searchUser = async (_root: unknown, args: { value: string; }, { req
         throw new ForbiddenError("no user");
     }
 
+    /*
     if (!user.isAdmin(loggedUser)) {
         //  throw new ForbiddenError("Unauthorized action");
 
         throw new ForbiddenError("no admin " + req.session.sessionid);
     }
+    */
 
     const value: string = args.value;
 
@@ -47,7 +49,7 @@ export const getUser = async (_root: unknown, args: { id: string; }, { req }: re
 
     const id: string = args.id;
 
-    const loggedUser = await user.getUser(req.session.sessionid) as UserSchemaType;
+    const loggedUser = await user.session.hasSession(req.session.sessionid);
 
     if (!loggedUser) {
         throw new ForbiddenError("Unauthorized action");
@@ -75,8 +77,20 @@ export const getUser = async (_root: unknown, args: { id: string; }, { req }: re
     });
 };
 
+export const getAuthorization = async (_root: unknown, args: unknown, { req }: requestType): Promise<Authorization> => {
+
+    if(args) null;
+	
+	console.log("Debug -- "+req.session.sessionid)
+	
+	console.log(req.session.cookie.expires)
+
+    return await user.getAuthorization(req.session.sessionid);
+};
+
 export default {
     searchUser,
     getUser,
-    session
+    session,
+    getAuthorization
 };

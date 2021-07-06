@@ -1,6 +1,7 @@
 import { ApolloError, UserInputError } from 'apollo-server-express';
 import user from '../../services/user';
-import { requestType,TokenType } from '../../types/sessionTypes';
+import { requestType, TokenType } from '../../types/sessionTypes';
+import { Authorization } from '../../types/userTypes';
 
 
 interface loginResponse {
@@ -13,41 +14,19 @@ interface logoutResponse {
 
 
 
-export const login = async (_root: unknown, args: { username: string, password: string }, { req }: requestType): Promise<loginResponse | void> => {
+export const login = async (_root: unknown, args: { username: string, password: string }, { req }: requestType): Promise<Authorization | void> => {
 
     const username: string = args.username;
     const password: string = args.password;
 
-    
-
     return await user.login(username, password).then(async id => {
 
-        
-       const sessionid=await user.session.startSession(id);
 
-       req.session.sessionid=sessionid;
+        const sessionid = await user.session.startSession(id);
 
-        return { "status": "true"};
+        req.session.sessionid = sessionid;
 
-    }).catch((error: Error) => {
-
-        console.error(error.stack);
-
-        if (error instanceof ApolloError) {
-            throw new ApolloError(error.message);
-        }
-        else if (error instanceof UserInputError) {
-            throw new UserInputError(error.message);
-        }
-
-
-
-    });
-
-    /*
-    return await user.login(username, password).then(result => {
-
-        return result;
+        return await user.getAuthorization(sessionid);
 
     }).catch((error: Error) => {
 
@@ -63,20 +42,23 @@ export const login = async (_root: unknown, args: { username: string, password: 
 
 
     });
-    */
 };
 
-export const logout =  async (_root: unknown, { req }: requestType): Promise<logoutResponse> => {
 
-    const sessionid =req.session.sessionid;
+export const logout = async (_root: unknown, args: unknown, { req }: requestType): Promise<logoutResponse> => {
 
-    req.session.destroy((err) => {
-        console.log(err);
+    const sessionid = req.session.sessionid;
+
+    req.session.cookie.expires = new Date(Date.now() - 3600000);
+
+
+    req.session.destroy((sessionid) => {
+        console.log(sessionid);
     });
-
+    
     await user.session.endSession(sessionid);
 
-    return { "status":"true" };
+    return { "status": "true" };
 
 
 };
@@ -89,7 +71,7 @@ export const testi123 = async (_root: unknown, args: { username: string, passwor
 
 
     req.session.destroy((err) => {
-        console.log("")
+        console.log(err);
     });
 
 
@@ -153,7 +135,7 @@ export const testi345 = async (_root: unknown, args: { username: string, passwor
     */
 };
 
-export const session =  {  
+export const session = {
     "login": login,
     "logout": logout,
     "testi123": testi123,

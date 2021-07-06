@@ -2,14 +2,14 @@ import React, { ChangeEvent } from 'react';
 import { ComponentAttributeList } from '../../types/component'
 import { Button, ListGroup, Col, Form, Modal, Card, InputGroup } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
-import { addItem, removeItem, clearItems } from '../../reducers/list'
+import { addItem, removeItem, clearItems } from '../../reducers/favorites'
 import { setShow } from '../../reducers/modal';
 import trackm from '../../graphql/track';
 import { useMutation } from '@apollo/client';
 
 
 
-const SelectedFavorites: React.FC<ComponentAttributeList> = ({ show, list, showmessage }) => {
+const SelectedFavorites: React.FC<ComponentAttributeList> = ({ show, tracks, showmessage }) => {
 
   interface Testi {
     href: string;
@@ -35,7 +35,7 @@ const SelectedFavorites: React.FC<ComponentAttributeList> = ({ show, list, showm
     await addTrack({
       variables:
       {
-        tracks: Object.values(list.list)
+        tracks: Object.values(tracks.favorites)
       }
     });
 
@@ -83,7 +83,7 @@ const SelectedFavorites: React.FC<ComponentAttributeList> = ({ show, list, showm
             <Form.Group>
               <form >
                 <ListGroup variant="flush">
-                  {list ? Object.keys(list.list).map((uri: string) => (
+                  {tracks ? Object.keys(tracks.favorites).map((uri: string) => (
 
                     <Form.Row key={uri} >
                       <Col>
@@ -91,7 +91,7 @@ const SelectedFavorites: React.FC<ComponentAttributeList> = ({ show, list, showm
 
                           <InputGroup.Checkbox id={'preview'+uri.replace('spotify:track:','')} defaultChecked onChange={changeSelected} value={uri} />
 
-                          <ListGroup.Item>{list.list[uri].name}</ListGroup.Item>
+                          <ListGroup.Item>{tracks.favorites[uri].name}</ListGroup.Item>
                         </InputGroup.Prepend>
 
                       </Col>

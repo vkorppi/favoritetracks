@@ -17,7 +17,8 @@ export const resolvers = {
         getUser:userq.getUser,
         delegateToken:userq.session.delegateToken,
         getUserLoggedin:userq.session.getUserLoggedin,
-        delegateRefreshedToken: userq.session.delegateRefreshedToken //,
+        delegateRefreshedToken: userq.session.delegateRefreshedToken,
+        getAuthorization: userq.getAuthorization
         //test789: sessionq.test789
     },
     Mutation: {
@@ -27,6 +28,7 @@ export const resolvers = {
        // updatePassword:userm.updatePassword,
         remove: userm.remove,
         login: userm.session.login,
+        logout: userm.session.logout,
         testi123: userm.session.testi123,
         testi345: userm.session.testi345,
         add: trackm.add,

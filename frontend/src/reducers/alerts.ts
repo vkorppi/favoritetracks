@@ -1,7 +1,11 @@
 
 
-import { AlertAttributes } from '../types/alerts'
 import { createAction, createReducer } from '@reduxjs/toolkit'
+
+type AlertAttributes = {
+
+  [key: string]: boolean;
+}
 
 export const setAlerts = createAction<AlertAttributes>('SET');
 

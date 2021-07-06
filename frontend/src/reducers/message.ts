@@ -1,7 +1,17 @@
 
 
-import { ActionMessage } from '../types/alerts'
+import { MessageAttributes } from '../types/alerts'
 import { createAction, createReducer } from '@reduxjs/toolkit'
+
+type ActionMessage =
+{
+
+  data: MessageAttributes;
+} |
+{
+
+  data: MessageAttributes;
+};
 
 export const setMessage = createAction<ActionMessage>('SET_MESSAGE');
 export const clearMessage = createAction<ActionMessage>('CLEAR_MESSAGE');

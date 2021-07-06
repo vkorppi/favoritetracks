@@ -10,16 +10,6 @@ import { setContext } from 'apollo-link-context'
 
 let graphqlPath ='';
 
-const authentication = setContext((_, { headers }) => {
-
-  //const token = localStorage.getItem('Token')
-	const token = sessionStorage.getItem('Token')
-
-  const authorization = token && token !== 'null' ? `bearer ${token}` : null
-
-  return { headers: { ...headers, authorization, } }
-}
-)
 
 if (process.env.REACT_APP_ENVIR === 'test') {
   graphqlPath=process.env.REACT_APP_GRAPHQL_DEV as string;
@@ -28,15 +18,12 @@ else {
   graphqlPath=process.env.REACT_APP_GRAPHQL_PROD as string;
 }
 
-
-const httpLink  = new HttpLink({ uri: graphqlPath }) 
+const httpLink  = new HttpLink({ uri: graphqlPath,credentials: 'include' }) 
 
 const apollo = new ApolloClient({
-
   cache: new InMemoryCache(),
-  link: authentication.concat(httpLink as any) as any 
+  link: httpLink 
 })
-
 
 
 ReactDOM.render(

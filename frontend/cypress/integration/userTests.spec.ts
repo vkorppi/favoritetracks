@@ -180,6 +180,7 @@ describe('Test related to user management. Admin', function () {
 })
 
 
+
 describe('Test related to user management. Regular user', function () {
 
 	beforeEach(function () {
@@ -233,6 +234,8 @@ describe('Test related to user management. Regular user', function () {
 
 	})
 
+
+
 	it('User can not delete or modify other users', function () {
 
 		cy.contains('Users').click()
@@ -248,6 +251,7 @@ describe('Test related to user management. Regular user', function () {
 		cy.get('#detailsClose').click()
 
 	})
+	
 
 
 })
@@ -281,3 +285,4 @@ describe('Tests user deletion. Admin', function () {
 	})
 	
 })
+

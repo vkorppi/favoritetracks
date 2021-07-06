@@ -19,13 +19,13 @@ const delegateToken = async (_root: unknown, args: { code: string, playlist: str
     const code = args.code;
     const playlist = args.playlist;
 
-    const loggedUser = await user.getUser(req.session.userid) as UserSchemaType;
+    const loggedUser = await user.getUserLoggedin(req.session.sessionid) as UserSchemaType;
 
     if (!loggedUser) {
         throw new ForbiddenError("Unauthorized action");
     }
 
-    await user.addPLaylist(playlist, req.session.userid);
+    await user.addPLaylist(playlist, req.session.sessionid);
 
     return await spotify.session.user.delegateToken(code).then(result => {
 
@@ -48,7 +48,7 @@ const getUserLoggedin = async (_root: unknown, args: { code: string, playlist: s
 
     if (args) null;
 
-    const loggedUser = await user.getUser(req.session.userid) as UserSchemaType;
+    const loggedUser = await user.getUserLoggedin(req.session.sessionid)  as UserSchemaType;
 
     if (!loggedUser) {
         throw new ForbiddenError("Unauthorized action");
@@ -61,7 +61,7 @@ const getUserLoggedin = async (_root: unknown, args: { code: string, playlist: s
 const delegateRefreshedToken = async (_root: unknown, args: { refreshesToken: string; }, { req }: requestType): Promise<void | refreshtoken> => {
 
 
-    const loggedUser = await user.getUser(req.session.userid) as UserSchemaType;
+    const loggedUser = await user.getUserLoggedin(req.session.sessionid) as UserSchemaType;
 
     if (!loggedUser) {
         throw new ForbiddenError("Unauthorized action");

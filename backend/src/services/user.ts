@@ -2,7 +2,7 @@
 
 import typeparsers from '../utils/typeparsers';
 import User from '../mongo/user';
-import { UserSchemaType, UserType } from '../types/userTypes';
+import { Authorization, UserSchemaType, UserType } from '../types/userTypes';
 import { hashPassword } from '../utils/userFunctions';
 import { UserInputError } from 'apollo-server-express';
 import bcrypt from 'bcryptjs';
@@ -11,7 +11,7 @@ const parser = typeparsers.parseString;
 const emailParser = typeparsers.parseEmailUserInput;
 const dateParser = typeparsers.parseBirthdate;
 import { getMessage } from '../utils/errorFunctions';
-import {session} from '../services/systemSession';
+import { session } from '../services/systemSession';
 
 const firstnameError = getMessage('string', 'firstname', true);
 const lastnameError = getMessage('string', 'lastname', true);
@@ -41,7 +41,8 @@ export const create = async (username: string, password: string, firstname: stri
         birthdate: birthdate ? dateParser(birthdate, birthdateError) : '',
         email: email ? emailParser(email, emailError) : '',
         address: address ? parser(address, addressError) : '',
-        admin: false
+        admin: false,
+        sessionid:''
 
     } as UserSchemaType;
 
@@ -131,7 +132,7 @@ const search = async (value: string): Promise<UserSchemaType[]> => {
 const login = async (username: string, password: string): Promise<string> => {
 
 
-   return await check(
+    return await check(
         parser(username, getMessage('string', 'username', true)),
         parser(password, "userInput: password was invalid")
     );
@@ -158,14 +159,20 @@ const check = async (username: string, password: string): Promise<string> => {
     return user.id as string;
 };
 
+
 const getUser = async (id: string): Promise<UserSchemaType | null> => {
 
     return await User.findOne({ _id: id });
 };
 
-const addPLaylist = async (playlist: string, id: string): Promise<string> => {
+const getUserLoggedin = async (sessionid: string): Promise<UserSchemaType | null> => {
 
-    await User.updateOne({ _id: id },
+    return await User.findOne({ sessionid: sessionid });
+};
+
+const addPLaylist = async (playlist: string, sessionid: string): Promise<string> => {
+
+    await User.updateOne({ sessionid: sessionid },
         {
             $set:
             {
@@ -179,13 +186,28 @@ const addPLaylist = async (playlist: string, id: string): Promise<string> => {
 
 };
 
-export const isAdmin =  (user: UserSchemaType): boolean => {
+export const isAdmin = (user: UserSchemaType): boolean => {
 
-    if(!user.admin) {
+    if (!user.admin) {
         return false;
     }
 
     return true;
+
+};
+
+export const getAuthorization =async (sessionid: string):  Promise<Authorization> => {
+
+    const fetchedUser = await User.findOne({ sessionid: sessionid });
+
+    const islogged = !(!fetchedUser);
+    let isadmin = false;
+
+    if(islogged) {
+        isadmin = isAdmin(fetchedUser as UserSchemaType);
+    }
+
+    return { "authenticated": islogged, "admin": isadmin };
 
 };
 
@@ -202,5 +224,7 @@ export default {
     getUser,
     addPLaylist,
     isAdmin,
-    session
+    session,
+    getAuthorization,
+    getUserLoggedin
 };

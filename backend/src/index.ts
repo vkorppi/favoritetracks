@@ -59,60 +59,15 @@ const server = new ApolloServer({
     userdef.userMutation,
     userdef.userQuery
   ],
-  resolvers
-  ,
- /* context: async ({ req }) => {
-    if (req) {
-      const { secret } = getSessionEnvs();
-      const auth = req.headers.authorization;
-      const hasAuthHeader = auth ? auth.startsWith('bearer ') : false;
-      let encodedToken: string;
-
-      if (hasAuthHeader) {
-        encodedToken = auth?.replace('bearer ', '') as string;
-        const decodedToken = jsonwebtoken.verify(encodedToken, secret) as decodedTokenType;
-
-        const userdata =user.getUser(decodedToken.id);
-
-        return userdata.then(
-          response => {
-            return response;
-          }
-        );
-
-      }
-
-    }
-
-    return '';
-  } ,*/
-
+  resolvers,
   context:  ( {req}  ) => {   return {req}; },
-
-/*
-  formatError: (err) => {
-
-    const userError = /userInput:.*|Unauthorized action/i;
-
-    console.log(err.message);
-
-    if (!userError.test(err.message)) {
-
-      return new Error('Internal server error');
-    }
-    else {
-      return new Error(err.message);
-    }
-
-    return err;
-  }
-  */
-  
 
 });
 
 
 const app = express();
+
+// Muutettava, testaus ja tuotannon välillä
 
 const corsOptions = {
   origin: 'http://localhost:3000',
@@ -128,7 +83,12 @@ app.use(express.static('build'));
 app.use(session({
   secret: 'dfdsfs',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+	  sameSite:'strict',
+	  secure:false ,
+	maxAge: 3600000
+  }
 }));
 
 server.applyMiddleware({ app, cors: false });

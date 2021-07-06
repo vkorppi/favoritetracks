@@ -6,7 +6,9 @@ import {  spotifyTrackMinimal } from '../../types/spotifyTypes';
 import { track } from '../../types/favoritesTypes';
 import { requestType } from '../../types/sessionTypes';
 
-export const search =async (_root: unknown, args: { track: string; page: number; }): Promise<searchResult | void> => {
+export const search =async (_root: unknown, args: { track: string; page: number; } , { req }: requestType): Promise<searchResult | void> => {
+
+    console.log(req)
 
     const track: string = args.track;
     const page: number = args.page;
@@ -37,11 +39,14 @@ export const search =async (_root: unknown, args: { track: string; page: number;
 };
 
 export const getFavorites = async (_root: unknown, args: unknown , { req }: requestType): Promise<void | track[] | null> => {
-
           
     if(args) null;
 
+    
+
     const loggedUser= await user.session.hasSession(req.session.sessionid);
+
+    console.log(loggedUser.email)
 
     if(!loggedUser) {
         throw new ForbiddenError("Unauthorized action");

@@ -11,12 +11,19 @@ export interface UserType {
     admin: boolean;
   }
   
-  export interface UseId {
+  export interface UserId {
     id: string;
   }
   
-  
-  
-  export interface UseId {
-    id: string;
+  export interface Auhtorization {
+    admin: boolean;
+    authenticated: boolean;
+  }
+
+  export interface CapsulatedLoginAuth {
+    login: Auhtorization;
+  }
+
+  export interface AuhtorizationType {
+    authorization: Auhtorization;
   }

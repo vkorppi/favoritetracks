@@ -24,7 +24,12 @@ import { ApolloError } from 'apollo-server-express';
 };
 
  const hasSession = async (sessionid: string): Promise<UserSchemaType> => {
-	
+
+    if (!sessionid) {
+        console.log("No session found");
+        throw new ApolloError("Unauthorized action");
+    }
+
     const fetchedUser = await User.findOne({ sessionid: sessionid });
 
     if (!fetchedUser) {

@@ -1,5 +1,5 @@
 import React, { MouseEvent } from 'react';
-import {  NewTrack, Track } from '../../type'
+import {  NewTrack } from '../../types/spotify'
 import { BasicComponent } from '../../types/component'
 import {  ModalType } from '../../types/modal'
 import { useQuery, useMutation } from '@apollo/client';
@@ -33,7 +33,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
     const modalState = (state: ModalType) => state
     const ModalData = useSelector(modalState)
 
-    const { data, refetch } = useQuery(track.getList, {
+    const { data, refetch } = useQuery(track.getFavorites, {
         fetchPolicy: "no-cache", errorPolicy: 'none'
     })
 
@@ -104,7 +104,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
         localStorage.setItem('Expiration', getTimeWhenTokenExpires(expiration))
 
         if (data) {
-            TransferToPlaylist(data.getList)
+            TransferToPlaylist(data.getFavorites)
         }
 
     }
@@ -166,7 +166,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
 
             <Form.Group>
                 <ListGroup variant="flush">
-                    { (data && data.getList) ? data.getList.map((track: NewTrack) => (
+                    { (data && data.getFavorites) ? data.getFavorites.map((track: NewTrack) => (
 
                         <Form.Row key={track.spotifUri} >
                             <Col>
@@ -186,7 +186,7 @@ const Favorites: React.FC<BasicComponent> = ({ showmessage }) => {
                         <Button type="button" className="buttonSpace" variant="outline-info" onClick={() => transferFavorites()}  >Transfer </Button>
                     </Col>
                 </Form.Row>
-                {ModalData && data && user ? <Transfer showmessage={showmessage} show={ModalData.modal.show} tracks={data.getList} TransferToPlaylist={TransferToPlaylist} user={user} newtoken={tokenObject} /> : ''}
+                {ModalData && data && user ? <Transfer showmessage={showmessage} show={ModalData.modal.show} tracks={data.getFavorites} TransferToPlaylist={TransferToPlaylist} user={user} newtoken={tokenObject} /> : ''}
             </Form.Group>
 
         </div>
