@@ -16,19 +16,6 @@ extend type Mutation {
   logout: logoutResponse 
 }
 
-extend type Mutation {
-  testi123(
-    username: String!
-    password: String!
-  ): encodedToken 
-}
-
-extend type Mutation {
-  testi345(
-    username: String!
-    password: String!
-  ): encodedToken 
-}
 
 type encodedToken {
   value : String!
@@ -51,7 +38,6 @@ export const sessionQuery = gql`
  type Query {
     delegateToken(code: String,playlist: String): spotifyToken!
     delegateRefreshedToken(refreshedToken: String!): refreshedToken!
-    test789(test:String):test1
   }
 
 type spotifyToken {
@@ -67,9 +53,7 @@ type spotifyToken {
     scope: String!
   }
 
-  type test1 {
-    test: String
-  }
+
   
 `;
 

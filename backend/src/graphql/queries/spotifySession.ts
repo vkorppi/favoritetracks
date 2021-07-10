@@ -90,12 +90,6 @@ const delegateRefreshedToken = async (_root: unknown, args: { refreshesToken: st
 
 };
 
-export const test789 = (_root: unknown, args: { test: string }): test999 => {
-
-    const test = args.test;
-
-    return { "test": test };
-};
 
 export const session = {
     "delegateRefreshedToken": delegateRefreshedToken,
@@ -104,6 +98,5 @@ export const session = {
 };
 
 export default {
-    test789,
     session
 };

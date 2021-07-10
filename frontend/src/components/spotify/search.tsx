@@ -1,6 +1,6 @@
 import React, { FormEvent, ChangeEvent } from 'react';
 import {  Track, FavoritesType, NewTrack } from '../../types/spotify'
-import { SearchForm,BasicComponent } from '../../types/component'
+import { SearchForm } from '../../types/component'
 import { ModalType } from '../../types/modal'
 import { Button, ListGroup, Col, Form, FormControl, InputGroup } from 'react-bootstrap'
 import Resultpagination from './pagination';
@@ -37,7 +37,6 @@ const Search: React.FC<SearchForm> = ({ showmessage,authorization }) => {
 
   let uris: string[] = [''];
 
-  // Tarkistus onko jo authorizoitu, muussa tapauksessa ei tehdä kutsua
   const listObject = useQuery(trackq.getFavorites, {
     fetchPolicy: "no-cache", errorPolicy: 'none'
   })

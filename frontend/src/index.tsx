@@ -6,7 +6,6 @@ import './index.css'
 import store from './store'
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from "react-router-dom"
-import { setContext } from 'apollo-link-context'
 
 let graphqlPath ='';
 

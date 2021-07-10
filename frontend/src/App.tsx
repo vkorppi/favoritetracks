@@ -1,7 +1,7 @@
 import React from 'react';
 import Search from './components/spotify/search';
 import { MessageType } from './types/alerts';
-import { UserId, Auhtorization, AuhtorizationType } from './types/user';
+import { UserId, Auhtorization } from './types/user';
 import { Container, Row, Navbar, Nav, Modal } from 'react-bootstrap'
 import { showMessage } from './thunks/message';
 import Message from './components/spotify/message';
@@ -9,7 +9,7 @@ import Registaration from './components/users/registaration';
 import UserSearch from './components/users/userSearch';
 import Details from './components/users/userDetails';
 import Login from './components/users/login';
-import { useRouteMatch, Route, Switch, useLocation, useHistory } from 'react-router-dom';
+import { useRouteMatch, Route, Switch, useHistory } from 'react-router-dom';
 import Favorites from './components/spotify/favorites';
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from "react-router-bootstrap";

@@ -93,35 +93,6 @@ export const updateUser = async (_root: unknown, args: { firstname: string, last
     });
 };
 
-/*
-export const updatePassword = async (_root: unknown, args: { password: string, id: string }, { req }: requestType): Promise<string | void> => {
-
-    const password: string = args.password;
-    const id: string = args.id;
-
-    return await user.updatePassword(password, id).then(() => {
-
-        return `User's password was updated. User's id was ${id}`;
-
-    }).catch((error: Error) => {
-
-        console.error(error.stack);
-
-        if (error instanceof ApolloError) {
-            throw new ApolloError(error.message);
-        }
-        else if (error instanceof UserInputError) {
-            throw new UserInputError(error.message);
-        }
-        else if (error instanceof MongoError) {
-            throw new UserInputError(error.message);
-        }
-
-
-    });
-};
-*/
-
 export const remove = async (_root: unknown, args: { id: string },{ req }: requestType): Promise<string | void> => {
             
 
@@ -160,7 +131,6 @@ export const remove = async (_root: unknown, args: { id: string },{ req }: reque
 export default {
     create,
     updateUser,
-   // updatePassword,
     remove,
     session
 };

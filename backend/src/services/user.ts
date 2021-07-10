@@ -50,23 +50,6 @@ export const create = async (username: string, password: string, firstname: stri
     return await user.save();
 };
 
-/*
-const addList = async (favorites: string, id: string): Promise<string> => {
-
-    await User.updateOne({ _id: id },
-        {
-            $set:
-            {
-                "favorites": parser(
-                    favorites,
-                    getMessage('string', 'favorites', false))
-            }
-        });
-
-    return id;
-
-};
-*/
 
 const update = async (firstname: string, lastname: string, birthdate: string, email: string, address: string, id: string): Promise<void> => {
 
@@ -182,7 +165,7 @@ const addPLaylist = async (playlist: string, sessionid: string): Promise<string>
             }
         });
 
-    return id;
+    return "playlist added";
 
 };
 

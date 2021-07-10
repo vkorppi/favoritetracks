@@ -12,20 +12,10 @@ export const searchUser = async (_root: unknown, args: { value: string; }, { req
     const loggedUser = await user.session.hasSession(req.session.sessionid);
 
     if (!loggedUser) {
-        //throw new ForbiddenError("Unauthorized action");
-        throw new ForbiddenError("no user");
+        throw new ForbiddenError("no session found");
     }
-
-    /*
-    if (!user.isAdmin(loggedUser)) {
-        //  throw new ForbiddenError("Unauthorized action");
-
-        throw new ForbiddenError("no admin " + req.session.sessionid);
-    }
-    */
 
     const value: string = args.value;
-
 
     return await user.search(value).then(result => {
 
@@ -81,10 +71,6 @@ export const getAuthorization = async (_root: unknown, args: unknown, { req }: r
 
     if(args) null;
 	
-	console.log("Debug -- "+req.session.sessionid)
-	
-	console.log(req.session.cookie.expires)
-
     return await user.getAuthorization(req.session.sessionid);
 };
 

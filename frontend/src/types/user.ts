@@ -23,7 +23,3 @@ export interface UserType {
   export interface CapsulatedLoginAuth {
     login: Auhtorization;
   }
-
-  export interface AuhtorizationType {
-    authorization: Auhtorization;
-  }

@@ -18,9 +18,7 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
     const data2 = useSelector(modalState)
     const dispatch = useDispatch()
 
-   // const admin =  localStorage.getItem('Admin') === 'true'
-
-    const fetchedUser = useQuery(userq.getUser, {
+    const userData = useQuery(userq.getUser, {
         fetchPolicy: "no-cache", errorPolicy: 'none',
         skip: (!id),
         variables: { id: id }
@@ -28,7 +26,6 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
 
     const loggedUser = useQuery(userq.loggedInUser, {
         fetchPolicy: "no-cache", errorPolicy: 'none',
-        //skip: (id !== '')
     })
 
 
@@ -37,9 +34,9 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
     let loggeduser
     let isloggeduser=true
 
-    if(fetchedUser && fetchedUser.data) {
-        error = fetchedUser.error
-        user = fetchedUser.data.getUser
+    if(userData && userData.data) {
+        error = userData.error
+        user = userData.data.getUser
         isloggeduser=false
     }
 
@@ -52,15 +49,6 @@ const Details: React.FC<ComponentAttribueId> = ({ showmessage, id }) => {
     if(!user) {
         user=loggeduser
     }
-
-    /*
-    if(loggedUser && loggedUser.data) {
-        error = loggedUser.error
-        user = loggedUser.data.getUserLoggedin
-        
-        isloggeduser=true
-    }
-    */
 
 
     const [deleteUser] = useMutation(userq.deleteUser, {
